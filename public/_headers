@@ -1,0 +1,4 @@
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; connect-src 'self' data: https://ark.cn-beijing.volces.com https://rtc.volcengineapi.com https://visual.volcengineapi.com wss://*.volcengineapi.com https://*.rtc.volcvideo.com https://*.volcvideos.com wss://*.rtc.volcvideo.com wss://*.volcvideos.com; worker-src 'self' blob:; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY

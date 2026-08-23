@@ -1,0 +1,425 @@
+{
+  "_annotation_guide": "Each entry represents one conversation. expectedConcepts lists the knowledge points a human judges are discussed. concept must be from KC_VOCABULARY (src/lib/kcVocabulary.ts). signal reflects the child's performance. Annotate based on conversation content, NOT on what the LLM might extract. Target: 20+ entries with message_count >= 4.",
+  "_note": "Synthetic conversations for pipeline validation. Replace with real D1 conversations for production-grade accuracy measurement.",
+  "conversations": [
+    {
+      "conversationId": "synth-math-001",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "这道题是 35 + 28 = ?" },
+        { "role": "assistant", "content": "我看到你在做加法题呢！35加28，你觉得可以怎么算？" },
+        { "role": "user", "content": "我不知道，5加8是多少" },
+        { "role": "assistant", "content": "5加8等于多少呢？你可以用手指数一数" },
+        { "role": "user", "content": "13！要进位" },
+        { "role": "assistant", "content": "太棒了！5加8确实是13，需要向十位进1。那十位怎么算呢？" }
+      ],
+      "expectedConcepts": [
+        { "concept": "carrying", "signal": "struggle" },
+        { "concept": "counting", "signal": "mastery" }
+      ],
+      "notes": "Child struggles with carrying but successfully counts 5+8"
+    },
+    {
+      "conversationId": "synth-math-002",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "52 - 37 怎么算" },
+        { "role": "assistant", "content": "52减37，�����是2减7，够不够减呢？" },
+        { "role": "user", "content": "不够，要借位" },
+        { "role": "assistant", "content": "对！要从十位借1。那借了之后个位变成多少？" },
+        { "role": "user", "content": "12减7等于5" },
+        { "role": "assistant", "content": "非常好！那十位��？" },
+        { "role": "user", "content": "4减3等于1，所以答案是15" },
+        { "role": "assistant", "content": "完全正确！你对退位减法掌握得很好" }
+      ],
+      "expectedConcepts": [
+        { "concept": "borrowing", "signal": "mastery" },
+        { "concept": "place_value", "signal": "mastery" }
+      ],
+      "notes": "Child independently solves borrowing problem with place value understanding"
+    },
+    {
+      "conversationId": "synth-math-003",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "8+7怎么算啊" },
+        { "role": "assistant", "content": "8加7��你知道凑十法吗？" },
+        { "role": "user", "content": "什么是凑十法" },
+        { "role": "assistant", "content": "就是把一个数凑成10。8还差几到10呢？" },
+        { "role": "user", "content": "差2！" },
+        { "role": "assistant", "content": "对！那从7里拿2给8，7还剩多少？" },
+        { "role": "user", "content": "剩5，10加5等于15！" },
+        { "role": "assistant", "content": "太棒了！你学会凑十法了！" }
+      ],
+      "expectedConcepts": [
+        { "concept": "make_ten", "signal": "mastery" },
+        { "concept": "split_method", "signal": "mastery" }
+      ],
+      "notes": "Child learns make_ten through guided instruction, also uses split_method (splitting 7 into 2+5)"
+    },
+    {
+      "conversationId": "synth-math-004",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "6乘以7等于多少" },
+        { "role": "assistant", "content": "六七？你还记得乘法口诀吗？" },
+        { "role": "user", "content": "六七...四十...不对，我忘了" },
+        { "role": "assistant", "content": "没关系。你知道六六三十六吗？那六七就是36再加一个6" },
+        { "role": "user", "content": "36加6等于42！" },
+        { "role": "assistant", "content": "对了！六七四十二。你用了一个聪明的方法——从已知的推算未知的" }
+      ],
+      "expectedConcepts": [
+        { "concept": "times_tables", "signal": "struggle" }
+      ],
+      "notes": "Child forgot 6x7 multiplication table, needed hint to derive it"
+    },
+    {
+      "conversationId": "synth-math-005",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "列���式算 234 + 568" },
+        { "role": "assistant", "content": "好，竖式计算要把数位对齐。个位先算，4加8等于多少？" },
+        { "role": "user", "content": "12，写2进1" },
+        { "role": "assistant", "content": "对！十位呢？3加6再加进位的1？" },
+        { "role": "user", "content": "等于10，写0进1" },
+        { "role": "assistant", "content": "很好！百位呢？" },
+        { "role": "user", "content": "2加5加1等于8，答案是802" },
+        { "role": "assistant", "content": "完全正确！你的竖式算得又快又准" }
+      ],
+      "expectedConcepts": [
+        { "concept": "long_form", "signal": "mastery" },
+        { "concept": "carrying", "signal": "mastery" },
+        { "concept": "place_value", "signal": "mastery" }
+      ],
+      "notes": "Child confidently does long-form vertical calculation with carrying"
+    },
+    {
+      "conversationId": "synth-math-006",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "一半是多少，比如一个蛋糕分成两份" },
+        { "role": "assistant", "content": "一个蛋糕分成两份，每份就是二分之一，写成 1/2" },
+        { "role": "user", "content": "那三份呢？" },
+        { "role": "assistant", "content": "如果分成三份，每份就是三分之一，写成 1/3。你能画一画吗？" },
+        { "role": "user", "content": "我画了一个圆分成三份" },
+        { "role": "assistant", "content": "画得很好！那如果吃了两份，吃了多少？" },
+        { "role": "user", "content": "吃了2/3！" }
+      ],
+      "expectedConcepts": [
+        { "concept": "simple_fraction", "signal": "mastery" },
+        { "concept": "diagram", "signal": "mastery" }
+      ],
+      "notes": "Child understands fractions and uses diagram to visualize"
+    },
+    {
+      "conversationId": "synth-math-007",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "15比8大还是小" },
+        { "role": "assistant", "content": "你觉得15和8哪个大呢？" },
+        { "role": "user", "content": "15大！因为15比10大，8比10小" },
+        { "role": "assistant", "content": "说得好！你用10做参照来比较，这是一个很棒的方法" },
+        { "role": "user", "content": "那100和99呢" },
+        { "role": "assistant", "content": "你觉得呢？" },
+        { "role": "user", "content": "100大，因为100是三位数，99是两位数" }
+      ],
+      "expectedConcepts": [
+        { "concept": "compare_size", "signal": "mastery" },
+        { "concept": "place_value", "signal": "mastery" }
+      ],
+      "notes": "Child compares numbers confidently using place value reasoning"
+    },
+    {
+      "conversationId": "synth-math-008",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "2/3 + 1/4 怎么算" },
+        { "role": "assistant", "content": "分数加法��分母不同要先通分。2/3和1/4的公���母是多少？" },
+        { "role": "user", "content": "不知道什么是通分" },
+        { "role": "assistant", "content": "通分就是把分母变成一样的。3和4的最小公倍数是12。2/3变成8/12，1/4变成3/12" },
+        { "role": "user", "content": "8/12 + 3/12 = 11/12？" },
+        { "role": "assistant", "content": "完全正确！你很快就理解了通分的方法" }
+      ],
+      "expectedConcepts": [
+        { "concept": "fraction_denom", "signal": "struggle" }
+      ],
+      "notes": "Child didn't know how to find common denominator, learned through guidance"
+    },
+    {
+      "conversationId": "synth-math-009",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "一个长方形长8厘��宽5厘米，面积是多少" },
+        { "role": "assistant", "content": "长方形的面积怎么算呢？" },
+        { "role": "user", "content": "长乘以宽！8乘5等于40平方厘米" },
+        { "role": "assistant", "content": "对！那如果把它分成两个三角形呢？每个三角形面积是多少？" },
+        { "role": "user", "content": "40除以2等于20平方厘米" },
+        { "role": "assistant", "content": "你对面积拆分理解得很好！" }
+      ],
+      "expectedConcepts": [
+        { "concept": "volume_area", "signal": "mastery" },
+        { "concept": "area_split", "signal": "mastery" }
+      ],
+      "notes": "Child calculates area and understands splitting shapes"
+    },
+    {
+      "conversationId": "synth-math-010",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "x + 5 = 12，x等于多少" },
+        { "role": "assistant", "content": "要找x，你觉得��该怎么做？" },
+        { "role": "user", "content": "减掉5���" },
+        { "role": "assistant", "content": "对！等号两边��减5。那x等于？" },
+        { "role": "user", "content": "12减5等于7" },
+        { "role": "assistant", "content": "正确！我们可以验算一下：7+5=12，没错！你用了逆运算" }
+      ],
+      "expectedConcepts": [
+        { "concept": "equation_reverse", "signal": "mastery" },
+        { "concept": "inverse_check", "signal": "mastery" }
+      ],
+      "notes": "Child solves simple equation and verifies with inverse operation"
+    },
+    {
+      "conversationId": "synth-math-011",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "小明有12块糖，分给3���人，每人几块" },
+        { "role": "assistant", "content": "12块糖分给3个人，你觉得可以怎么算？" },
+        { "role": "user", "content": "我不会除法" },
+        { "role": "assistant", "content": "我们可以���倒推法！想一想，什么数乘以3等于12？" },
+        { "role": "user", "content": "4！4乘3等于12" },
+        { "role": "assistant", "content": "太棒了！所以每人分4块。你用乘法��过来想，就找到答案了" }
+      ],
+      "expectedConcepts": [
+        { "concept": "reverse_reasoning", "signal": "mastery" },
+        { "concept": "times_tables", "signal": "mastery" }
+      ],
+      "notes": "Child uses reverse reasoning to solve division via multiplication"
+    },
+    {
+      "conversationId": "synth-chinese-001",
+      "subject": "chinese",
+      "messages": [
+        { "role": "user", "content": "这篇文章说的是什么？我看不懂" },
+        { "role": "assistant", "content": "没���系，我们一起来看。你先读第一段，告诉我��一段讲了什么？" },
+        { "role": "user", "content": "讲了一个小男孩去公园" },
+        { "role": "assistant", "content": "很好！那他去公园做了什么呢？" },
+        { "role": "user", "content": "他看到了很多花，然后...然后我不认识这个字" },
+        { "role": "assistant", "content": "遇到不认识的字很正常。你看这个字的偏旁是什么？" }
+      ],
+      "expectedConcepts": [
+        { "concept": "reading_comp", "signal": "struggle" },
+        { "concept": "char_meaning", "signal": "struggle" }
+      ],
+      "notes": "Child struggles with reading comprehension and encounters unknown characters"
+    },
+    {
+      "conversationId": "synth-chinese-002",
+      "subject": "chinese",
+      "messages": [
+        { "role": "user", "content": "怎么记住'林'这个字" },
+        { "role": "assistant", "content": "你看'林'这个字，它是由什么组成的？" },
+        { "role": "user", "content": "两个木！" },
+        { "role": "assistant", "content": "对！两个'木'放在一起就是'林'，很多树在一起就是树林。这叫偏旁联想" },
+        { "role": "user", "content": "那'森'呢？是不是三个木？" },
+        { "role": "assistant", "content": "哇你自己发现了��三个木就是'森'，更多���树。你很会联想！" }
+      ],
+      "expectedConcepts": [
+        { "concept": "radical_assoc", "signal": "mastery" }
+      ],
+      "notes": "Child actively uses radical association to learn characters"
+    },
+    {
+      "conversationId": "synth-chinese-003",
+      "subject": "chinese",
+      "messages": [
+        { "role": "user", "content": "老师让造句，用'虽然...但是...'" },
+        { "role": "assistant", "content": "好的！这是一个转折句式。你先想一件事情的两个方面" },
+        { "role": "user", "content": "虽然今天下雨，但是我还是去上学了" },
+        { "role": "assistant", "content": "造得很好！前半句说一个情况，后半句说相反的结果。再造一个试试？" },
+        { "role": "user", "content": "虽然作业很多，但是我很快就做完了" },
+        { "role": "assistant", "content": "又对了！你对这个句式掌握得很好" }
+      ],
+      "expectedConcepts": [
+        { "concept": "sentence_sense", "signal": "mastery" }
+      ],
+      "notes": "Child creates grammatically correct turning sentences"
+    },
+    {
+      "conversationId": "synth-chinese-004",
+      "subject": "chinese",
+      "messages": [
+        { "role": "user", "content": "这首古诗是什么���思：床前明月光，疑是地上霜" },
+        { "role": "assistant", "content": "这是李白的《静夜思》。你先逐字看：'床前'是什么意思？" },
+        { "role": "user", "content": "床的前面？" },
+        { "role": "assistant", "content": "对！'明月光'呢？" },
+        { "role": "user", "content": "月亮很亮" },
+        { "role": "assistant", "content": "很好！'疑是地上霜'——'疑'是什么意思？" },
+        { "role": "user", "content": "怀疑？就是以为地上有霜？" },
+        { "role": "assistant", "content": "太棒了！月光太亮了，诗人以为地上结了霜。这是用比喻来写月光的美" }
+      ],
+      "expectedConcepts": [
+        { "concept": "ancient_poetry", "signal": "mastery" },
+        { "concept": "char_meaning", "signal": "mastery" },
+        { "concept": "metaphor_figure", "signal": "neutral" }
+      ],
+      "notes": "Child understands poem meaning through character-by-character analysis, metaphor mentioned but not deeply explored"
+    },
+    {
+      "conversationId": "synth-chinese-005",
+      "subject": "chinese",
+      "messages": [
+        { "role": "user", "content": "b-a-ba，这个音对吗" },
+        { "role": "assistant", "content": "b和a拼在一起读什么呢？你试试" },
+        { "role": "user", "content": "ba！���爸的爸" },
+        { "role": "assistant", "content": "对了！那p-a呢？" },
+        { "role": "user", "content": "pa！怕的怕" },
+        { "role": "assistant", "content": "真棒���声母和韵母拼在一起你已经很熟练了" }
+      ],
+      "expectedConcepts": [
+        { "concept": "initial_finals", "signal": "mastery" }
+      ],
+      "notes": "Child fluently combines initials and finals"
+    },
+    {
+      "conversationId": "synth-chinese-006",
+      "subject": "chinese",
+      "messages": [
+        { "role": "user", "content": "老师让写作文，题目���'我的好朋友'，我不知道怎么写" },
+        { "role": "assistant", "content": "写作文先想好写什么。你的好朋友是谁？" },
+        { "role": "user", "content": "小明" },
+        { "role": "assistant", "content": "好！那你可以先想三件事：小明长什么样、你们怎么认识的、一起做过什么有趣的事" },
+        { "role": "user", "content": "嗯...小明很高，我们一年级就���识了，上次一起打篮球" },
+        { "role": "assistant", "content": "这就是三个段落的内容了！第一段写外貌，第二段写怎么认识的，第三段写一件趣事" },
+        { "role": "user", "content": "那开头和结尾怎么写" },
+        { "role": "assistant", "content": "开头可以直接说'我有一个好朋友叫小明'，结尾可以说'我很开心有小明这个朋友'。简单直接就好" }
+      ],
+      "expectedConcepts": [
+        { "concept": "essay_outline", "signal": "struggle" },
+        { "concept": "simple_narrative", "signal": "neutral" }
+      ],
+      "notes": "Child struggles with essay organization, needs scaffolding for structure"
+    },
+    {
+      "conversationId": "synth-chinese-007",
+      "subject": "chinese",
+      "messages": [
+        { "role": "user", "content": "这段话的关键句是哪一句" },
+        { "role": "assistant", "content": "关键句通常在段落的开头或结尾，表达整段的中心意思。你找到了吗？" },
+        { "role": "user", "content": "是不是第一句？'秋天是丰收的季节'" },
+        { "role": "assistant", "content": "对！后面的内容都在描述秋天丰收的场景。这就叫总分结构" },
+        { "role": "user", "content": "所以后面说果园、稻田都是在解释这句话？" },
+        { "role": "assistant", "content": "完全正确！你的理解力很强" }
+      ],
+      "expectedConcepts": [
+        { "concept": "key_sentence", "signal": "mastery" },
+        { "concept": "para_locate", "signal": "mastery" }
+      ],
+      "notes": "Child identifies key sentence and paragraph structure"
+    },
+    {
+      "conversationId": "synth-english-001",
+      "subject": "english",
+      "messages": [
+        { "role": "user", "content": "cat怎么读" },
+        { "role": "assistant", "content": "cat，我们来拆开看。c发什么音？" },
+        { "role": "user", "content": "k的音？" },
+        { "role": "assistant", "content": "对！c在这里发/k/。那a呢？" },
+        { "role": "user", "content": "/æ/！" },
+        { "role": "assistant", "content": "真棒！���后t发/t/。合起来就是/kæt/。这就是自然拼读" },
+        { "role": "user", "content": "那bat呢？b-a-t，/bæt/！" },
+        { "role": "assistant", "content": "你已经会自己拼了！只是换了第一个字母" }
+      ],
+      "expectedConcepts": [
+        { "concept": "phonics", "signal": "mastery" },
+        { "concept": "abc_sounds", "signal": "mastery" }
+      ],
+      "notes": "Child learns phonics and applies to new word independently"
+    },
+    {
+      "conversationId": "synth-english-002",
+      "subject": "english",
+      "messages": [
+        { "role": "user", "content": "I go to school yesterday. 这句话对吗" },
+        { "role": "assistant", "content": "嗯，yesterday是昨天的意思。yesterday发生的事情，go要变成什么形式？" },
+        { "role": "user", "content": "go...goed？" },
+        { "role": "assistant", "content": "go是不规则动词哦，过去式是went。I went to school yesterday." },
+        { "role": "user", "content": "哦！那eat呢？eated？" },
+        { "role": "assistant", "content": "eat的过去式也是不���则的：ate。不规则动词需要一个一个记" },
+        { "role": "user", "content": "好难啊" }
+      ],
+      "expectedConcepts": [
+        { "concept": "tense_use", "signal": "struggle" }
+      ],
+      "notes": "Child struggles with irregular past tense verbs"
+    },
+    {
+      "conversationId": "synth-english-003",
+      "subject": "english",
+      "messages": [
+        { "role": "user", "content": "Do you like apples? 怎么回答" },
+        { "role": "assistant", "content": "这是一个一般疑问句，用Do开头。回答可以用Yes或No" },
+        { "role": "user", "content": "Yes, I like apples!" },
+        { "role": "assistant", "content": "完整的回答是：Yes, I do. 或者 Yes, I like apples. 你说得对！" },
+        { "role": "user", "content": "那 Does she like apples? 怎么答？" },
+        { "role": "assistant", "content": "一样的！Yes, she does. 或者 No, she doesn't. 你来试试？" },
+        { "role": "user", "content": "Yes, she does!" }
+      ],
+      "expectedConcepts": [
+        { "concept": "yes_no_question", "signal": "mastery" },
+        { "concept": "basic_sentence", "signal": "mastery" }
+      ],
+      "notes": "Child handles yes/no questions fluently with do/does"
+    },
+    {
+      "conversationId": "synth-english-004",
+      "subject": "english",
+      "messages": [
+        { "role": "user", "content": "beautiful这个词太长了记不住" },
+        { "role": "assistant", "content": "我们可以把它拆��音节：beau-ti-ful，三个部分" },
+        { "role": "user", "content": "beau是什么意思" },
+        { "role": "assistant", "content": "beau来自法语，意思是'美丽的'。加上-tiful变成形容词。像wonderful也是一样：wonder+ful" },
+        { "role": "user", "content": "哦！那careful是care加ful？" },
+        { "role": "assistant", "content": "对！-ful这个词尾表示'充满...的'。你已经在用词根联想了" }
+      ],
+      "expectedConcepts": [
+        { "concept": "syllable_split", "signal": "mastery" },
+        { "concept": "word_root", "signal": "mastery" }
+      ],
+      "notes": "Child learns syllable splitting and root-based word association"
+    },
+    {
+      "conversationId": "synth-english-005",
+      "subject": "english",
+      "messages": [
+        { "role": "user", "content": "one two three...后面是什么" },
+        { "role": "assistant", "content": "one, two, three, 后面��？" },
+        { "role": "user", "content": "four! five!" },
+        { "role": "assistant", "content": "对！那six之后呢？" },
+        { "role": "user", "content": "seven, eight, nine, ten!" },
+        { "role": "assistant", "content": "太棒了！你把1到10的数字单词全记住了" }
+      ],
+      "expectedConcepts": [
+        { "concept": "number_words", "signal": "mastery" }
+      ],
+      "notes": "Child knows number words 1-10 fluently"
+    },
+    {
+      "conversationId": "synth-math-012",
+      "subject": "math",
+      "messages": [
+        { "role": "user", "content": "178除以6，有余数怎么办" },
+        { "role": "assistant", "content": "先算最大能整除多少。6乘以多少接近178？" },
+        { "role": "user", "content": "6乘29等于174" },
+        { "role": "assistant", "content": "对！178减174呢？" },
+        { "role": "user", "content": "余4！所以178÷6=29余4" },
+        { "role": "assistant", "content": "验算一下：29×6+4=174+4=178。完全正确！" }
+      ],
+      "expectedConcepts": [
+        { "concept": "divisibility", "signal": "mastery" },
+        { "concept": "inverse_check", "signal": "mastery" }
+      ],
+      "notes": "Child handles division with remainder and verifies"
+    }
+  ]
+}
