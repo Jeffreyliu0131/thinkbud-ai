@@ -6,6 +6,12 @@ The product rule is deliberately strict:
 
 > AI guides the thinking process; the learner owns the answer.
 
+## Ownership and evidence boundary
+
+ThinkBud is an independent AI product project. I owned the product mechanism, coaching-policy evolution, prompt and safety constraints, multimodal workflow, acceptance criteria, QA, and release decisions. I used AI coding agents as implementation and review collaborators: I set scope, reviewed changes, diagnosed failures, and required tests before release.
+
+This repository demonstrates a working technical prototype and product-decision process, not broad product-market fit. User validation to date has mainly been family testing, so I do not claim external adoption or measured learning outcomes.
+
 ## What this project demonstrates
 
 - Product constraints translated into enforceable AI behavior.
