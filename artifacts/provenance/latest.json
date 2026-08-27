@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-27T02:40:59.589Z",
+  "generatedAt": "2026-08-27T07:27:16.951Z",
   "dependencySummary": {
     "total": 799,
     "direct": 39,
@@ -476,9 +476,9 @@
     }
   ],
   "assetSummary": {
-    "inventoried": 8,
+    "inventoried": 11,
     "missing": 0,
-    "ownerAttestationPending": 8
+    "ownerAttestationPending": 11
   },
   "assets": [
     {
@@ -552,6 +552,33 @@
       "ownerAttested": false,
       "exists": true,
       "sha256": "9b9aa749a910d152417cb445ba8a7f090ee30e1dadc123721e8bee25578c1708"
+    },
+    {
+      "path": "evals/rag/fixtures/synthetic-upper-math.md",
+      "kind": "synthetic-textbook-eval-fixture",
+      "source": "authored for deterministic repository tests; contains no copied textbook or participant data",
+      "licenseStatus": "test-only within this source-visible snapshot; pending project license decision",
+      "ownerAttested": false,
+      "exists": true,
+      "sha256": "b9d0b77f40bf8db0ea9168fcb3e82c0bf51a7ef40091407df54dbee00a724352"
+    },
+    {
+      "path": "evals/rag/fixtures/synthetic-lower-math.txt",
+      "kind": "synthetic-textbook-eval-fixture",
+      "source": "authored for deterministic repository tests; contains no copied textbook or participant data",
+      "licenseStatus": "test-only within this source-visible snapshot; pending project license decision",
+      "ownerAttested": false,
+      "exists": true,
+      "sha256": "adf917253691680e7c3ebfcf4ef0067fb8e809b7674e2f6f7efc72c4950b241d"
+    },
+    {
+      "path": "evals/rag/fixtures/synthetic-upper-english.md",
+      "kind": "synthetic-textbook-eval-fixture",
+      "source": "authored for deterministic repository tests; contains no copied textbook or participant data",
+      "licenseStatus": "test-only within this source-visible snapshot; pending project license decision",
+      "ownerAttested": false,
+      "exists": true,
+      "sha256": "eefe0d55a60d9f49eb7fed29cfcd30eaf3ebbb25f5fc3c8d540129290d3e12df"
     }
   ],
   "interpretation": {

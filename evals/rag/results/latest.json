@@ -1,0 +1,433 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-27T07:27:16.800Z",
+  "durationMs": 16.97,
+  "sourceCommit": "43976c4c080c7791c51df035f06ea02c42d8f6b4",
+  "sourceDirty": false,
+  "sourceSnapshotHash": "6b22ec6f662e15a7b1eabe42aa816e90dec818341f6c0d66c560392b322d0552",
+  "sourceSnapshotFiles": [
+    "functions/_shared/input-safety.ts",
+    "functions/_shared/output-guard.ts",
+    "functions/_shared/llm/types.ts",
+    "functions/_shared/llm/gateway.ts",
+    "functions/_shared/llm/fake.ts",
+    "functions/_shared/providers/chat/ark.ts",
+    "functions/_shared/rag/context-builder.ts",
+    "functions/_shared/rag/contract.ts",
+    "functions/_shared/rag/embedding.ts",
+    "functions/_shared/rag/hash.ts",
+    "functions/_shared/rag/ingestion.ts",
+    "functions/_shared/rag/retrieval.ts",
+    "functions/_shared/rag/runtime.ts",
+    "functions/_shared/rag/types.ts",
+    "functions/_shared/rag/vector-store.ts",
+    "functions/_shared/rag/vectorize.ts",
+    "functions/api/chat.ts",
+    "evals/rag/run.ts",
+    "evals/rag/cases/synthetic-rag-v1.json",
+    "evals/rag/fixtures/corpus.json",
+    "evals/rag/fixtures/synthetic-upper-math.md",
+    "evals/rag/fixtures/synthetic-upper-math.metadata.json",
+    "evals/rag/fixtures/synthetic-lower-math.txt",
+    "evals/rag/fixtures/synthetic-upper-english.md",
+    "package.json",
+    "package-lock.json"
+  ],
+  "dataset": "thinkbud-rag-synthetic-v1",
+  "casesHash": "90df24eee689bc4f44d3c3afa139eae569914abedd74d8bd8c3a902d51ea62cd",
+  "corpusHash": "3ba9cc39b89dcaa8b8005eb6c1581ef1e7395a2d90d124df869720911b5ef369",
+  "dataPolicy": "Project-authored synthetic textbook snippets only; no copied textbook, learner, school, or provider data. Human-authored synthetic queries and relevance labels; deterministic fake providers only.",
+  "groundTruthPolicy": "Human-authored relevance labels; no model generated or scored the ground truth.",
+  "scope": {
+    "productionModelCalls": 0,
+    "fakeLlmCalls": 1,
+    "networkCalls": 0,
+    "realTextbookRecords": 0,
+    "realChildRecords": 0,
+    "vectorizeDeployment": false,
+    "productionEmbeddingProvider": false
+  },
+  "corpus": {
+    "sources": 3,
+    "productionReadySources": 0,
+    "documents": 3,
+    "chapters": 4,
+    "sections": 7,
+    "chunks": 8
+  },
+  "summary": {
+    "total": 14,
+    "passed": 14,
+    "failed": 0,
+    "goldQueries": 5,
+    "badCases": 9
+  },
+  "gate": {
+    "passed": true,
+    "metrics": {
+      "meanRecallAtK": 1,
+      "meanPrecisionAtK": 1,
+      "citationCorrectness": 1,
+      "badCasePassRate": 1
+    },
+    "thresholds": {
+      "meanRecallAtK": 1,
+      "meanPrecisionAtK": 1,
+      "citationCorrectness": 1,
+      "badCasePassRate": 1
+    }
+  },
+  "cases": [
+    {
+      "id": "rag-gold-common-denominator",
+      "type": "gold_retrieval",
+      "passed": true,
+      "details": {
+        "query": "common denominator combine numerators fractions",
+        "filters": {
+          "subject": "math",
+          "gradeLabel": "upper"
+        },
+        "expectedSections": [
+          "Common denominators"
+        ],
+        "retrievedSections": [
+          "Common denominators"
+        ],
+        "recall": 1,
+        "precision": 1,
+        "citationCorrect": true,
+        "citations": [
+          {
+            "citationId": "TB1",
+            "sourceId": "src_8f59ed9b454124fa18e592f9",
+            "sourceTitle": "Synthetic Upper Math Notes",
+            "documentId": "doc_67750754aace93634d61d66f",
+            "documentTitle": "Synthetic Upper Math Notes",
+            "chapterId": "ch_c6047ae34830a630a047e641",
+            "chapterTitle": "Fraction Sense",
+            "sectionId": "sec_c38f08a43561b519a64a9b09",
+            "sectionTitle": "Common denominators",
+            "chunkId": "chk_673a3f4cbe33417f47998176",
+            "contentHash": "c4fa18669297b4522be4089c3e6b1c97af4d8dab0cc9e559cd8197e3bbb55306",
+            "locator": {
+              "documentTitle": "Synthetic Upper Math Notes",
+              "chapterTitle": "Fraction Sense",
+              "sectionTitle": "Common denominators",
+              "sectionPath": "Synthetic Upper Math Notes > Fraction Sense > Common denominators",
+              "lineStart": 7,
+              "lineEnd": 7,
+              "pageStart": 1,
+              "pageEnd": 1,
+              "charStart": 1,
+              "charEnd": 288
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rag-gold-benchmark-estimate",
+      "type": "gold_retrieval",
+      "passed": true,
+      "details": {
+        "query": "estimate fraction one half benchmark before calculating",
+        "filters": {
+          "subject": "math",
+          "gradeLabel": "upper"
+        },
+        "expectedSections": [
+          "Compare before calculating"
+        ],
+        "retrievedSections": [
+          "Compare before calculating"
+        ],
+        "recall": 1,
+        "precision": 1,
+        "citationCorrect": true,
+        "citations": [
+          {
+            "citationId": "TB1",
+            "sourceId": "src_8f59ed9b454124fa18e592f9",
+            "sourceTitle": "Synthetic Upper Math Notes",
+            "documentId": "doc_67750754aace93634d61d66f",
+            "documentTitle": "Synthetic Upper Math Notes",
+            "chapterId": "ch_c6047ae34830a630a047e641",
+            "chapterTitle": "Fraction Sense",
+            "sectionId": "sec_73a550bb47086bd6ad36af22",
+            "sectionTitle": "Compare before calculating",
+            "chunkId": "chk_a77bcd5d34896837089a519b",
+            "contentHash": "243097b320347630cc981c1c926c75109ae361b1ed534ff83178ee45108d5c01",
+            "locator": {
+              "documentTitle": "Synthetic Upper Math Notes",
+              "chapterTitle": "Fraction Sense",
+              "sectionTitle": "Compare before calculating",
+              "sectionPath": "Synthetic Upper Math Notes > Fraction Sense > Compare before calculating",
+              "lineStart": 11,
+              "lineEnd": 11,
+              "pageStart": 1,
+              "pageEnd": 1,
+              "charStart": 1,
+              "charEnd": 242
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rag-gold-area-perimeter",
+      "type": "gold_retrieval",
+      "passed": true,
+      "details": {
+        "query": "distance around shape surface inside area perimeter",
+        "filters": {
+          "subject": "math",
+          "gradeLabel": "upper"
+        },
+        "expectedSections": [
+          "Area and perimeter"
+        ],
+        "retrievedSections": [
+          "Area and perimeter"
+        ],
+        "recall": 1,
+        "precision": 1,
+        "citationCorrect": true,
+        "citations": [
+          {
+            "citationId": "TB1",
+            "sourceId": "src_8f59ed9b454124fa18e592f9",
+            "sourceTitle": "Synthetic Upper Math Notes",
+            "documentId": "doc_67750754aace93634d61d66f",
+            "documentTitle": "Synthetic Upper Math Notes",
+            "chapterId": "ch_b6e52c2393fe0c53f66d101b",
+            "chapterTitle": "Measurement",
+            "sectionId": "sec_cc042cf6e4a830627abd0b4f",
+            "sectionTitle": "Area and perimeter",
+            "chunkId": "chk_a1293d4351544a0c626163eb",
+            "contentHash": "f630ca87e8730d47a932a4e79cce2563e30afa7fb426a185b0e71c212121b40e",
+            "locator": {
+              "documentTitle": "Synthetic Upper Math Notes",
+              "chapterTitle": "Measurement",
+              "sectionTitle": "Area and perimeter",
+              "sectionPath": "Synthetic Upper Math Notes > Measurement > Area and perimeter",
+              "lineStart": 19,
+              "lineEnd": 19,
+              "pageStart": 2,
+              "pageEnd": 2,
+              "charStart": 1,
+              "charEnd": 266
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rag-gold-place-value",
+      "type": "gold_retrieval",
+      "passed": true,
+      "details": {
+        "query": "digit position four tens two ones place value",
+        "filters": {
+          "subject": "math",
+          "gradeLabel": "lower"
+        },
+        "expectedSections": [
+          "Overview"
+        ],
+        "retrievedSections": [
+          "Overview"
+        ],
+        "recall": 1,
+        "precision": 1,
+        "citationCorrect": true,
+        "citations": [
+          {
+            "citationId": "TB1",
+            "sourceId": "src_61fa6860ffc4a1b471dae227",
+            "sourceTitle": "Synthetic Lower Math Notes",
+            "documentId": "doc_aa984edd2d74c9e1c88654ba",
+            "documentTitle": "Synthetic Lower Math Notes",
+            "chapterId": "ch_f125ad1890d7716dbb84ddbc",
+            "chapterTitle": "Synthetic Lower Math Notes",
+            "sectionId": "sec_26871d4dfe52c909f7b2eb10",
+            "sectionTitle": "Overview",
+            "chunkId": "chk_584b785700c5e00fe1e6190a",
+            "contentHash": "b03111df99045fef00d1f954168ef895c20e580312afb56f1b7289c81f1426f7",
+            "locator": {
+              "documentTitle": "Synthetic Lower Math Notes",
+              "chapterTitle": "Synthetic Lower Math Notes",
+              "sectionTitle": "Overview",
+              "sectionPath": "Synthetic Lower Math Notes > Synthetic Lower Math Notes > Overview",
+              "lineStart": 1,
+              "lineEnd": 3,
+              "charStart": 0,
+              "charEnd": 352
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rag-gold-reading-evidence",
+      "type": "gold_retrieval",
+      "passed": true,
+      "details": {
+        "query": "claim exact detail passage evidence supports claim",
+        "filters": {
+          "subject": "english",
+          "gradeLabel": "upper"
+        },
+        "expectedSections": [
+          "Claims and evidence"
+        ],
+        "retrievedSections": [
+          "Claims and evidence"
+        ],
+        "recall": 1,
+        "precision": 1,
+        "citationCorrect": true,
+        "citations": [
+          {
+            "citationId": "TB1",
+            "sourceId": "src_9f3e61be55c9982169619ba6",
+            "sourceTitle": "Synthetic Upper English Notes",
+            "documentId": "doc_6314d7181dda9a6dce753af7",
+            "documentTitle": "Synthetic Upper English Notes",
+            "chapterId": "ch_26e0df7e4f338c8b345d91a6",
+            "chapterTitle": "Reading for evidence",
+            "sectionId": "sec_898df7f523e980f1c5c48620",
+            "sectionTitle": "Claims and evidence",
+            "chunkId": "chk_b43d0e531f9309b84a5e259d",
+            "contentHash": "8601bebff6134184297fcc09dd6e10de328f39bb0268b21cc89b8100169bccc9",
+            "locator": {
+              "documentTitle": "Synthetic Upper English Notes",
+              "chapterTitle": "Reading for evidence",
+              "sectionTitle": "Claims and evidence",
+              "sectionPath": "Synthetic Upper English Notes > Reading for evidence > Claims and evidence",
+              "lineStart": 7,
+              "lineEnd": 7,
+              "pageStart": 1,
+              "pageEnd": 1,
+              "charStart": 1,
+              "charEnd": 202
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rag-bad-prompt-injection",
+      "type": "bad_case",
+      "passed": true,
+      "details": {
+        "ingestionFlags": [
+          "prompt_override",
+          "role_spoofing",
+          "prompt_exfiltration"
+        ],
+        "contextFlags": [
+          "prompt_override",
+          "role_spoofing",
+          "prompt_exfiltration"
+        ]
+      }
+    },
+    {
+      "id": "rag-bad-wrong-grade",
+      "type": "bad_case",
+      "passed": true,
+      "details": {
+        "returnedGradeLabels": [
+          "lower",
+          "lower"
+        ]
+      }
+    },
+    {
+      "id": "rag-bad-wrong-subject",
+      "type": "bad_case",
+      "passed": true,
+      "details": {
+        "returnedSubjects": [
+          "english",
+          "english"
+        ]
+      }
+    },
+    {
+      "id": "rag-bad-duplicate-chunk",
+      "type": "bad_case",
+      "passed": true,
+      "details": {
+        "returnedContentHashes": [
+          "8a13dfcaa21c2733159ec3c6f0b3d0a9c8bc62570d775dbd03c27b7121e146aa",
+          "243097b320347630cc981c1c926c75109ae361b1ed534ff83178ee45108d5c01",
+          "c4fa18669297b4522be4089c3e6b1c97af4d8dab0cc9e559cd8197e3bbb55306",
+          "f630ca87e8730d47a932a4e79cce2563e30afa7fb426a185b0e71c212121b40e"
+        ],
+        "deduplicatedCount": 1
+      }
+    },
+    {
+      "id": "rag-bad-no-result",
+      "type": "bad_case",
+      "passed": true,
+      "details": {
+        "matchCount": 0,
+        "threshold": 1.01
+      }
+    },
+    {
+      "id": "rag-bad-overlong-context",
+      "type": "bad_case",
+      "passed": true,
+      "details": {
+        "retrieval": {
+          "embeddingProvider": "deterministic-fake-embedding",
+          "embeddingModel": "hash-bow-v1",
+          "vectorStore": "in-memory-vector-store",
+          "requestedTopK": 3,
+          "scoreThreshold": -1,
+          "candidateCount": 4,
+          "deduplicatedCount": 0,
+          "omittedForBudget": 2,
+          "usedCharacters": 80,
+          "estimatedTokens": 19,
+          "truncated": true
+        },
+        "contextCharacters": 799
+      }
+    },
+    {
+      "id": "rag-bad-store-failure",
+      "type": "bad_case",
+      "passed": true,
+      "details": {
+        "passed": true,
+        "error": "VectorStoreError: synthetic vector query failure"
+      }
+    },
+    {
+      "id": "rag-bad-provider-failure",
+      "type": "bad_case",
+      "passed": true,
+      "details": {
+        "passed": true,
+        "error": "EmbeddingProviderError: synthetic embedding provider failure"
+      }
+    },
+    {
+      "id": "rag-bad-output-guard-integration",
+      "type": "bad_case",
+      "passed": true,
+      "details": {
+        "outputGuardBlocked": true,
+        "blockingIssues": [
+          "可能泄露了答案"
+        ],
+        "fakeLlmCalls": 1
+      }
+    }
+  ]
+}
