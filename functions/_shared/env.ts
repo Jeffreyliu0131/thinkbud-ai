@@ -1,7 +1,9 @@
 // 字节跳动/火山引擎体系环境变量类型定义
 // 所有 API Key 仅在服务端使用，前端不暴露
 
-export interface AppEnv extends VolcanoEnv {
+import type { RagRuntimeEnv } from './rag/runtime'
+
+export interface AppEnv extends VolcanoEnv, RagRuntimeEnv {
   // ===== D1 数据库 =====
   DB: D1Database
 
@@ -54,7 +56,7 @@ export interface VolcanoEnv {
 
 /** 从 Cloudflare env 中安全读取变量 */
 export function getEnvVar(
-  env: AppEnv | Record<string, string | undefined>,
+  env: object,
   key: string,
   required = true
 ): string {
@@ -67,6 +69,7 @@ export function getEnvVar(
 
 /** Middleware 注入到 context.data 的类型 */
 export interface ContextData {
+  [key: string]: unknown
   userId?: string
   isAdmin?: boolean
 }

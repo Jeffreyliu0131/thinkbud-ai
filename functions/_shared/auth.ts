@@ -13,8 +13,15 @@ interface JwtPayload {
   exp: number
 }
 
-function base64url(buf: ArrayBuffer): string {
-  return btoa(String.fromCharCode(...new Uint8Array(buf)))
+function ownedBuffer(value: Uint8Array): ArrayBuffer {
+  const buffer = new ArrayBuffer(value.byteLength)
+  new Uint8Array(buffer).set(value)
+  return buffer
+}
+
+function base64url(buf: ArrayBuffer | Uint8Array): string {
+  const bytes = buf instanceof Uint8Array ? buf : new Uint8Array(buf)
+  return btoa(String.fromCharCode(...bytes))
     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
 }
 
@@ -25,7 +32,7 @@ function base64urlDecode(str: string): Uint8Array {
 }
 
 async function getKey(secret: string): Promise<CryptoKey> {
-  return crypto.subtle.importKey('raw', ENCODER.encode(secret), ALGORITHM, false, ['sign', 'verify'])
+  return crypto.subtle.importKey('raw', ownedBuffer(ENCODER.encode(secret)), ALGORITHM, false, ['sign', 'verify'])
 }
 
 export async function signJwt(userId: string, role: 'user' | 'admin', secret: string, ttlSeconds: number): Promise<string> {
@@ -51,8 +58,8 @@ export async function verifyJwt(token: string, secret: string): Promise<JwtPaylo
     const key = await getKey(secret)
     const valid = await crypto.subtle.verify(
       'HMAC', key,
-      base64urlDecode(parts[2]),
-      ENCODER.encode(`${parts[0]}.${parts[1]}`)
+      ownedBuffer(base64urlDecode(parts[2])),
+      ownedBuffer(ENCODER.encode(`${parts[0]}.${parts[1]}`))
     )
     if (!valid) return null
 
@@ -115,7 +122,7 @@ export async function constantTimeCompare(a: string, b: string): Promise<boolean
 
 /** @deprecated Legacy unsalted SHA-256 hash -- used for backward-compatible lookups */
 export async function hashPhoneLegacy(phone: string): Promise<string> {
-  const hash = await crypto.subtle.digest('SHA-256', ENCODER.encode(phone))
+  const hash = await crypto.subtle.digest('SHA-256', ownedBuffer(ENCODER.encode(phone)))
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('')
 }
 

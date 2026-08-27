@@ -14,7 +14,10 @@ export function errorResponse(message: string, status = 500): Response {
 }
 
 export function audioResponse(audioBuffer: ArrayBuffer | Uint8Array, contentType = 'audio/mpeg'): Response {
-  return new Response(audioBuffer, {
+  const body = audioBuffer instanceof Uint8Array
+    ? Uint8Array.from(audioBuffer).buffer
+    : audioBuffer
+  return new Response(body, {
     headers: {
       'Content-Type': contentType,
       'Cache-Control': 'no-cache',

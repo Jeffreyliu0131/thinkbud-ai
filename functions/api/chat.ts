@@ -14,6 +14,7 @@ import { startUsageSession } from '../_shared/usage-time'
 import { parseMetaFromContent } from '../_shared/meta-parser'
 import { sanitizeUntrustedText, wrapUntrustedContext } from '../_shared/input-safety'
 import { collectThinkBudSse, createThinkBudSse, guardAiOutput } from '../_shared/output-guard'
+import { buildChatRagContext } from '../_shared/rag/runtime'
 
 const VALID_GRADE_LEVELS: ReadonlySet<string> = new Set(['lower', 'upper'])
 const VALID_SUBJECTS: ReadonlySet<string> = new Set(['math', 'chinese', 'english'])
@@ -128,9 +129,23 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
       }
     }
 
+    const lastUserMessage = [...safeMessages].reverse().find(message => message.role === 'user')
+    const rag = await buildChatRagContext(context.env, {
+      query: lastUserMessage?.content ?? '',
+      subject: subject ?? 'math',
+      gradeLabel: gradeLevel,
+    })
+    if (rag.status === 'degraded') {
+      console.warn('[Chat RAG] degraded to non-RAG chat:', rag.reason)
+    }
+
     const arkStream = await chatCompletionStream(
       context.env,
-      { messages: safeMessages, systemPrompt }
+      {
+        messages: safeMessages,
+        systemPrompt,
+        ...(rag.context ? { untrustedContexts: [rag.context] } : {}),
+      }
     )
 
     // Safety trade-off: buffer the short tutoring turn, run the blocking guard,
@@ -160,6 +175,9 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-store',
         'X-ThinkBud-Output-Guard': guarded.blocked ? 'blocked' : 'passed',
+        'X-ThinkBud-RAG': rag.status,
+        'X-ThinkBud-RAG-Citations': String(rag.citations.length),
+        'X-ThinkBud-RAG-Truncated': String(rag.truncated),
       },
     })
   } catch (err) {
