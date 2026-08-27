@@ -5,8 +5,8 @@
 - Mean recall@k: **1.00**
 - Mean precision@k: **1.00**
 - Citation correctness: **1.00**
-- Source commit: `31b883aefc84a195263e6f07dd553186408bcc56`
-- Source snapshot SHA-256: `6b22ec6f662e15a7b1eabe42aa816e90dec818341f6c0d66c560392b322d0552` (clean evidence source files)
+- Source commit: `a41f23b87115c7e4bb932f1106c1929047618cec`
+- Source snapshot SHA-256: `cb5eb8147b8935568b0a8dc297c2a7b3c2d8572346f3fe9a719a9e3be5fe979a` (clean evidence source files)
 - Production model/network calls: **0/0**
 - Real textbook/child records: **0/0**
 - Production-ready sources: **0** (all fixtures are synthetic test-only)

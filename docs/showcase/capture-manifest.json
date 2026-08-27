@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-08-27T14:10:47Z",
+  "sourceCommit": "a41f23b87115c7e4bb932f1106c1929047618cec",
+  "sourceDirty": false,
+  "mode": "synthetic-demo",
+  "origin": "http://127.0.0.1:4173",
+  "captureMethod": "Codex in-app browser viewport screenshot of the final synthetic demo:build served by vite preview",
+  "browserViewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "capturePixels": {
+    "width": 1265,
+    "height": 712,
+    "format": "image/jpeg"
+  },
+  "reports": [
+    {
+      "path": "public/eval-report.json",
+      "sha256": "d1c33c343c3fdfcc81d743cccacc78e56226399dee3734c6aa45455bf39c56b1"
+    },
+    {
+      "path": "public/rag-eval-report.json",
+      "sha256": "ff71a7ca988ad63b5f55785ef030bf54e7e42a6d4dc7d88edede49708a81b6aa"
+    }
+  ],
+  "captures": [
+    {
+      "path": "docs/showcase/synthetic-evidence-overview.jpg",
+      "route": "/",
+      "scrollY": 0,
+      "sha256": "dfb4158be3b6f0331850fcddf18cd2fa35218e1ec92a6c9b49a3aeb24c9021cb",
+      "shows": ["synthetic-only boundary", "engineering gate", "product loop", "RAG and RTC default-off flags", "output guard ordering"]
+    },
+    {
+      "path": "docs/showcase/synthetic-coaching-guard.jpg",
+      "route": "/",
+      "scrollY": 590,
+      "sha256": "c6de73d63fcfef5ffe5593b45356adb46af2a983f705307e23a2bf1a58ef2be0",
+      "shows": ["synthetic coaching turn", "transfer step", "blocked fake-provider answer", "safe fallback before SSE and TTS"]
+    },
+    {
+      "path": "docs/showcase/synthetic-rag-citation-evidence.jpg",
+      "route": "/",
+      "scrollY": 1350,
+      "sha256": "08cb44b80db8e4f59c77e5feb00bfc7e64923c537bfa0bb7e0eaa42e992655d5",
+      "shows": ["RAG used state", "structured source/chapter/section/locator", "stable IDs", "content hash", "no production Vectorize"]
+    },
+    {
+      "path": "docs/showcase/synthetic-gateway-eval.jpg",
+      "route": "/",
+      "scrollY": 1967.5,
+      "sha256": "239d3429ca5b044d92bfcf116603f67905b33dd6c7658c9c4cf6e72741970eec",
+      "shows": ["offline fake LLM gateway", "typed provider metadata", "zero production/network calls", "38-case behavior gate", "14-case RAG gate", "sourceDirty=false", "release limitations"]
+    },
+    {
+      "path": "docs/showcase/synthetic-rag-degraded.jpg",
+      "route": "/?rag=degraded#rag-contract",
+      "scrollY": 1250,
+      "sha256": "c4e8f15b895b2a0cbaca5b813b0d6db6eeec961da59b5ae1d6547f19fffee976",
+      "shows": ["disabled state", "degraded state", "no-result state", "no citation attached", "original non-RAG fallback"]
+    }
+  ],
+  "dataPolicy": {
+    "productionModelCalls": 0,
+    "paidApiCalls": 0,
+    "externalNetworkCalls": 0,
+    "realChildRecords": 0,
+    "realTextbookRecords": 0,
+    "userTestimonials": 0,
+    "source": "Project-authored synthetic dialogue, synthetic textbook fixtures, and generated deterministic reports only."
+  }
+}
