@@ -64,7 +64,7 @@ Instead, the release boundary now controls delivery:
 - Rollup gives the optional chunk the stable `rtc-sdk` name;
 - Workbox excludes that chunk from the default PWA precache while preserving on-demand loading for explicit RTC builds.
 
-On the same local production-build toolchain, the precache moved from 32 entries / 2,064.54 KiB to 31 entries / 800.79 KiB, a 1,263.75 KiB reduction. This is default install-transfer evidence, not a claim that the RTC SDK itself became smaller or that RTC is release-ready.
+On the same local production-build toolchain, the precache moved from 32 entries / 2,064.54 KiB to 31 entries / approximately 800.8 KiB, a roughly 1,263.7 KiB reduction. This is default install-transfer evidence, not a claim that the RTC SDK itself became smaller or that RTC is release-ready.
 
 ## Data boundaries
 
