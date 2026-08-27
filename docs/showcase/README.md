@@ -2,9 +2,15 @@
 
 These are browser captures of ThinkBud's real `synthetic-demo` build. They are not AI-generated product mockups, live-provider results, user testimonials, or production screenshots.
 
-![Synthetic evidence overview](synthetic-evidence-overview.png)
+![Synthetic evidence overview](synthetic-evidence-overview.jpg)
 
-![RAG degraded state](synthetic-rag-degraded.png)
+![Synthetic coaching loop and blocking answer guard](synthetic-coaching-guard.jpg)
+
+![Structured RAG citation evidence](synthetic-rag-citation-evidence.jpg)
+
+![RAG degraded and no-result states](synthetic-rag-degraded.jpg)
+
+![Offline LLM gateway and deterministic eval evidence](synthetic-gateway-eval.jpg)
 
 ## Data and rights boundary
 

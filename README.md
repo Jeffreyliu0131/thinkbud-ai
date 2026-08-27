@@ -17,7 +17,7 @@ npm run demo
 
 Open the printed local URL. Synthetic demo mode needs no account, provider credential, paid API, real learner record, or real textbook. It shows the coaching loop beside the deterministic release evidence that produced it.
 
-![ThinkBud synthetic evidence overview](docs/showcase/synthetic-evidence-overview.png)
+![ThinkBud synthetic evidence overview](docs/showcase/synthetic-evidence-overview.jpg)
 
 [Inspect the showcase states and capture provenance](docs/showcase/README.md).
 

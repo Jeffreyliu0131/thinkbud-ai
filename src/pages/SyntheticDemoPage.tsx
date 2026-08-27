@@ -244,7 +244,7 @@ export default function SyntheticDemoPage() {
   const allGatesPass = Boolean(behaviorReport?.gate.passed && ragReport?.gate.passed)
 
   return (
-    <main className="min-h-full overflow-auto bg-[#f3f7f3] text-[#17352f]">
+    <main className="min-h-screen bg-[#f3f7f3] text-[#17352f]">
       <div className="mx-auto max-w-7xl px-5 py-7 md:px-8 md:py-10">
         <div className="mb-7 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">
           <div className="flex items-start gap-3">
@@ -281,7 +281,7 @@ export default function SyntheticDemoPage() {
           </section>
         )}
 
-        <section className="mb-8 rounded-3xl border border-[#d9e7df] bg-white p-5 shadow-sm md:p-7" data-showcase="product-loop">
+        <section id="product-loop" className="mb-8 rounded-3xl border border-[#d9e7df] bg-white p-5 shadow-sm md:p-7" data-showcase="product-loop">
           <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.18em] text-teal-700">Product loop</p>
@@ -355,7 +355,7 @@ export default function SyntheticDemoPage() {
           </section>
         </div>
 
-        <section className="mb-8 rounded-3xl border border-[#d9e7df] bg-white p-6 shadow-sm md:p-7" data-showcase="rag-contract">
+        <section id="rag-contract" className="mb-8 scroll-mt-6 rounded-3xl border border-[#d9e7df] bg-white p-6 shadow-sm md:p-7" data-showcase="rag-contract">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.18em] text-teal-700">RAG runtime contract</p>
