@@ -154,7 +154,7 @@ function sourceCommit(): string {
 
 function sourceDirty(): boolean {
   try {
-    return execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim().length > 0
+    return execFileSync('git', ['status', '--porcelain', '--', ...EVIDENCE_SOURCE_FILES], { cwd: root, encoding: 'utf8' }).trim().length > 0
   } catch {
     return true
   }
@@ -422,7 +422,7 @@ async function main(): Promise<void> {
   await Promise.all([mkdir(latestDir, { recursive: true }), mkdir(artifactDir, { recursive: true }), mkdir(publicDir, { recursive: true })])
   const json = `${JSON.stringify(report, null, 2)}\n`
   const html = reportHtml(report as unknown as Record<string, unknown>)
-  const markdown = `# ThinkBud synthetic eval result\n\n- Deterministic gate: **${gatePassed ? 'PASS' : 'FAIL'}**\n- Cases matched: **${report.summary.matched}/${report.summary.total}**\n- Dataset SHA-256: \`${report.datasetHash}\`\n- Source commit: \`${report.sourceCommit}\`\n- Source snapshot SHA-256: \`${report.sourceSnapshotHash}\` (${report.sourceDirty ? 'dirty working tree' : 'clean working tree'})\n- Production model calls: **0**\n- Real child records: **0**\n- Full model release: **BLOCKED pending fresh live outputs + blinded human review**\n`
+  const markdown = `# ThinkBud synthetic eval result\n\n- Deterministic gate: **${gatePassed ? 'PASS' : 'FAIL'}**\n- Cases matched: **${report.summary.matched}/${report.summary.total}**\n- Dataset SHA-256: \`${report.datasetHash}\`\n- Source commit: \`${report.sourceCommit}\`\n- Source snapshot SHA-256: \`${report.sourceSnapshotHash}\` (${report.sourceDirty ? 'dirty evidence source files' : 'clean evidence source files'})\n- Production model calls: **0**\n- Real child records: **0**\n- Full model release: **BLOCKED pending fresh live outputs + blinded human review**\n`
   await Promise.all([
     writeFile(path.join(latestDir, 'latest.json'), json),
     writeFile(path.join(latestDir, 'latest.md'), markdown),

@@ -93,7 +93,7 @@ function sourceCommit(): string {
 
 function sourceDirty(): boolean {
   try {
-    return execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim().length > 0
+    return execFileSync('git', ['status', '--porcelain', '--', ...SOURCE_FILES], { cwd: root, encoding: 'utf8' }).trim().length > 0
   } catch {
     return true
   }
@@ -353,7 +353,7 @@ async function main(): Promise<void> {
   const artifactDir = path.join(root, 'artifacts/evals/rag/latest')
   await Promise.all([mkdir(resultDir, { recursive: true }), mkdir(artifactDir, { recursive: true })])
   const json = `${JSON.stringify(report, null, 2)}\n`
-  const markdown = `# ThinkBud textbook RAG synthetic eval\n\n- Deterministic gate: **${gatePassed ? 'PASS' : 'FAIL'}**\n- Cases passed: **${report.summary.passed}/${report.summary.total}** (${report.summary.goldQueries} gold queries; ${report.summary.badCases} bad cases)\n- Mean recall@k: **${metrics.meanRecallAtK.toFixed(2)}**\n- Mean precision@k: **${metrics.meanPrecisionAtK.toFixed(2)}**\n- Citation correctness: **${metrics.citationCorrectness.toFixed(2)}**\n- Source commit: \`${report.sourceCommit}\`\n- Source snapshot SHA-256: \`${snapshotHash}\` (${report.sourceDirty ? 'dirty working tree' : 'clean working tree'})\n- Production model/network calls: **0/0**\n- Real textbook/child records: **0/0**\n- Production-ready sources: **0** (all fixtures are synthetic test-only)\n- Vectorize/live embedding: **not configured**\n`
+  const markdown = `# ThinkBud textbook RAG synthetic eval\n\n- Deterministic gate: **${gatePassed ? 'PASS' : 'FAIL'}**\n- Cases passed: **${report.summary.passed}/${report.summary.total}** (${report.summary.goldQueries} gold queries; ${report.summary.badCases} bad cases)\n- Mean recall@k: **${metrics.meanRecallAtK.toFixed(2)}**\n- Mean precision@k: **${metrics.meanPrecisionAtK.toFixed(2)}**\n- Citation correctness: **${metrics.citationCorrectness.toFixed(2)}**\n- Source commit: \`${report.sourceCommit}\`\n- Source snapshot SHA-256: \`${snapshotHash}\` (${report.sourceDirty ? 'dirty evidence source files' : 'clean evidence source files'})\n- Production model/network calls: **0/0**\n- Real textbook/child records: **0/0**\n- Production-ready sources: **0** (all fixtures are synthetic test-only)\n- Vectorize/live embedding: **not configured**\n`
   await Promise.all([
     writeFile(path.join(resultDir, 'latest.json'), json),
     writeFile(path.join(resultDir, 'latest.md'), markdown),
