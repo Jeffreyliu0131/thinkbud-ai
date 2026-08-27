@@ -23,6 +23,8 @@ The Singapore PDPC's [Advisory Guidelines on the PDPA for Children's Personal Da
 | Emotion/session labels | model/app | D1/local analytics | inference purpose and accuracy notice absent |
 | Knowledge signals | extraction model | D1 and IndexedDB | derived profile; purpose/retention/correction absent |
 | Error stack/path/meta | global handler | D1 error logs | can capture incidental identifiers; retention/redaction absent |
+| Textbook source/content | offline operator ingestion | local manifest today; future embedding/store/provider | rights/owner attestation, school identifiers, retention, deletion, and provider processing must be approved per source |
+| Textbook embeddings/citations | future configured RAG runtime | vector index plus server/eval metadata | no production provider/index is configured; deletion and source-version invalidation are not implemented |
 
 ## Controls present
 
@@ -32,6 +34,7 @@ The Singapore PDPC's [Advisory Guidelines on the PDPA for Children's Personal Da
 - Shared prompt-injection/OCR sanitizer and strict client role allowlist.
 - Text output blocking guard for answer/step leakage.
 - Fully synthetic default eval and demo mode.
+- Default-off textbook RAG, no public upload route, provenance readiness checks, and synthetic-only bundled textbook fixtures.
 
 These controls reduce risk; they do not complete PDPA obligations.
 
@@ -47,5 +50,6 @@ These controls reduce risk; they do not complete PDPA obligations.
 8. Add PII detection/redaction for OCR, transcripts, and error telemetry.
 9. Establish breach assessment and child/guardian notification procedures.
 10. Complete fresh live-model eval and blinded human review; keep RTC disabled until its output can be gated or an explicit architecture decision accepts the residual risk.
+11. Before any real textbook ingestion, verify ownership/license, define the operator/admin authorization boundary, remove incidental learner/school data, and implement source/version deletion across manifests, embeddings, caches, and provider copies.
 
 The adult-only protocol in [FIELD_PILOT_PROTOCOL.md](FIELD_PILOT_PROTOCOL.md) deliberately avoids child data while these blockers remain.

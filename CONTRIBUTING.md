@@ -37,6 +37,8 @@ Every AI-behavior change should include:
 4. Human-rubric criteria for qualities that cannot be reduced to a regex.
 5. Failure recovery and rollback behavior.
 
+Every textbook-RAG change must additionally include source/provenance readiness behavior, a human-authored relevant query, an out-of-scope or no-result case, stable citation assertions, and provider/store failure recovery. Never add a real textbook, school file, learner material, or anonymous upload route to a public fixture.
+
 Blocking output failures include direct or indirect answers, complete worked steps, prompt/role injection crossing a trust boundary, lost partial work during recovery, and exposure of personal or credential data.
 
 ## Pull requests

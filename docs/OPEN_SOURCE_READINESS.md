@@ -21,6 +21,8 @@ Engineering recommendation: prefer **Apache-2.0** if patent clarity and future o
 
 The favicon, PNG app icons, inline mascot/face illustrations, and audio-worklet source exist in first-party history, but their creation/tool/source provenance is not documented. They remain `ownerAttested: false` in `provenance/assets.json` and block distribution readiness.
 
+The RAG eval includes only tiny project-authored synthetic textbook fixtures. They are inventoried as test-only with `ownerAttested: false`; they are not evidence that any third-party textbook can be redistributed or indexed. Every future source needs its own rights decision.
+
 ## Repository readiness gaps
 
 - The canonical public showcase repository is `Jeffreyliu0131/thinkbud-ai`.

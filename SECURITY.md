@@ -5,6 +5,7 @@
 - Keep all provider credentials in ignored local environment files or encrypted deployment secrets.
 - Never commit `.env`, `.env.*`, or `.dev.vars`.
 - Treat screenshots, logs, fixtures, and generated reports as possible secret-bearing files.
+- Treat every textbook, retrieved chunk, citation label, and embedding input as untrusted data. Textbook text may contain prompt injection and must never become a system/developer instruction.
 
 ## User data
 
@@ -24,9 +25,12 @@ Highest-priority report classes:
 - authentication or authorization exposes another user's records;
 - a vendor or application path stores data outside the disclosed boundary;
 - a deployment workflow bypasses the release gate.
+- a RAG result bypasses subject/grade/source filters, citation integrity, context budgets, or the blocking output guard.
 
 ## Deployment
 
 The public repository intentionally contains no production deployment workflow or infrastructure identifiers. Forks must configure their own infrastructure, database, domains, and secrets.
+
+`RAG_TEXTBOOK_ENABLED` defaults to `false`. Turning it on without a complete runtime service returns a degraded/non-RAG path; it does not imply a deployed Vectorize index. No production textbook ingestion endpoint exists in this snapshot.
 
 This repository represents a prototype and does not claim a production security SLA. Child-facing production use remains blocked pending the items in [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md).

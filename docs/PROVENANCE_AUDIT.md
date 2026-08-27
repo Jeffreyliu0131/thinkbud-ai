@@ -13,6 +13,7 @@ The audit covers tracked first-party source, direct and transitive npm metadata 
 - Images/icons: five app-icon/favicon files are tracked; source/derivation and rights attestation are missing.
 - Inline art: BudMascot and CoachFace are source-rendered SVG components; design/tool provenance is missing.
 - Evaluation set: authored synthetic fixtures, explicitly marked as containing no real participant data.
+- Textbook RAG fixtures: three tiny project-authored synthetic files, marked test-only and non-production-ready; no real/copyrighted textbook was imported.
 - Models/services: Ark chat/vision, Volcano RTC/STT/TTS/OCR, and Aliyun SMS are integrations, not redistributed models. Model IDs, provider terms, data use, regional processing, and acceptable-use constraints require deployment-time verification.
 
 ## Required owner actions
@@ -22,3 +23,4 @@ The audit covers tracked first-party source, direct and transitive npm metadata 
 3. Attest each entry in `provenance/assets.json` or replace/remove it.
 4. Generate an attribution/NOTICE artifact from the final production dependency tree.
 5. Record model/vendor versions and applicable terms in each release's evidence manifest.
+6. For every future textbook source, retain owner/license attestation, production authorization, version, content hash, and deletion owner; do not infer rights from possession of a file.

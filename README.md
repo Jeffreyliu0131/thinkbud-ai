@@ -26,6 +26,8 @@ The current public strengthening is evaluation-first. It uses synthetic cases on
 - Parent and learner views built from the same underlying learning evidence.
 - Failure recovery across RTC, STT, SSE, OCR, and browser storage.
 - A failure-first synthetic evaluation suite, human-review rubric, provenance inventory, and fail-closed release gate.
+- A backend textbook-RAG contract with deterministic ingestion, stable citations, retrieval budgets, and explicit provenance readiness.
+- A provider-agnostic LLM gateway with typed streaming/usage/error/timeout metadata, an Ark adapter, and offline fake providers.
 - A test suite covering prompt rules, auth, rate limiting, API handlers, hooks, and UI components.
 
 Managed RTC speech currently bypasses the application output guard, so RTC is disabled by default with `VITE_ENABLE_RTC=false`. It must not be enabled for child-facing use or described as guard-equivalent until fresh live evidence and blinded human review pass.
@@ -50,6 +52,8 @@ Managed RTC speech currently bypasses the application output guard, so RTC is di
 
 Provider credentials are never required by the browser bundle. Local values belong in ignored environment files; see [`.env.example`](.env.example).
 
+The textbook knowledge layer is implemented as backend/offline logic and is **disabled by default**. The repository ships no real textbook, production embedding model, populated Vectorize index, or Vectorize binding. Its corpus is a tiny set of project-authored synthetic chunks used only to test retrieval and safety. See [Textbook RAG and LLM backend](docs/TEXTBOOK_RAG.md).
+
 ## Evaluation and testing
 
 The repository includes:
@@ -59,11 +63,13 @@ The repository includes:
 - an independent human-review rubric and optional model-grader calibration path;
 - unit, integration, hook, API, and component tests;
 - provenance and release-readiness checks;
+- a separate textbook-RAG eval with human-authored gold relevance labels, injection/filter/dedupe/budget/failure bad cases, and citation checks;
 - build, lint, typecheck, tests, evals, and provenance checks in CI.
 
 ```bash
 npm ci
 npm run verify
+npm run eval:rag
 ```
 
 Credential-free evidence demo:
@@ -89,6 +95,8 @@ npm run dev
 ```
 
 The frontend can be explored without production credentials. Provider-backed API routes require your own server-side accounts and keys.
+
+Offline Markdown/plain-text ingestion is available through `npm run rag:ingest -- ...`. It writes a manifest only; there is no public anonymous upload endpoint. A source lacking complete owner/provenance/license attestation is retained as non-production evidence and can never be marked `productionReady` by omission.
 
 Synthetic demo mode is isolated from auth and provider-backed routes. It should not be used to imply live-model or user validation.
 

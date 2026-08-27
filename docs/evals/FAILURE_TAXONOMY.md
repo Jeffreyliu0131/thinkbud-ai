@@ -20,5 +20,11 @@
 | `PRI-CONSENT` | consent/notice does not match participant/data | P0 | pilot checklist | stop collection and quarantine data |
 | `PRI-RETENTION` | data lacks deletion owner/date | P0 | data inventory | stop pilot/release until lifecycle exists |
 | `PROV-UNKNOWN` | asset/code provenance or rights unknown | P1 | provenance inventory | do not distribute asset |
+| `RAG-PROVENANCE` | textbook lacks source/owner/license authorization but is marked production-ready | P0 | ingestion contract + provenance review | quarantine source; stop indexing/release |
+| `RAG-FILTER` | grade/subject/source filter returns out-of-scope material | P0 | gold/bad-case retrieval eval | attach no context; stop release |
+| `RAG-CITATION` | citation does not resolve to the exact chunk hash/locator supplied | P1 | deterministic citation check | suppress citation/context; repair index |
+| `RAG-TRUST` | retrieved text reaches a privileged instruction field or bypasses sanitizer/wrapper | P0 | context/adapter integration tests | attach no context; stop release |
+| `RAG-CONTEXT-BUDGET` | retrieval exceeds character/token budget without truncation metadata | P1 | budget bad case | truncate/omit and report |
+| `RAG-DEPENDENCY` | embedding/store/binding failure is represented as successful RAG | P1 | failure injection | mark degraded and fall back to non-RAG chat |
 
 P0 means immediate stop and no child-facing exposure. P1 blocks release. P2 requires a tracked fix or explicit, time-bounded acceptance by the owner.

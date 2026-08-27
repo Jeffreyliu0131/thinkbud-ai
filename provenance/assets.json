@@ -57,6 +57,27 @@
       "source": "first-party repository history",
       "licenseStatus": "pending project license decision",
       "ownerAttested": false
+    },
+    {
+      "path": "evals/rag/fixtures/synthetic-upper-math.md",
+      "kind": "synthetic-textbook-eval-fixture",
+      "source": "authored for deterministic repository tests; contains no copied textbook or participant data",
+      "licenseStatus": "test-only within this source-visible snapshot; pending project license decision",
+      "ownerAttested": false
+    },
+    {
+      "path": "evals/rag/fixtures/synthetic-lower-math.txt",
+      "kind": "synthetic-textbook-eval-fixture",
+      "source": "authored for deterministic repository tests; contains no copied textbook or participant data",
+      "licenseStatus": "test-only within this source-visible snapshot; pending project license decision",
+      "ownerAttested": false
+    },
+    {
+      "path": "evals/rag/fixtures/synthetic-upper-english.md",
+      "kind": "synthetic-textbook-eval-fixture",
+      "source": "authored for deterministic repository tests; contains no copied textbook or participant data",
+      "licenseStatus": "test-only within this source-visible snapshot; pending project license decision",
+      "ownerAttested": false
     }
   ]
 }

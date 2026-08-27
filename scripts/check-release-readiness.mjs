@@ -19,6 +19,7 @@ async function readJson(relativePath) {
 }
 
 const deterministic = await readJson(config.evidencePaths.deterministicEval)
+const deterministicRag = await readJson(config.evidencePaths.deterministicRagEval)
 const assets = await readJson(config.evidencePaths.assetManifest)
 const privacy = await readJson(config.evidencePaths.privacyApproval)
 const live = await readJson(config.evidencePaths.liveModelEvidence)
@@ -28,6 +29,13 @@ const checks = [
     id: 'deterministic-eval',
     pass: deterministic?.gate?.passed === true,
     detail: deterministic ? `dataset ${deterministic.datasetHash}` : 'run npm run eval:gate',
+  },
+  {
+    id: 'deterministic-rag-eval',
+    pass: deterministicRag?.gate?.passed === true,
+    detail: deterministicRag
+      ? `cases ${deterministicRag.summary?.passed}/${deterministicRag.summary?.total}; corpus ${deterministicRag.corpusHash}`
+      : 'run npm run eval:rag',
   },
   {
     id: 'project-license',

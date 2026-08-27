@@ -2,6 +2,20 @@
 
 All notable changes to ThinkBud will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- Backend textbook source/document/chapter/section/chunk contracts with stable IDs, SHA-256 hashes, locators, and fail-closed production-readiness attestation.
+- Offline Markdown/plain-text ingestion CLI, deterministic chunking, embedding/vector interfaces, fake embedding provider, in-memory store, and adapter-only Cloudflare Vectorize contract.
+- Filtered/deduplicated/budgeted retrieval, structured citations, and sanitized untrusted RAG context builder.
+- Provider-neutral LLM completion/stream/usage/error/timeout gateway, Ark adapter, and fake LLM provider.
+- Default-off chat RAG integration with non-RAG fallback and unchanged blocking output guard.
+- Project-authored synthetic textbook corpus, human-authored gold queries, RAG bad cases, generated evidence, and backend/tool TypeScript project checks.
+
+### Security
+- Retrieved textbook text is sanitized and carried in a separate untrusted provider field; it cannot become system/developer instructions or learner state.
+- No real textbook, public upload route, production embedding provider, Vectorize binding/index, provider key, or deployment was added.
+
 ## [1.2.1.0] - 2026-04-10
 
 ### Added

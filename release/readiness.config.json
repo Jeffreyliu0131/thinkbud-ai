@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "required": {
     "deterministicEvalPass": true,
+    "deterministicRagEvalPass": true,
     "licenseFile": true,
     "assetOwnerAttestation": true,
     "privacyChildSafetyApproval": true,
@@ -10,6 +11,7 @@
   },
   "evidencePaths": {
     "deterministicEval": "evals/results/latest.json",
+    "deterministicRagEval": "evals/rag/results/latest.json",
     "assetManifest": "provenance/assets.json",
     "privacyApproval": "release/privacy-approval.json",
     "liveModelEvidence": "evals/results/live/latest.json",

@@ -17,7 +17,7 @@ npm run release:check
 
 - [ ] Clean release commit and immutable tag candidate identified.
 - [ ] `npm ci` works on a clean clone with supported Node.
-- [ ] `npm run verify` passes: lint, typecheck, unit/integration, synthetic eval, provenance inventory, build.
+- [ ] `npm run verify` passes: lint, frontend/backend/tool typecheck, unit/integration, behavior eval, textbook-RAG eval, provenance inventory, build.
 - [ ] Generated reports identify commit, dataset hash, configuration hash, and time.
 - [ ] Bad cases and known limitations are included, not deleted to make a chart green.
 
@@ -30,6 +30,11 @@ npm run release:check
 - [ ] RTC remains disabled, or its output is gated before speech and passes a separate live slice.
 
 ## G2 — resilience and operations
+
+- [ ] Textbook RAG remains default-off unless source readiness, embedding provider, index binding/content, budgets, deletion/versioning, and rollback are all verified.
+- [ ] Retrieval bad cases pass for injection, wrong grade/subject, duplicates, no results, overlong context, and provider/store failure.
+- [ ] RAG citations resolve to the exact source/document/chapter/section/chunk hash and locator used in the model context.
+- [ ] RAG failure falls back to non-RAG chat and the final text still passes the blocking output guard.
 
 - [ ] RTC connect, health timeout, and mid-session failures fall back to STT.
 - [ ] STT retries are bounded; SSE preserves partial content.
@@ -52,6 +57,7 @@ npm run release:check
 - [ ] All first-party contributors/rights holders confirmed.
 - [ ] Icon, illustration, font, audio, fixture, and copied-code provenance attested.
 - [ ] Third-party license/notice obligations reviewed for shipped artifacts.
+- [ ] Every non-synthetic textbook has explicit source-specific rights/provenance attestation; fixture or file possession is not treated as authorization.
 - [ ] CONTRIBUTING, SECURITY, issue/PR templates, architecture, eval docs, and support boundary are current.
 - [ ] Public repository URL, CI badges, branch protection, security advisory route, and release artifacts verified.
 

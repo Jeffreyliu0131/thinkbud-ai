@@ -50,7 +50,7 @@ npm run test:watch
 npm run verify
 ```
 
-This runs lint, TypeScript checks, unit/integration/component tests, the deterministic synthetic eval, provenance generation, and the production build. The generated evidence records the exact test and eval state; do not treat an old count in prose as canonical.
+This runs lint, frontend/shared/backend/tool TypeScript project checks, unit/integration/component tests, both deterministic synthetic evals, provenance generation, and the production build. The generated evidence records the exact test and eval state; do not treat an old count in prose as canonical.
 
 ## Evaluation Layers
 
@@ -59,10 +59,16 @@ This runs lint, TypeScript checks, unit/integration/component tests, the determi
 - `docs/evals/HUMAN_RUBRIC.md`: independent human scoring contract.
 - `evals/calibrate-grader.ts`: advisory grader calibration against human labels.
 - `evals/generate-live-slice.ts`: guarded optional live slice; requires explicit credentials and budget approval.
+- `evals/rag/fixtures/`: project-authored synthetic textbook snippets; never real or copied school material.
+- `evals/rag/cases/synthetic-rag-v1.json`: human-authored retrieval relevance labels and declared bad-case coverage.
+- `evals/rag/run.ts`: offline RAG gate for recall@k, precision@k, citation correctness, trust boundaries, filters, dedupe, budgets, failures, and RAG→LLM→output-guard behavior.
 
 ```bash
 npm run eval:gate
+npm run eval:rag
 npm run eval:calibrate-grader
 ```
+
+The RAG eval uses deterministic fake embeddings, an in-memory store, and one fake LLM call for the output-guard integration case. It makes zero network or production-model calls. The machine-readable result is `evals/rag/results/latest.json`; its count and hashes are canonical.
 
 The full release gate intentionally fails until every item in `docs/RELEASE_CHECKLIST.md` is supported by real evidence.

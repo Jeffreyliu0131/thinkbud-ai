@@ -6,6 +6,8 @@
 
 It does **not** prove that a live model is consistently Socratic, age-appropriate, low-latency, or cost-efficient. Those claims require fresh outputs from the exact model/configuration plus blinded human review.
 
+`npm run eval:rag` separately builds a tiny project-authored synthetic textbook corpus, indexes it with deterministic fake embeddings and an in-memory store, and evaluates retrieval/citation/safety behavior. It does not prove real textbook coverage, semantic embedding quality, Vectorize deployment, or live RAG behavior.
+
 ## Evaluation layers
 
 1. **Prompt contract tests** confirm that required policies are present in both grade variants.
@@ -14,11 +16,13 @@ It does **not** prove that a live model is consistently Socratic, age-appropriat
 4. **Blinded human review** scores fresh model outputs using [HUMAN_RUBRIC.md](HUMAN_RUBRIC.md).
 5. **Optional model grader** may add triage signal only after calibration against held-out human labels.
 6. **Adult-only field pilot** tests comprehension, trust calibration, and workflow—not learning outcomes.
+7. **Synthetic textbook RAG gate** checks human-authored gold relevance labels plus injection/filter/dedupe/budget/dependency and output-guard bad cases.
 
 ## Commands and artifacts
 
 ```bash
 npm run eval:gate
+npm run eval:rag
 npm run eval:calibrate-grader
 npm run evidence
 ```
@@ -32,6 +36,8 @@ Generated evidence:
 - `artifacts/evals/latest/report.html`: standalone dashboard.
 - `public/eval-report.json`: data shown by synthetic demo mode.
 - `evals/results/grader-calibration.json`: calibration mechanics example.
+- `evals/rag/results/latest.json`: case-level textbook-RAG evidence, structured citations, corpus scope, and zero-network/provider declarations.
+- `artifacts/evals/rag/latest/report.html`: standalone RAG evidence report.
 
 Every result includes the source commit, dataset SHA-256, gate configuration SHA-256, generation time, and explicit counts of model calls and real-child records.
 
@@ -40,6 +46,8 @@ Every result includes the source commit, dataset SHA-256, gate configuration SHA
 Add only synthetic data to `evals/cases/synthetic-v1.json`. Each case needs a stable ID, dimension, expected outcome, and—when failing—one or more taxonomy codes. A detector change must include both a bad case and a nearby good case to measure false positives.
 
 Negative controls are expected to fail the candidate behavior. The gate passes only when the evaluator detects them as expected; it does not pretend all fixture outputs are good.
+
+RAG gold labels are authored directly in `evals/rag/cases/synthetic-rag-v1.json`; no model generates or scores its own ground truth. Add both a relevant query and a nearby filter/no-result/bad case when changing retrieval behavior.
 
 ## Model grader policy
 

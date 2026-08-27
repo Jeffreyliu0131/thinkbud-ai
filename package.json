@@ -15,14 +15,16 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "eval:gate": "node --import tsx evals/run.ts",
+    "eval:rag": "node --import tsx evals/rag/run.ts",
     "eval:calibrate-grader": "node --import tsx evals/calibrate-grader.ts",
     "eval:live": "node --import tsx evals/generate-live-slice.ts",
     "provenance:check": "node scripts/generate-provenance.mjs",
-    "evidence": "npm run eval:gate && npm run provenance:check",
+    "evidence": "npm run eval:gate && npm run eval:rag && npm run provenance:check",
     "verify": "npm run lint && npm run typecheck && npm test && npm run evidence && npm run build",
     "release:check": "npm run verify && node scripts/check-release-readiness.mjs",
     "demo": "npm run evidence && vite --mode synthetic-demo",
-    "demo:build": "npm run evidence && vite build --mode synthetic-demo"
+    "demo:build": "npm run evidence && vite build --mode synthetic-demo",
+    "rag:ingest": "node --import tsx scripts/ingest-textbook.ts"
   },
   "dependencies": {
     "@volcengine/rtc": "^4.68.2",
