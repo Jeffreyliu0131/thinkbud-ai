@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ThinkBud synthetic eval evidence</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:#17352f;background:#f4f8f5}body{margin:0}.wrap{max-width:1080px;margin:auto;padding:40px 24px}.banner{padding:12px 16px;border:1px solid #e0b54b;background:#fff6d8;border-radius:12px}.hero{display:flex;justify-content:space-between;gap:24px;align-items:end;margin:32px 0}.status{font-size:36px;font-weight:800;color:#087a55}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}.grid article{background:#fff;border:1px solid #dce9e2;border-radius:14px;padding:18px}.grid span{display:block;color:#54716a;font-size:13px}.grid strong{font-size:28px}section{background:#fff;border:1px solid #dce9e2;border-radius:16px;padding:22px;margin-top:20px}table{width:100%;border-collapse:collapse}th,td{text-align:left;border-bottom:1px solid #edf2ef;padding:10px 6px}.muted{color:#607a73;font-size:14px}code{word-break:break-all}h1,h2{margin-top:0}
+</style></head><body><main class="wrap">
+<div class="banner"><strong>Synthetic evidence only.</strong> No real child data and no production model or paid API calls. Passing this deterministic gate does not prove live-model teaching quality.</div>
+<div class="hero"><div><h1>ThinkBud evaluation evidence</h1><p class="muted">Dataset ee8720282fc8a58b99d51a6a50fe5d763e1eb3045487d20d916e15334710feff · source snapshot 7fa623d2a70d4761bcd17b47c771123785fab4600ef27874c22be31ec88472d5</p></div><div class="status">PASS</div></div>
+<div class="grid">
+    <article><span>positiveControlPassRate</span><strong>100%</strong></article>
+    <article><span>negativeControlDetectionRecall</span><strong>100%</strong></article>
+    <article><span>inputSafetyAccuracy</span><strong>100%</strong></article>
+    <article><span>failureRecoveryAccuracy</span><strong>100%</strong></article>
+    <article><span>telemetryBudgetAccuracy</span><strong>100%</strong></article></div>
+<section><h2>Coverage</h2><table><thead><tr><th>Dimension</th><th>Cases</th></tr></thead><tbody>
+    <tr><td>socratic_next_question</td><td>3</td></tr>
+    <tr><td>emotion_adaptation</td><td>3</td></tr>
+    <tr><td>transfer_question</td><td>3</td></tr>
+    <tr><td>multisubject</td><td>2</td></tr>
+    <tr><td>answer_leakage</td><td>6</td></tr>
+    <tr><td>age_appropriateness</td><td>2</td></tr>
+    <tr><td>ocr_input_pollution</td><td>3</td></tr>
+    <tr><td>prompt_injection</td><td>5</td></tr>
+    <tr><td>rtc_failure</td><td>3</td></tr>
+    <tr><td>stt_failure</td><td>2</td></tr>
+    <tr><td>cost_boundary</td><td>1</td></tr>
+    <tr><td>sse_failure</td><td>1</td></tr>
+    <tr><td>latency_cost</td><td>4</td></tr></tbody></table></section>
+<section><h2>Evaluator mismatches</h2><p class="muted">38/38 cases matched their human-authored expected outcome.</p><table><thead><tr><th>Case</th><th>Dimension</th><th>Codes</th></tr></thead><tbody><tr><td colspan="3">No evaluator mismatches.</td></tr></tbody></table></section>
+<section><h2>Release interpretation</h2><p>Deterministic gate: <strong>PASS</strong>. Full model release: <strong>BLOCKED until fresh live outputs receive blinded human review</strong>. Model graders are advisory and may not override hard safety checks.</p></section>
+</main></body></html>
