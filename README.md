@@ -1,92 +1,133 @@
 # ThinkBud
 
-ThinkBud is an AI thinking coach for primary-school learners. Instead of answering homework questions, it uses Socratic prompts, voice interaction, OCR, and mastery checks to help a learner explain their own reasoning.
+[![CI and deterministic evidence](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml)
 
-The product rule is deliberately strict:
+ThinkBud is an AI thinking coach for primary-school learners. The problem it tackles is not access to answers; it is the ease with which an AI tutor can replace the learner's reasoning. ThinkBud therefore turns a homework question into a short coaching loop that asks for one cognitive action at a time, checks transfer, and blocks detected answer leakage before text reaches the learner.
 
-> AI guides the thinking process; the learner owns the answer.
+> **Product rule:** AI guides the thinking process; the learner owns the answer.
 
-## Ownership and evidence boundary
+This repository is a working, reviewable prototype and product-evidence trail. It is not evidence of product-market fit, measured learning outcomes, a production-safe child deployment, or a live textbook corpus.
 
-ThinkBud is an independent AI product project. I owned the product mechanism, coaching-policy evolution, prompt and safety constraints, multimodal workflow, acceptance criteria, QA, and release decisions. I used AI coding agents as implementation and review collaborators: I set scope, reviewed changes, diagnosed failures, and required tests before release.
-
-This repository demonstrates a working technical prototype and product-decision process, not broad product-market fit. User validation to date has mainly been family testing, so I do not claim external adoption or measured learning outcomes.
-
-The current public strengthening is evaluation-first. It uses synthetic cases only, records zero production-model calls and zero child records, and fails closed on release blockers instead of presenting repository activity as evidence of product readiness.
-
-## What this project demonstrates
-
-- Product constraints translated into enforceable AI behavior.
-- A shared trust boundary for OCR, learner context, chat history, and knowledge extraction.
-- A pre-display and pre-TTS text-output guard that blocks detected answer, indirect-answer, and worked-step leakage.
-- Age-adaptive prompting for grades 1–3 and 4–6.
-- Multimodal input through camera OCR, text, and real-time voice.
-- Server-side prompt construction and output auditing.
-- Knowledge tracking with Bayesian Knowledge Tracing (BKT).
-- Parent and learner views built from the same underlying learning evidence.
-- Failure recovery across RTC, STT, SSE, OCR, and browser storage.
-- A failure-first synthetic evaluation suite, human-review rubric, provenance inventory, and fail-closed release gate.
-- A backend textbook-RAG contract with deterministic ingestion, stable citations, retrieval budgets, and explicit provenance readiness.
-- A provider-agnostic LLM gateway with typed streaming/usage/error/timeout metadata, an Ark adapter, and offline fake providers.
-- A test suite covering prompt rules, auth, rate limiting, API handlers, hooks, and UI components.
-
-Managed RTC speech currently bypasses the application output guard, so RTC is disabled by default with `VITE_ENABLE_RTC=false`. It must not be enabled for child-facing use or described as guard-equivalent until fresh live evidence and blinded human review pass.
-
-## Core product loop
-
-1. The learner photographs or uploads a question.
-2. OCR extracts the question without treating page text as trusted instructions.
-3. The server builds a grade- and subject-aware coaching prompt.
-4. The server buffers the short text turn, audits it, and substitutes a safe fallback if the response appears to reveal an answer or complete solution.
-5. The learner explains their reasoning by voice or text.
-6. A transfer question checks whether the learner actually understood the idea.
-7. The session updates knowledge evidence and generates a concise coach note.
-
-## Architecture
-
-- **Frontend:** React 19, TypeScript, Vite, PWA.
-- **Backend:** Cloudflare Pages Functions.
-- **AI and speech:** server-side provider adapters for chat, OCR, RTC, STT, and TTS.
-- **Storage:** D1 for server-side learning records and IndexedDB for replaceable local state.
-- **Safety:** authenticated endpoints, HMAC phone hashing, rate limits, CSP, untrusted-input filtering, blocking text-output guard, and explicit RTC release flag.
-
-Provider credentials are never required by the browser bundle. Local values belong in ignored environment files; see [`.env.example`](.env.example).
-
-The textbook knowledge layer is implemented as backend/offline logic and is **disabled by default**. The repository ships no real textbook, production embedding model, populated Vectorize index, or Vectorize binding. Its corpus is a tiny set of project-authored synthetic chunks used only to test retrieval and safety. See [Textbook RAG and LLM backend](docs/TEXTBOOK_RAG.md).
-
-## Evaluation and testing
-
-The repository includes:
-
-- deterministic audit and blocking rules for answer leakage and unsafe coaching behavior;
-- a fully synthetic release dataset with positive, negative, boundary, and adversarial cases;
-- an independent human-review rubric and optional model-grader calibration path;
-- unit, integration, hook, API, and component tests;
-- provenance and release-readiness checks;
-- a separate textbook-RAG eval with human-authored gold relevance labels, injection/filter/dedupe/budget/failure bad cases, and citation checks;
-- build, lint, typecheck, tests, evals, and provenance checks in CI.
+## See the product and evidence in 60 seconds
 
 ```bash
 npm ci
-npm run verify
-npm run eval:rag
-```
-
-Credential-free evidence demo:
-
-```bash
 npm run demo
 ```
 
-The full release gate is expected to remain non-zero until the owner selects a license, attests asset provenance, completes child/privacy approval, produces explicitly approved live-model evidence, and completes blinded human review:
+Open the printed local URL. Synthetic demo mode needs no account, provider credential, paid API, real learner record, or real textbook. It shows the coaching loop beside the deterministic release evidence that produced it.
+
+For a fast code review, start here:
+
+| Question | Source of truth |
+|---|---|
+| Does the deterministic coaching/safety gate pass? | [Behavior eval summary](evals/results/latest.md) and [machine-readable report](evals/results/latest.json) |
+| Do retrieval filters, citations, budgets, bad cases, and guard integration pass? | [Textbook-RAG eval summary](evals/rag/results/latest.md) and [machine-readable report](evals/rag/results/latest.json) |
+| What is actually implemented versus adapter-only or blocked? | [Architecture](docs/ARCHITECTURE.md) and [Textbook RAG + LLM backend](docs/TEXTBOOK_RAG.md) |
+| Why is this not releasable to children yet? | [Release checklist](docs/RELEASE_CHECKLIST.md) and [privacy/child-safety boundary](docs/PRIVACY_AND_CHILD_SAFETY.md) |
+| What are the asset and dependency rights gaps? | [Provenance audit](docs/PROVENANCE_AUDIT.md) and [generated inventory](artifacts/provenance/latest.json) |
+| What product decisions and trade-offs shaped the system? | [Case study](docs/CASE_STUDY.md) and [coaching policy](docs/ThinkBud对话决策规范v5.md) |
+
+## Product mechanism
+
+1. A learner provides a question through text or the camera/OCR path.
+2. Client history, OCR text, and learner context cross a shared untrusted-input boundary.
+3. The server builds the grade- and subject-aware coaching policy; the browser cannot supply a system role.
+4. Textbook RAG, when explicitly enabled and fully configured, retrieves filtered chunks and attaches structured citation metadata as untrusted context. Disabled, incomplete, failed, or empty retrieval falls back to non-RAG chat.
+5. A provider-neutral LLM gateway records completion/stream, timing, usage, timeout, and error metadata while provider keys remain server-side.
+6. The text turn is buffered and the blocking output guard runs **last**. Detected answer, indirect-answer, or worked-step leakage is replaced with a safe question before SSE display, persistence, or TTS.
+7. The learner explains a step; a transfer question checks whether the idea can be reused before the session updates learning evidence.
+
+```mermaid
+flowchart LR
+  A[Text / OCR / learner context] --> B[Sanitize as untrusted input]
+  B --> C[Server-owned coaching policy]
+  B --> D{RAG enabled and ready?}
+  D -- No / degraded / no result --> E[Original non-RAG path]
+  D -- Yes --> F[Filtered retrieval + stable citations]
+  F --> G[Untrusted bounded context]
+  C --> H[Provider-neutral LLM gateway]
+  E --> H
+  G --> H
+  H --> I[Buffer short text turn]
+  I --> J[Blocking output guard — last]
+  J -- Pass or safe fallback --> K[SSE display / persistence / TTS]
+  R[Managed RTC speech — default OFF] -. cannot use the text guard .-> X[Release blocked]
+```
+
+The default-off textbook path contains no real textbook, production embedding model, populated Vectorize index, durable chunk repository, or Vectorize deployment binding. Managed RTC also remains default-off because provider-managed speech bypasses the application output guard.
+
+## Evidence chain
+
+The public evidence is intentionally synthetic and reproducible:
+
+```text
+human-authored fixtures + expected outcomes
+        ↓
+deterministic behavior and RAG runners
+        ↓
+JSON / Markdown / HTML reports with source SHA + snapshot hash
+        ↓
+unit/integration tests + provenance inventory + production build
+        ↓
+CI (engineering gate)
+        ↓
+full release gate fails closed on missing human/legal/live-model evidence
+```
+
+The tracked behavior report covers 38 synthetic cases; the separate RAG report covers 14 retrieval and bad-case checks. Both record zero production-model calls and zero real child records. RAG evidence additionally records zero network calls and zero real textbook records. Exact counts and hashes live in the linked reports rather than in prose that can silently go stale.
+
+`sourceDirty=false` means the evidence runner saw no uncommitted change in its declared source inputs. Evidence commits point back to the clean code commit they evaluated, so a reviewer can inspect both the implementation SHA and the generated result.
+
+Passing these deterministic gates proves only that the encoded mechanisms behaved as expected on the versioned synthetic set. It does not prove live-model teaching quality, adoption, learning impact, production latency/cost, privacy compliance, or textbook rights.
+
+## Safety and release boundary
+
+- Text output is guarded before display and TTS; model-judge scores cannot override deterministic hard failures.
+- OCR, chat history, learner memory, and retrieved textbook excerpts are treated as untrusted data rather than privileged instructions.
+- `RAG_TEXTBOOK_ENABLED` and `VITE_ENABLE_RTC` are false by default.
+- RAG failure preserves the existing chat path and never changes the requirement that the output guard executes last.
+- The full release gate is expected to fail until the owner chooses a project license, attests the 11 tracked assets, approves child/privacy controls, produces fresh live-model evidence, and completes two-rater blinded review.
+- No real child/family/teacher data, real textbook content, production identifiers, or credentials belong in this repository or its public issues.
+
+## What is implemented—and what is not
+
+| Area | Implemented evidence | Honest limit |
+|---|---|---|
+| Coaching | Grade/subject prompt policy, one-action tutoring loop, transfer checks | Synthetic mechanism evidence only; no learning-outcome claim |
+| Text safety | Blocking answer/step guard before text display/TTS | Pattern-based; novel leakage still requires fresh live evaluation and human review |
+| RAG | Deterministic ingestion, readiness contract, filters, budgets, dedupe, citations, untrusted context, failure fallback | Default-off; synthetic corpus and fake embedding/store only |
+| LLM | Provider-neutral gateway plus Ark adapter and offline fake provider | No public live-model evidence or bundled provider credentials |
+| Voice | STT/TTS path and RTC failure recovery | Managed RTC bypasses the text guard and stays disabled |
+| Learning evidence | BKT, knowledge signals, learner/parent views | Prototype data model; no validated learning impact |
+| Privacy/security | Auth boundaries, rate limits, CSP, input sanitization, public safety docs | No approved DPIA, complete consent/notice, retention/deletion, vendor review, or admin hardening |
+
+## Product ownership and AI collaboration
+
+I owned the problem framing, coaching mechanism, product and safety constraints, prompt-policy evolution, acceptance criteria, trade-offs, evaluation design, evidence bar, and release decisions. AI coding agents acted as implementation and review collaborators: they proposed or changed code, generated synthetic fixtures, and helped diagnose failures. I constrained the scope, reviewed the changes, rejected unsupported claims, and required reproducible tests and fail-closed release gates.
+
+That division matters: repository activity or agent-generated prose is not treated as user evidence. Product claims are limited to what the code, versioned fixtures, generated reports, and explicitly identified human evidence can support.
+
+## Run and review locally
+
+Supported baseline: Node.js 22 and the committed npm lockfile.
 
 ```bash
+# Full deterministic engineering gate
+npm ci
+npm run verify
+
+# Registry-backed dependency check
+npm audit --audit-level=high
+
+# Credential-free synthetic showcase build
+npm run demo:build
+
+# Expected to exit non-zero until human/legal/live evidence is complete
 npm run release:check
 ```
 
-For the testing structure, see [TESTING.md](TESTING.md). For the evaluation contract and evidence, see [docs/evals/README.md](docs/evals/README.md), [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md), and [docs/CASE_STUDY.md](docs/CASE_STUDY.md). For the current coaching policy, see [docs/ThinkBud对话决策规范v5.md](docs/ThinkBud对话决策规范v5.md).
-
-## Local development
+For ordinary local development:
 
 ```bash
 cp .env.example .env
@@ -94,18 +135,32 @@ npm ci
 npm run dev
 ```
 
-The frontend can be explored without production credentials. Provider-backed API routes require your own server-side accounts and keys.
+Provider-backed routes require the reviewer's own server-side accounts and keys. Provider credentials are never required by the browser bundle and must remain in ignored environment files.
 
-Offline Markdown/plain-text ingestion is available through `npm run rag:ingest -- ...`. It writes a manifest only; there is no public anonymous upload endpoint. A source lacking complete owner/provenance/license attestation is retained as non-production evidence and can never be marked `productionReady` by omission.
+Offline Markdown/plain-text ingestion is available through `npm run rag:ingest -- ...`. It writes a manifest only; there is no public anonymous upload endpoint. A source without complete owner, provenance, license, and production authorization is explicitly non-production-ready.
 
-Synthetic demo mode is isolated from auth and provider-backed routes. It should not be used to imply live-model or user validation.
+## Repository map
 
-## Public-snapshot note
+- `functions/api/` — Cloudflare Pages API handlers and the guarded chat boundary.
+- `functions/_shared/` — prompt policy, input/output safety, provider gateway, RAG contracts, retrieval, and adapters.
+- `src/` — React product UI, voice pipeline, learning evidence, and synthetic showcase.
+- `evals/` — human-authored synthetic cases, deterministic runners, bad cases, and generated evidence.
+- `artifacts/` — reviewable HTML/provenance outputs generated by repository scripts.
+- `docs/` — architecture, evaluation, privacy, provenance, pilot, case-study, and release decisions.
+- `.github/workflows/` — read-only CI and manual full-release checks; no production deployment workflow.
 
-This repository is a clean public snapshot of version `1.2.1.0`. The original private development repository used AI coding agents and contained internal planning and deployment history. Those materials, production identifiers, credentials, and user data are intentionally excluded here.
+## Current release blockers
 
-No production learner records or real credentials are included. Tests use synthetic fixtures.
+The engineering gate can pass while the product release remains blocked. The unresolved items require owner, legal/privacy, live-provider, or independent-human evidence and must not be auto-filled:
+
+1. explicit project-license choice and first-party rights confirmation;
+2. owner attestation for 11 tracked icons/illustrations/worklet/fixture assets;
+3. DPIA, age/guardian consent, child-readable notice, retention/export/correction/deletion, vendor processing, admin access, and incident procedures;
+4. fresh live-model outputs tied to an exact model/prompt/config/transport;
+5. two-rater blinded review of those outputs;
+6. RTC architecture or evidence that can enforce an equivalent pre-speech safety boundary;
+7. source-specific rights, deletion/versioning, production embeddings, durable storage, and rollback before any real textbook RAG.
 
 ## License
 
-No open-source license is granted. The source is public for portfolio review and technical discussion; all rights are reserved.
+No open-source license is granted. The source is public for portfolio review and technical discussion; all rights are reserved. Choosing a license is an explicit owner decision and remains outside automated release work.
