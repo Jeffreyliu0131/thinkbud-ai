@@ -6,6 +6,7 @@ import { buildRagContext } from '../../functions/_shared/rag/context-builder'
 import { DeterministicFakeEmbeddingProvider, EmbeddingProviderError } from '../../functions/_shared/rag/embedding'
 import { ingestTextbook } from '../../functions/_shared/rag/ingestion'
 import { RagRetrievalService } from '../../functions/_shared/rag/retrieval'
+import { buildChatRagContext } from '../../functions/_shared/rag/runtime'
 import { stableTextbookId } from '../../functions/_shared/rag/hash'
 import type { TextbookChunk, TextbookFilters, TextbookIngestionInput } from '../../functions/_shared/rag/types'
 import { InMemoryVectorStore, VectorStoreError } from '../../functions/_shared/rag/vector-store'
@@ -281,6 +282,30 @@ async function main(): Promise<void> {
     filters: { subject: 'math', gradeLabel: 'upper' }, topK: 1, scoreThreshold: -1,
   })
   const safeContext = buildRagContext(safeRetrieval)
+  const runtimeRequest = {
+    query: 'common denominator equal-sized parts',
+    subject: 'math',
+    gradeLabel: 'upper' as const,
+  }
+  const runtimeStates = await Promise.all([
+    buildChatRagContext({ RAG_SERVICE: service }, runtimeRequest),
+    buildChatRagContext({ RAG_TEXTBOOK_ENABLED: 'true' }, runtimeRequest),
+    buildChatRagContext({
+      RAG_TEXTBOOK_ENABLED: 'true',
+      RAG_SERVICE: service,
+      RAG_SCORE_THRESHOLD: '1',
+    }, { ...runtimeRequest, query: 'synthetic query with no matching terms' }),
+    buildChatRagContext({
+      RAG_TEXTBOOK_ENABLED: 'true',
+      RAG_SERVICE: service,
+      RAG_SCORE_THRESHOLD: '-1',
+    }, runtimeRequest),
+  ])
+  const expectedRuntimeStates = ['disabled', 'degraded', 'no_results', 'used']
+  if (!runtimeStates.every((state, index) => state.status === expectedRuntimeStates[index])) {
+    throw new Error(`Unexpected RAG runtime showcase states: ${runtimeStates.map(state => state.status).join(',')}`)
+  }
+
   const fakeLlm = new FakeLlmProvider({ response: '答案是7。' })
   const llm = new LlmGateway(fakeLlm)
   const completion = await llm.complete({
@@ -346,18 +371,41 @@ async function main(): Promise<void> {
       metrics,
       thresholds: { meanRecallAtK: 1, meanPrecisionAtK: 1, citationCorrectness: 1, badCasePassRate: 1 },
     },
+    showcase: {
+      runtimeStates: runtimeStates.map(state => ({
+        status: state.status,
+        reason: state.reason,
+        citationCount: state.citations.length,
+        truncated: state.truncated,
+        citations: state.citations,
+      })),
+      llmGateway: completion.metadata,
+      outputGuard: {
+        candidate: completion.text,
+        blocked: guarded.blocked,
+        fallback: guarded.content,
+        blockingIssues: guarded.blockingIssues,
+      },
+      dataPolicy: 'Deterministic fake providers and project-authored synthetic textbook fixtures only.',
+    },
     cases: results,
   }
 
   const resultDir = path.join(root, 'evals/rag/results')
   const artifactDir = path.join(root, 'artifacts/evals/rag/latest')
-  await Promise.all([mkdir(resultDir, { recursive: true }), mkdir(artifactDir, { recursive: true })])
+  const publicDir = path.join(root, 'public')
+  await Promise.all([
+    mkdir(resultDir, { recursive: true }),
+    mkdir(artifactDir, { recursive: true }),
+    mkdir(publicDir, { recursive: true }),
+  ])
   const json = `${JSON.stringify(report, null, 2)}\n`
   const markdown = `# ThinkBud textbook RAG synthetic eval\n\n- Deterministic gate: **${gatePassed ? 'PASS' : 'FAIL'}**\n- Cases passed: **${report.summary.passed}/${report.summary.total}** (${report.summary.goldQueries} gold queries; ${report.summary.badCases} bad cases)\n- Mean recall@k: **${metrics.meanRecallAtK.toFixed(2)}**\n- Mean precision@k: **${metrics.meanPrecisionAtK.toFixed(2)}**\n- Citation correctness: **${metrics.citationCorrectness.toFixed(2)}**\n- Source commit: \`${report.sourceCommit}\`\n- Source snapshot SHA-256: \`${snapshotHash}\` (${report.sourceDirty ? 'dirty evidence source files' : 'clean evidence source files'})\n- Production model/network calls: **0/0**\n- Real textbook/child records: **0/0**\n- Production-ready sources: **0** (all fixtures are synthetic test-only)\n- Vectorize/live embedding: **not configured**\n`
   await Promise.all([
     writeFile(path.join(resultDir, 'latest.json'), json),
     writeFile(path.join(resultDir, 'latest.md'), markdown),
     writeFile(path.join(artifactDir, 'report.html'), html(report as unknown as Record<string, unknown>)),
+    writeFile(path.join(publicDir, 'rag-eval-report.json'), json),
   ])
   console.log(`ThinkBud textbook RAG eval: ${gatePassed ? 'PASS' : 'FAIL'}`)
   console.log(`Cases passed: ${report.summary.passed}/${report.summary.total}`)

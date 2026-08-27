@@ -31,7 +31,7 @@ flowchart LR
 | LLM gateway | Implemented | Provider-neutral completion/stream/usage/error/timeout metadata; Ark adapter retains server-side keys and existing generation defaults |
 | Chat integration | Implemented, default-off | Requires an explicit flag and complete service; any RAG failure falls back to original chat; output guard stays last |
 | Vectorize | Adapter-only | Binding/schema class exists; binding, index, embedding provider, durable chunk repository and deployment are unconfigured |
-| Client citation display | Future | Structured citations are retained in server/eval metadata; current SSE remains backward-compatible text only |
+| Citation display | Synthetic showcase only | The credential-free demo renders structured eval citations; the production learner client still receives backward-compatible text-only SSE |
 
 ## Data contract and readiness
 
@@ -82,6 +82,8 @@ Markdown `#` headings create chapters and deeper headings create sections. `<!--
 | Model reveals an answer despite RAG | Blocking output guard substitutes safe question | Unsafe text never enters the existing SSE response |
 
 The response headers expose only coarse diagnostics (`X-ThinkBud-RAG`, citation count, truncation flag). Citation bodies are not placed in headers or the legacy SSE stream.
+
+The synthetic showcase reads the generated RAG eval report and renders source, chapter, section, locator, IDs, and content hash for review. That evidence view is not a production chat citation protocol and does not imply that the learner-facing SSE client receives citation bodies.
 
 ## Synthetic evidence and limits
 
