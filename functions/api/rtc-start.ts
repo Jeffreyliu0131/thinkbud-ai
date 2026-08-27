@@ -16,6 +16,7 @@ import type { GradeLevel, Subject, SessionContext } from '../_shared/prompt'
 import type { AppEnv, ContextData } from '../_shared/env'
 import { startUsageSession } from '../_shared/usage-time'
 import { checkUserRateLimit } from '../_shared/rate-limit'
+import { sanitizeUntrustedText, wrapUntrustedContext } from '../_shared/input-safety'
 
 const RTC_API_HOST = 'https://rtc.volcengineapi.com'
 const ACTION = 'StartVoiceChat'
@@ -55,15 +56,18 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
       if (typeof learnerContext !== 'string') {
         return errorResponse('learnerContext 必须是字符串', 400)
       }
-      if (learnerContext.length > MAX_LEARNER_CONTEXT_LENGTH) {
-        sanitizedLearnerContext = learnerContext.slice(0, MAX_LEARNER_CONTEXT_LENGTH)
-      } else {
-        sanitizedLearnerContext = learnerContext
+      const sanitized = sanitizeUntrustedText(learnerContext, { maxLength: MAX_LEARNER_CONTEXT_LENGTH })
+      if (sanitized.flags.length > 0) {
+        console.warn('[RTC Learner Context] sanitized flags:', sanitized.flags.join(','))
       }
+      sanitizedLearnerContext = wrapUntrustedContext('rtc_context', sanitized.text)
     }
 
     // 服务端构建 system prompt（防止前端绕过产品宪法）
     const systemPrompt = buildRTCSystemPrompt(gradeLevel, { subject, session, learnerContext: sanitizedLearnerContext })
+
+    // Lower grades need a longer pause before turn completion; upper grades can respond faster.
+    const silenceTime = gradeLevel === 'lower' ? 1000 : 800
 
     // VOI-03: TTS 语速按学段分化
     const speechRate = gradeLevel === 'lower' ? -0.1 : 0
@@ -127,7 +131,9 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
             StreamMode: 2,
           },
           VADConfig: {
-            SilenceTime: 600,   // 实验值：降低至600ms加速轮次检测（远端默认 silenceTime 按年级动态）
+            // Validated safe range: lower 1000ms / upper 800ms.
+            // Values above 1000ms previously caused subtitle timeouts.
+            SilenceTime: silenceTime,
             AIVAD: true,
           },
           InterruptConfig: {

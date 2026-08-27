@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security and child-safety disclosure
+    url: https://github.com/Jeffreyliu0131/thinkbud-ai/security/advisories/new
+    about: Use a private advisory. Do not put sensitive data in a public issue.

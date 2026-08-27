@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "reviewComplete": false,
+  "releaseRecommendation": "blocked",
+  "dataPolicy": "Synthetic prompts and approved model outputs only; no real child data.",
+  "model": "REPLACE_WITH_EXACT_MODEL_ID",
+  "promptHash": "REPLACE_FROM_LIVE_EVIDENCE",
+  "reviewers": ["R1", "R2"],
+  "adjudicator": "R3_IF_NEEDED",
+  "summary": {
+    "items": 0,
+    "hardFailures": 0,
+    "passingItems": 0,
+    "agreementRate": 0
+  },
+  "items": []
+}

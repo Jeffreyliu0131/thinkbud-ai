@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "required": {
+    "deterministicEvalPass": true,
+    "licenseFile": true,
+    "assetOwnerAttestation": true,
+    "privacyChildSafetyApproval": true,
+    "freshLiveModelEvidence": true,
+    "blindedHumanReview": true
+  },
+  "evidencePaths": {
+    "deterministicEval": "evals/results/latest.json",
+    "assetManifest": "provenance/assets.json",
+    "privacyApproval": "release/privacy-approval.json",
+    "liveModelEvidence": "evals/results/live/latest.json",
+    "humanReview": "evals/results/human/latest.json"
+  }
+}

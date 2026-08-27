@@ -8,27 +8,10 @@ import { getSession } from '../lib/db'
 import { useStorage } from './useStorage'
 import { useToast } from '../components/Toast'
 import { extractAndSyncKnowledge } from '../lib/knowledgeExtractor'
+import { sanitizeOcrText } from '../lib/inputSafety'
 
-/**
- * P5: OCR prompt injection 基础防护
- * 过滤 OCR 结果中可能的 prompt injection 内容
- */
-export function sanitizeOcrText(text: string): string {
-  const injectionPatterns = [
-    /忽略(上面|之前|以上|前面)的(规则|指令|提示|要求|指示)/gi,
-    /ignore (previous|above|prior|all) (instructions|rules|prompts)/gi,
-    /你(现在|从现在开始)是/gi,
-    /you are now/gi,
-    /system\s*prompt/gi,
-    /\[SYSTEM\]/gi,
-    /\[INST\]/gi,
-  ]
-  let cleaned = text
-  for (const pattern of injectionPatterns) {
-    cleaned = cleaned.replace(pattern, '[已过滤]')
-  }
-  return cleaned
-}
+// Keep the historical import path stable for existing callers and tests.
+export { sanitizeOcrText } from '../lib/inputSafety'
 
 /**
  * OCR result validation: filter out noise from non-question captures
@@ -138,9 +121,10 @@ export function useChatSession({
         chat.setMessages(session.messages)
         if (session.imageUrl) dispatch({ type: 'SET_IMAGE', imageUrl: session.imageUrl })
         if (session.ocrText) {
+          const sanitizedOcr = sanitizeOcrText(session.ocrText)
           hasOcrRef.current = true
-          ocrTextRef.current = session.ocrText
-          dispatch({ type: 'SET_OCR', ocrText: session.ocrText })
+          ocrTextRef.current = sanitizedOcr
+          dispatch({ type: 'SET_OCR', ocrText: sanitizedOcr })
         }
       }
     })
@@ -236,8 +220,9 @@ export function useChatSession({
       const ocrResult = await recognizeImage(dataUrl)
 
       if (isValidOcrResult(ocrResult)) {
-        dispatch({ type: 'SET_OCR', ocrText: ocrResult })
-        ocrTextRef.current = ocrResult
+        const sanitizedOcr = sanitizeOcrText(ocrResult)
+        dispatch({ type: 'SET_OCR', ocrText: sanitizedOcr })
+        ocrTextRef.current = sanitizedOcr
         hasOcrRef.current = true
       } else {
         // OCR 返回但内容不像题目 → 清除截帧，让用户重新拍
@@ -267,11 +252,12 @@ export function useChatSession({
       const ocrResult = await recognizeImage(dataUrl)
 
       if (isValidOcrResult(ocrResult)) {
+        const sanitizedOcr = sanitizeOcrText(ocrResult)
         // 自动截帧不锁定画面（不 SET_IMAGE），摄像头继续实时预览
-        dispatch({ type: 'SET_OCR', ocrText: ocrResult })
-        ocrTextRef.current = ocrResult
+        dispatch({ type: 'SET_OCR', ocrText: sanitizedOcr })
+        ocrTextRef.current = sanitizedOcr
         hasOcrRef.current = true
-        return ocrResult
+        return sanitizedOcr
       } else {
         console.log('[OCR] 未检测到数学题，跳过')
         hasOcrRef.current = true

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "dataPolicy": "Synthetic calibration labels only; not a claim about any deployed grader.",
+  "items": [
+    { "id": "cal-01", "human": "fail", "grader": "fail" },
+    { "id": "cal-02", "human": "fail", "grader": "fail" },
+    { "id": "cal-03", "human": "fail", "grader": "fail" },
+    { "id": "cal-04", "human": "fail", "grader": "fail" },
+    { "id": "cal-05", "human": "fail", "grader": "fail" },
+    { "id": "cal-06", "human": "fail", "grader": "fail" },
+    { "id": "cal-07", "human": "fail", "grader": "fail" },
+    { "id": "cal-08", "human": "fail", "grader": "fail" },
+    { "id": "cal-09", "human": "fail", "grader": "fail" },
+    { "id": "cal-10", "human": "fail", "grader": "pass" },
+    { "id": "cal-11", "human": "pass", "grader": "pass" },
+    { "id": "cal-12", "human": "pass", "grader": "pass" },
+    { "id": "cal-13", "human": "pass", "grader": "pass" },
+    { "id": "cal-14", "human": "pass", "grader": "pass" },
+    { "id": "cal-15", "human": "pass", "grader": "pass" },
+    { "id": "cal-16", "human": "pass", "grader": "pass" },
+    { "id": "cal-17", "human": "pass", "grader": "pass" },
+    { "id": "cal-18", "human": "pass", "grader": "pass" },
+    { "id": "cal-19", "human": "pass", "grader": "pass" },
+    { "id": "cal-20", "human": "pass", "grader": "fail" }
+  ]
+}

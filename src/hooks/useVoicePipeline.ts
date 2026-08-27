@@ -7,6 +7,7 @@ import { useRTCVoice, prefetchRTCSDK } from './useRTCVoice'
 import { computeSessionAnalytics } from '../lib/sessionAnalytics'
 import { extractAndSyncKnowledge } from '../lib/knowledgeExtractor'
 import { detectSubject } from '../lib/detectSubject'
+import { decideVoiceFailure } from '../lib/failurePolicy'
 
 /** TTS text sanitization: remove META remnants, JSON fragments, braces */
 function sanitizeForTTS(text: string): string {
@@ -17,21 +18,6 @@ function sanitizeForTTS(text: string): string {
     .replace(/---+/g, '')
     .replace(/\s{2,}/g, ' ')
     .trim()
-}
-
-/** VOI-01: 语音错误 -> 温暖的儿童友好提示 */
-function mapRTCErrorToFriendly(msg: string): string {
-  if (msg.includes('麦克风') || msg.toLowerCase().includes('mic') || msg.includes('permission')) {
-    return '哦，我好像没听到，能让我用一下麦克风吗？'
-  }
-  if (msg.includes('连接') || msg.includes('network') || msg.toLowerCase().includes('connect')) {
-    return '哦，我好像没听清楚，能再说一次吗？'
-  }
-  if (msg.includes('超时') || msg.includes('timeout')) {
-    return '哦，我好像没听清楚，能再说一次吗？'
-  }
-  // Default: all unknown errors get friendly copy
-  return '哦，我好像没听清楚，能再说一次吗？'
 }
 
 /** Emotion -> TTS speech rate, grade-differentiated (VOI-03) */
@@ -139,11 +125,15 @@ export function useVoicePipeline({
             return
           }
           sttRetryCountRef.current += 1
-          if (sttRetryCountRef.current > 3) {
+          const decision = decideVoiceFailure({
+            kind: 'stt_empty',
+            retryCount: sttRetryCountRef.current,
+          })
+          if (decision.action === 'stop') {
             console.warn('[STT] 录音连续失败，停止重试')
             conversationRef.current = false
             dispatch({ type: 'SET_PHASE', phase: 'idle' })
-            showToast(mapRTCErrorToFriendly('麦克风启动失败'))
+            showToast(decision.message)
             return
           }
           sttRetryTimerRef.current = setTimeout(() => startAutoListen(), 300)
@@ -175,18 +165,19 @@ export function useVoicePipeline({
         // 连接期间的错误存起来，由 handleTalkPress 的降级逻辑显示
         connectErrorRef.current = errMsg
       } else {
-        // Mid-session RTC error: disconnect, notify user, fall back to STT
+        const decision = decideVoiceFailure({ kind: 'rtc_mid_session', detail: errMsg })
         rtc.disconnect()
         dispatch({ type: 'FALLBACK_TO_STT' })
-        showToast(mapRTCErrorToFriendly(errMsg) + '，已切换到普通模式')
+        showToast(decision.message)
         startAutoListen()
       }
     },
     onHealthTimeout: () => {
       console.warn('[VoicePipeline] RTC 健康检查超时，降级到传统模式')
+      const decision = decideVoiceFailure({ kind: 'rtc_health_timeout' })
       rtc.disconnect()
       dispatch({ type: 'FALLBACK_TO_STT' })
-      showToast('语音识别未响应，已切换到普通模式')
+      showToast(decision.message)
       startAutoListen()
     },
     onTimeWarning: (msg) => showToast(msg),
@@ -338,12 +329,14 @@ export function useVoicePipeline({
         console.warn('[VoicePipeline] RTC 连接失败，降级到传统模式:', errDetail)
         // 如果是使用时长限制，直接显示友好文案，不降级
         if (errDetail.includes('学了不少') || errDetail.includes('明天再来')) {
-          showToast(errDetail)
+          const decision = decideVoiceFailure({ kind: 'usage_limit', detail: errDetail })
+          showToast(decision.message)
           dispatch({ type: 'SET_PHASE', phase: 'idle' })
           conversationRef.current = false
         } else {
+          const decision = decideVoiceFailure({ kind: 'rtc_connect', detail: errDetail })
           dispatch({ type: 'FALLBACK_TO_STT' })
-          showToast(`语音连接失败，已切换到普通模式`)
+          showToast(decision.message)
           startAutoListen()
         }
       }

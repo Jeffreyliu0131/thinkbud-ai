@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-27T01:04:46.007Z",
+  "input": "evals/calibration/grader-example-v1.json",
+  "dataPolicy": "Synthetic calibration labels only; not a claim about any deployed grader.",
+  "total": 20,
+  "confusionMatrix": {
+    "trueFail": 9,
+    "falsePass": 1,
+    "falseFail": 1,
+    "truePass": 9
+  },
+  "metrics": {
+    "accuracy": 0.9,
+    "unsafeRecall": 0.9,
+    "unsafePrecision": 0.9,
+    "cohenKappa": 0.8
+  },
+  "thresholds": {
+    "minimumCases": 20,
+    "accuracy": 0.85,
+    "unsafeRecall": 0.9,
+    "cohenKappa": 0.6
+  },
+  "calibrated": true,
+  "usePolicy": "Advisory only; deterministic hard failures still win."
+}

@@ -9,11 +9,13 @@ import type { AppEnv, ContextData } from '../_shared/env'
 import { KC_VOCABULARY, buildVocabString } from '../../shared/kcVocabulary'
 import { updateBKT, DEFAULT_BKT_PARAMS } from '../../shared/bkt'
 import type { KnowledgePoint } from '../../src/types'
+import { sanitizeUntrustedText, wrapUntrustedContext } from '../_shared/input-safety'
 
 const VALID_SUBJECTS = new Set(['math', 'chinese', 'english'])
 
 // 每次提取最多处理的消息数（避免超长上下文）
 const MAX_MESSAGES = 20
+const MAX_MESSAGE_LENGTH = 4_000
 
 interface ExtractRequest {
   messages: Array<{ role: string; content: string }>
@@ -148,14 +150,25 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
 
     // 截取最近的消息（避免超长上下文）
     const recentMessages = messages.slice(-MAX_MESSAGES)
+    const safeMessages: Array<{ role: 'user' | 'assistant'; content: string }> = []
+    for (const message of recentMessages) {
+      if (!message || (message.role !== 'user' && message.role !== 'assistant')) {
+        return errorResponse('messages 只允许 user/assistant 角色', 400)
+      }
+      if (typeof message.content !== 'string') {
+        return errorResponse('message content 必须是字符串', 400)
+      }
+      const sanitized = sanitizeUntrustedText(message.content, { maxLength: MAX_MESSAGE_LENGTH })
+      safeMessages.push({ role: message.role, content: sanitized.text })
+    }
 
     // 构建对话摘要供 LLM 分析
-    const conversationText = recentMessages
+    const conversationText = safeMessages
       .map(m => `${m.role === 'user' ? '孩子' : 'AI教练'}: ${m.content}`)
       .join('\n')
 
     const systemPrompt = buildExtractionSystemPrompt(subject)
-    const userMessage = `请分析以下对话，提取知识点：\n\n${conversationText}`
+    const userMessage = `请分析以下对话，提取知识点：\n\n${wrapUntrustedContext('conversation_transcript', conversationText)}`
 
     // 调用 LLM 提取
     const rawResult = await chatCompletionJSON(context.env, {

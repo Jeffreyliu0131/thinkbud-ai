@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "policy": "Every distributed non-code asset must have a source, applicable license, and owner attestation before public release.",
+  "assets": [
+    {
+      "path": "public/favicon.svg",
+      "kind": "brand-mark",
+      "source": "present in first-party repository history",
+      "licenseStatus": "pending project license decision",
+      "ownerAttested": false
+    },
+    {
+      "path": "public/icons/icon-192.png",
+      "kind": "app-icon",
+      "source": "present in first-party repository history; derivation not documented",
+      "licenseStatus": "pending source attestation and project license decision",
+      "ownerAttested": false
+    },
+    {
+      "path": "public/icons/icon-512.png",
+      "kind": "app-icon",
+      "source": "present in first-party repository history; derivation not documented",
+      "licenseStatus": "pending source attestation and project license decision",
+      "ownerAttested": false
+    },
+    {
+      "path": "public/icons/icon-maskable-192.png",
+      "kind": "app-icon",
+      "source": "present in first-party repository history; derivation not documented",
+      "licenseStatus": "pending source attestation and project license decision",
+      "ownerAttested": false
+    },
+    {
+      "path": "public/icons/icon-maskable-512.png",
+      "kind": "app-icon",
+      "source": "present in first-party repository history; derivation not documented",
+      "licenseStatus": "pending source attestation and project license decision",
+      "ownerAttested": false
+    },
+    {
+      "path": "src/components/BudMascot.tsx",
+      "kind": "inline-svg-illustration",
+      "source": "first-party source file; design/tool provenance not recorded",
+      "licenseStatus": "pending owner attestation and project license decision",
+      "ownerAttested": false
+    },
+    {
+      "path": "src/components/chat/CoachFace.tsx",
+      "kind": "inline-svg-illustration",
+      "source": "first-party source file; design/tool provenance not recorded",
+      "licenseStatus": "pending owner attestation and project license decision",
+      "ownerAttested": false
+    },
+    {
+      "path": "public/audio-worklet-processor.js",
+      "kind": "runtime-source",
+      "source": "first-party repository history",
+      "licenseStatus": "pending project license decision",
+      "ownerAttested": false
+    }
+  ]
+}

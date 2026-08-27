@@ -2,6 +2,7 @@ import { useState, useCallback, useRef } from 'react'
 import type { GradeLevel, Subject, ChatMessage, EmotionType, SessionPhase } from '../types'
 import { fetchWithTimeout } from '../lib/api'
 import { auditAiResponse } from '../lib/auditAi'
+import { formatInterruptedStreamContent } from '../lib/failurePolicy'
 
 interface MetaData {
   emotion: EmotionType
@@ -268,13 +269,7 @@ export function useChat(
         setMessages((prev) =>
           prev.map((m) =>
             m.id === assistantId
-              ? {
-                  ...m,
-                  // Keep partial content if any was streamed; only show error text if empty
-                  content: m.content?.trim()
-                    ? m.content + '\n\n[' + errMessage + ']'
-                    : errMessage,
-                }
+              ? { ...m, content: formatInterruptedStreamContent(m.content, errMessage) }
               : m
           )
         )

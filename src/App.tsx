@@ -17,6 +17,9 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 const ParentPage = lazy(() => import('./pages/ParentPage'))
 const ProgressPage = lazy(() => import('./pages/ProgressPage'))
 const WhiteboardSpikePage = lazy(() => import('./pages/WhiteboardSpikePage'))
+const SyntheticDemoPage = lazy(() => import('./pages/SyntheticDemoPage'))
+
+const syntheticDemoEnabled = import.meta.env.MODE === 'synthetic-demo'
 
 function LoadingFallback() {
   return (
@@ -52,6 +55,18 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  if (syntheticDemoEnabled) {
+    return (
+      <ToastProvider>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="*" element={<SyntheticDemoPage />} />
+          </Routes>
+        </ErrorBoundary>
+      </ToastProvider>
+    )
+  }
+
   return (
     <ToastProvider>
       <ErrorBoundary>

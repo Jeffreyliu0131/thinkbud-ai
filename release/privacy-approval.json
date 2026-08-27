@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "approved": false,
+  "approvedBy": null,
+  "approvedAt": null,
+  "checks": {
+    "dpiaComplete": false,
+    "ageAndGuardianConsentImplemented": false,
+    "childReadableNoticeImplemented": false,
+    "retentionAndDeletionImplemented": false,
+    "vendorProcessingVerified": false,
+    "adminMfaAndAccessLogging": false,
+    "incidentProcedureTested": false
+  },
+  "note": "Engineering placeholder only. Approval requires the named owner and appropriate Singapore privacy review."
+}

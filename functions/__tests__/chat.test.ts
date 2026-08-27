@@ -195,14 +195,14 @@ describe('chat endpoint', () => {
   // ── SSE 响应格式 ──────────────────────────────────
 
   describe('SSE 响应格式', () => {
-    it('成功请求返回 text/event-stream 和 no-cache', async () => {
+    it('成功请求返回 text/event-stream 和 no-store', async () => {
       const { ctx } = createMockContext(VALID_BODY)
 
       const response = await onRequestPost(ctx as never)
 
       expect(response.status).toBe(200)
       expect(response.headers.get('Content-Type')).toBe('text/event-stream')
-      expect(response.headers.get('Cache-Control')).toBe('no-cache')
+      expect(response.headers.get('Cache-Control')).toBe('no-store')
     })
 
     it('SSE 流包含 mock 数据', async () => {

@@ -12,23 +12,30 @@ ThinkBud is an independent AI product project. I owned the product mechanism, co
 
 This repository demonstrates a working technical prototype and product-decision process, not broad product-market fit. User validation to date has mainly been family testing, so I do not claim external adoption or measured learning outcomes.
 
+The current public strengthening is evaluation-first. It uses synthetic cases only, records zero production-model calls and zero child records, and fails closed on release blockers instead of presenting repository activity as evidence of product readiness.
+
 ## What this project demonstrates
 
 - Product constraints translated into enforceable AI behavior.
+- A shared trust boundary for OCR, learner context, chat history, and knowledge extraction.
+- A pre-display and pre-TTS text-output guard that blocks detected answer, indirect-answer, and worked-step leakage.
 - Age-adaptive prompting for grades 1–3 and 4–6.
 - Multimodal input through camera OCR, text, and real-time voice.
 - Server-side prompt construction and output auditing.
 - Knowledge tracking with Bayesian Knowledge Tracing (BKT).
 - Parent and learner views built from the same underlying learning evidence.
 - Failure recovery across RTC, STT, SSE, OCR, and browser storage.
+- A failure-first synthetic evaluation suite, human-review rubric, provenance inventory, and fail-closed release gate.
 - A test suite covering prompt rules, auth, rate limiting, API handlers, hooks, and UI components.
+
+Managed RTC speech currently bypasses the application output guard, so RTC is disabled by default with `VITE_ENABLE_RTC=false`. It must not be enabled for child-facing use or described as guard-equivalent until fresh live evidence and blinded human review pass.
 
 ## Core product loop
 
 1. The learner photographs or uploads a question.
 2. OCR extracts the question without treating page text as trusted instructions.
 3. The server builds a grade- and subject-aware coaching prompt.
-4. The coach asks one useful question at a time and avoids giving the answer.
+4. The server buffers the short text turn, audits it, and substitutes a safe fallback if the response appears to reveal an answer or complete solution.
 5. The learner explains their reasoning by voice or text.
 6. A transfer question checks whether the learner actually understood the idea.
 7. The session updates knowledge evidence and generates a concise coach note.
@@ -39,7 +46,7 @@ This repository demonstrates a working technical prototype and product-decision 
 - **Backend:** Cloudflare Pages Functions.
 - **AI and speech:** server-side provider adapters for chat, OCR, RTC, STT, and TTS.
 - **Storage:** D1 for server-side learning records and IndexedDB for replaceable local state.
-- **Safety:** authenticated endpoints, HMAC phone hashing, rate limits, CSP, prompt-injection filtering, and AI-output audits.
+- **Safety:** authenticated endpoints, HMAC phone hashing, rate limits, CSP, untrusted-input filtering, blocking text-output guard, and explicit RTC release flag.
 
 Provider credentials are never required by the browser bundle. Local values belong in ignored environment files; see [`.env.example`](.env.example).
 
@@ -47,19 +54,31 @@ Provider credentials are never required by the browser bundle. Local values belo
 
 The repository includes:
 
-- deterministic audit rules for answer leakage and unsafe coaching behavior;
-- synthetic ground-truth conversations for knowledge extraction;
+- deterministic audit and blocking rules for answer leakage and unsafe coaching behavior;
+- a fully synthetic release dataset with positive, negative, boundary, and adversarial cases;
+- an independent human-review rubric and optional model-grader calibration path;
 - unit, integration, hook, API, and component tests;
-- build and lint checks in CI.
+- provenance and release-readiness checks;
+- build, lint, typecheck, tests, evals, and provenance checks in CI.
 
 ```bash
 npm ci
-npm test
-npm run build
-npm run lint
+npm run verify
 ```
 
-For the testing structure, see [TESTING.md](TESTING.md). For the current coaching policy, see [docs/ThinkBud对话决策规范v5.md](docs/ThinkBud对话决策规范v5.md).
+Credential-free evidence demo:
+
+```bash
+npm run demo
+```
+
+The full release gate is expected to remain non-zero until the owner selects a license, attests asset provenance, completes child/privacy approval, produces explicitly approved live-model evidence, and completes blinded human review:
+
+```bash
+npm run release:check
+```
+
+For the testing structure, see [TESTING.md](TESTING.md). For the evaluation contract and evidence, see [docs/evals/README.md](docs/evals/README.md), [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md), and [docs/CASE_STUDY.md](docs/CASE_STUDY.md). For the current coaching policy, see [docs/ThinkBud对话决策规范v5.md](docs/ThinkBud对话决策规范v5.md).
 
 ## Local development
 
@@ -70,6 +89,8 @@ npm run dev
 ```
 
 The frontend can be explored without production credentials. Provider-backed API routes require your own server-side accounts and keys.
+
+Synthetic demo mode is isolated from auth and provider-backed routes. It should not be used to imply live-model or user validation.
 
 ## Public-snapshot note
 

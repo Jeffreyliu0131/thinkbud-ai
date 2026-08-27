@@ -16,7 +16,9 @@ export const INITIAL_CHAT_STATE: ChatState = {
   imageUrl: null,
   ocrText: null,
   sessionPhase: 'active',
-  useRTC: true,
+  // ArkV3 RTC speaks model output before the app can run its output guard.
+  // Keep it opt-in until fresh live eval + human review approve that path.
+  useRTC: import.meta.env.VITE_ENABLE_RTC === 'true',
   rtcSubtitle: '',
 }
 

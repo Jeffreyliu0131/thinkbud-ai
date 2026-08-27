@@ -11,12 +11,15 @@ import { buildSystemPrompt } from '../_shared/prompt'
 import type { GradeLevel, Subject, SessionContext } from '../_shared/prompt'
 import type { AppEnv, ContextData } from '../_shared/env'
 import { startUsageSession } from '../_shared/usage-time'
-import { auditAiResponse } from '../_shared/audit'
 import { parseMetaFromContent } from '../_shared/meta-parser'
+import { sanitizeUntrustedText, wrapUntrustedContext } from '../_shared/input-safety'
+import { collectThinkBudSse, createThinkBudSse, guardAiOutput } from '../_shared/output-guard'
 
 const VALID_GRADE_LEVELS: ReadonlySet<string> = new Set(['lower', 'upper'])
 const VALID_SUBJECTS: ReadonlySet<string> = new Set(['math', 'chinese', 'english'])
 const MAX_LEARNER_CONTEXT_LENGTH = 2000
+const MAX_MESSAGES = 40
+const MAX_MESSAGE_LENGTH = 8_000
 
 interface ChatRequest {
   messages: Array<{ role: string; content: string }>
@@ -36,6 +39,9 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
     if (!Array.isArray(messages) || !gradeLevel) {
       return errorResponse('参数格式错误', 400)
     }
+    if (messages.length === 0 || messages.length > MAX_MESSAGES) {
+      return errorResponse(`messages 数量必须在 1-${MAX_MESSAGES} 之间`, 400)
+    }
 
     // 白名单校验 gradeLevel 和 subject（信任边界）
     if (!VALID_GRADE_LEVELS.has(gradeLevel)) {
@@ -45,17 +51,34 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
       return errorResponse('无效的 subject 参数', 400)
     }
 
+    // The browser is not a role-authority boundary. Reject client-supplied
+    // system roles and sanitize every history item before model or D1 use.
+    const safeMessages: Array<{ role: 'user' | 'assistant'; content: string }> = []
+    for (const message of messages) {
+      if (!message || (message.role !== 'user' && message.role !== 'assistant')) {
+        return errorResponse('messages 只允许 user/assistant 角色', 400)
+      }
+      if (typeof message.content !== 'string' || message.content.trim().length === 0) {
+        return errorResponse('message content 必须是非空字符串', 400)
+      }
+      const sanitized = sanitizeUntrustedText(message.content, { maxLength: MAX_MESSAGE_LENGTH })
+      if (sanitized.flags.length > 0) {
+        console.warn('[Chat Input Safety] sanitized flags:', sanitized.flags.join(','))
+      }
+      safeMessages.push({ role: message.role, content: sanitized.text })
+    }
+
     // 校验 learnerContext：必须是字符串且不超过长度限制
     let sanitizedLearnerContext: string | undefined
     if (learnerContext !== undefined) {
       if (typeof learnerContext !== 'string') {
         return errorResponse('learnerContext 必须是字符串', 400)
       }
-      if (learnerContext.length > MAX_LEARNER_CONTEXT_LENGTH) {
-        sanitizedLearnerContext = learnerContext.slice(0, MAX_LEARNER_CONTEXT_LENGTH)
-      } else {
-        sanitizedLearnerContext = learnerContext
+      const sanitized = sanitizeUntrustedText(learnerContext, { maxLength: MAX_LEARNER_CONTEXT_LENGTH })
+      if (sanitized.flags.length > 0) {
+        console.warn('[Chat Learner Context] sanitized flags:', sanitized.flags.join(','))
       }
+      sanitizedLearnerContext = wrapUntrustedContext('learner_context', sanitized.text)
     }
 
     // 服务端构建 system prompt（防止前端绕过产品宪法）
@@ -82,8 +105,8 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
     }
 
     // 写入用户消息到 D1（fire-and-forget）
-    if (userId && db && messages.length > 0) {
-      const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')
+    if (userId && db && safeMessages.length > 0) {
+      const lastUserMsg = [...safeMessages].reverse().find(m => m.role === 'user')
       if (lastUserMsg) {
         context.waitUntil(
           (async () => {
@@ -107,76 +130,36 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
 
     const arkStream = await chatCompletionStream(
       context.env,
-      { messages: messages as Array<{ role: 'user' | 'assistant' | 'system'; content: string }>, systemPrompt }
+      { messages: safeMessages, systemPrompt }
     )
 
-    // 双通道：TransformStream 拦截 SSE 流，累积 AI 完整回复
-    const decoder = new TextDecoder()
-    let fullAiContent = ''
-    let lineBuffer = ''
+    // Safety trade-off: buffer the short tutoring turn, run the blocking guard,
+    // then emit SSE. This prevents a leaked answer from reaching display/TTS.
+    // The unguarded RTC path is feature-flagged off by default.
+    const fullAiContent = await collectThinkBudSse(arkStream)
+    const { cleanContent, meta } = parseMetaFromContent(fullAiContent)
+    if (!cleanContent) throw new Error('AI 返回空内容')
+    const guarded = guardAiOutput(cleanContent, gradeLevel)
+    if (guarded.blocked) {
+      console.warn('[Chat Output Guard] blocked:', guarded.blockingIssues.join(', '))
+    }
 
-    const { readable, writable } = new TransformStream({
-      transform(chunk, controller) {
-        // 透传给客户端
-        controller.enqueue(chunk)
+    if (userId && db) {
+      context.waitUntil(
+        addMessage(db, crypto.randomUUID(), conversationId, 'assistant', guarded.content, undefined, {
+          emotion: guarded.blocked ? undefined : meta?.emotion,
+          sessionPhase: guarded.blocked ? undefined : meta?.session_phase,
+          complianceIssues: guarded.issues.length > 0 ? guarded.issues : undefined,
+        }).catch(err => console.error('[Chat D1 写入 AI 回复失败]', err))
+      )
+    }
 
-        // 累积 AI 回复内容（带行缓冲，防止跨 chunk 截断丢数据）
-        const text = decoder.decode(chunk, { stream: true })
-        const combined = lineBuffer + text
-        const lines = combined.split('\n')
-        lineBuffer = lines.pop() || ''
-
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue
-          const data = line.slice(6).trim()
-          if (data === '[DONE]') continue
-          try {
-            const { d } = JSON.parse(data)
-            if (d) fullAiContent += d
-          } catch { /* skip malformed */ }
-        }
-      },
-      flush() {
-        // 处理残余 buffer
-        if (lineBuffer.startsWith('data: ')) {
-          const data = lineBuffer.slice(6).trim()
-          if (data && data !== '[DONE]') {
-            try {
-              const { d } = JSON.parse(data)
-              if (d) fullAiContent += d
-            } catch { /* skip */ }
-          }
-        }
-
-        // 流结束：解析 META + 合规审计 + 写 D1
-        if (userId && db && fullAiContent) {
-          const { cleanContent, meta } = parseMetaFromContent(fullAiContent)
-          if (cleanContent) {
-            // 服务端合规审计
-            const audit = auditAiResponse(cleanContent)
-            if (!audit.isCompliant) {
-              console.warn('[Chat Audit] 合规问题:', audit.issues.join(', '))
-            }
-
-            context.waitUntil(
-              addMessage(db, crypto.randomUUID(), conversationId, 'assistant', cleanContent, undefined, {
-                emotion: meta?.emotion,
-                sessionPhase: meta?.session_phase,
-                complianceIssues: audit.issues.length > 0 ? audit.issues : undefined,
-              }).catch(err => console.error('[Chat D1 写入 AI 回复失败]', err))
-            )
-          }
-        }
-      },
-    })
-
-    // 将 arkStream pipe 到 TransformStream
-    arkStream.pipeTo(writable).catch(() => {})
-
-    return new Response(readable, {
+    const outboundContent = guarded.blocked ? guarded.content : fullAiContent
+    return new Response(createThinkBudSse(outboundContent), {
       headers: {
         'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
+        'Cache-Control': 'no-store',
+        'X-ThinkBud-Output-Guard': guarded.blocked ? 'blocked' : 'passed',
       },
     })
   } catch (err) {

@@ -1,0 +1,33 @@
+name: Evaluation failure
+description: Add a synthetic bad case or report a release-gate regression.
+title: "[Eval]: "
+labels: [evaluation]
+body:
+  - type: dropdown
+    id: taxonomy
+    attributes:
+      label: Failure family
+      options: [SAF answer leakage, PED Socratic quality, AGE age adaptation, INP prompt injection or OCR, REC RTC/STT/SSE recovery, OPS latency or cost, PRI privacy]
+    validations:
+      required: true
+  - type: textarea
+    id: synthetic_case
+    attributes:
+      label: Synthetic case
+      description: Include input, candidate output/event, expected result, and why.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Reproduction evidence
+      description: Paste the command and relevant failure code; never paste real user data.
+    validations:
+      required: true
+  - type: checkboxes
+    id: data_policy
+    attributes:
+      label: Data policy
+      options:
+        - label: This case contains no real child, family, teacher, or production data.
+          required: true

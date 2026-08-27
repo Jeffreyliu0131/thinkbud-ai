@@ -16,9 +16,18 @@ const ANSWER_PATTERNS = [
   /等于\s*\d+/,
   /[=＝]\s*\d+/,
   /答案是\s*\d+/,
+  /答案(?:是|为)\s*[零一二三四五六七八九十百千万两]+/,
   /结果是\s*\d+/,
   /得\s*\d+/,
   /等于[零一二三四五六七八九十百千万]+/,
+  /(?:the\s+)?answer\s*(?:is|=)\s*-?\d+(?:\.\d+)?/i,
+  /(?:it|that)\s+(?:is|equals)\s+-?\d+(?:\.\d+)?/i,
+  /^\s*-?\d+(?:\.\d+)?(?:\s*\/\s*\d+)?\s*[%％个本只元]?\s*[。.!！]?\s*$/,
+  /^\s*[零一二三四五六七八九十百千万两]+\s*[。.!！]?\s*$/,
+  /(?:应该|就是|应为|所以是|还剩|一共|总共)(?:是|为)?\s*-?\d+(?:\.\d+)?/,
+  /\d+\s*[+\-×÷*/]\s*\d+\s*[=＝]\s*-?\d+(?:\.\d+)?/,
+  /(?:所以|因此|最终)\s*[a-zA-Z]?\s*[=＝:]\s*-?\d+(?:\.\d+)?/,
+  /\\boxed\s*\{[^}]+\}/,
 ]
 
 /** 排除误报的模式 */
@@ -36,6 +45,7 @@ const FALSE_POSITIVE_PATTERNS = [
   /你是怎么/,
   /你怎么算/,
   /原本是\d+/,
+  /(?:试试|解方程|题目是|这道题)[^。！？?!]*[=＝]\s*\d+[^。！？?!]*[？?]?/,
 ]
 
 /** 检测直接确认答案 */
@@ -52,6 +62,12 @@ const STEP_PATTERNS = [
   /首先.*然后.*最后/,
   /[①②③④⑤]/,
   /步骤[一二三1-9]/,
+  /先把.+再把.+就(?:能|会|得到)/,
+]
+
+const STEP_FALSE_POSITIVE_PATTERNS = [
+  /第[一二三四五六七八九十1-9]步[^。！？?!]*(?:是什么|做什么|怎么做|对应什么|选哪个)/,
+  /(?:哪|什么)一步/,
 ]
 
 /** 检测是非题 */
@@ -116,7 +132,8 @@ export function auditAiResponse(content: string): AuditResult {
   // 3. 检测完整步骤
   for (const pattern of STEP_PATTERNS) {
     if (pattern.test(content)) {
-      issues.push('可能给出了完整步骤')
+      const isQuestionAboutStep = STEP_FALSE_POSITIVE_PATTERNS.some((fp) => fp.test(content))
+      if (!isQuestionAboutStep) issues.push('可能给出了完整步骤')
       break
     }
   }
