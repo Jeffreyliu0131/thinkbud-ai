@@ -81,8 +81,11 @@ export function useVoicePipeline({
   const stt = useSTT()
   const tts = useTTS()
 
-  // VOICE-02: 预加载 RTC SDK（消除首次点击 2-5s 延迟）
-  useEffect(() => { prefetchRTCSDK() }, [])
+  // The managed RTC path is release-flagged off by default. Do not download the
+  // 1.29 MB optional SDK unless this build explicitly enables that path.
+  useEffect(() => {
+    if (state.useRTC) prefetchRTCSDK()
+  }, [state.useRTC])
 
   // Stable ref for onVoiceResult to avoid stale closures
   const onVoiceResultRef = useRef(onVoiceResult)

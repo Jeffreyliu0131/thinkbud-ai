@@ -1,0 +1,204 @@
+version: 1
+contracts:
+  - id: CTR-501
+    title: Guard text chat output before browser delivery
+    status: active
+    severity: critical
+    topic: text_output_guard
+    rule:
+      operator: require
+      object: guarded_text_output
+      applies_to: [text_chat]
+    defined_by:
+      - path: docs/ARCHITECTURE.md
+        locator: "| Text output |"
+    implemented_by:
+      - path: functions/_shared/output-guard.ts
+      - path: functions/api/chat.ts
+    enforced_by:
+      - path: functions/api/chat.ts
+        locator: "guardAiOutput"
+    verified_by:
+      - path: functions/__tests__/output-guard.test.ts
+        required: true
+        covers: [text_chat]
+      - path: functions/__tests__/chat-output-boundary.test.ts
+        required: true
+        covers: [text_chat]
+      - path: evals/cases/synthetic-v1.json
+        required: true
+        covers: [text_chat]
+    claimed_in:
+      - path: README.md
+        locator: "blocking output guard"
+    supersedes: []
+
+  - id: CTR-502
+    title: Keep textbook RAG default-off and fail back to non-RAG chat
+    status: active
+    severity: high
+    topic: rag_runtime_fallback
+    rule:
+      operator: require
+      object: rag_default_off_and_fallback
+      applies_to: [disabled_default, missing_service, retrieval_failure, no_results]
+    defined_by:
+      - path: docs/TEXTBOOK_RAG.md
+        locator: "## Failure behavior"
+    implemented_by:
+      - path: functions/_shared/rag/runtime.ts
+      - path: functions/api/chat.ts
+    enforced_by:
+      - path: functions/_shared/rag/runtime.ts
+        locator: "RAG_TEXTBOOK_ENABLED"
+      - path: functions/api/chat.ts
+        locator: "guardAiOutput"
+    verified_by:
+      - path: functions/__tests__/rag-context-runtime.test.ts
+        required: true
+        covers: [disabled_default, missing_service, retrieval_failure]
+      - path: functions/__tests__/chat-output-boundary.test.ts
+        required: true
+        covers: [missing_service]
+      - path: evals/rag/results/latest.json
+        required: true
+        covers: [no_results, retrieval_failure]
+    claimed_in:
+      - path: README.md
+        locator: "RAG failure preserves"
+    supersedes: []
+
+  - id: CTR-503
+    title: Require complete provenance before textbook production readiness
+    status: active
+    severity: critical
+    topic: textbook_source_readiness
+    rule:
+      operator: require
+      object: source_license_and_provenance_attestation
+      applies_to: [textbook_source]
+    defined_by:
+      - path: docs/TEXTBOOK_RAG.md
+        locator: "`productionReady` is true only"
+    implemented_by:
+      - path: functions/_shared/rag/contract.ts
+      - path: functions/_shared/rag/ingestion.ts
+    enforced_by:
+      - path: functions/_shared/rag/contract.ts
+        locator: "isProductionReady"
+    verified_by:
+      - path: functions/__tests__/rag-ingestion.test.ts
+        required: true
+        covers: [textbook_source]
+      - path: evals/rag/fixtures/corpus.json
+        required: true
+        covers: [textbook_source]
+    claimed_in:
+      - path: README.md
+        locator: "explicitly non-production-ready"
+    supersedes: []
+
+  - id: CTR-504
+    title: Keep managed RTC disabled and unloaded by default
+    status: active
+    severity: critical
+    topic: rtc_release_safety
+    rule:
+      operator: require
+      object: rtc_disabled_and_not_prefetched_by_default
+      applies_to: [rtc_default_disabled, default_bundle_delivery]
+    defined_by:
+      - path: docs/ARCHITECTURE.md
+        locator: "| RTC output |"
+    implemented_by:
+      - path: src/types/chatState.ts
+      - path: src/hooks/useVoicePipeline.ts
+      - path: vite.config.ts
+    enforced_by:
+      - path: src/types/chatState.ts
+        locator: "VITE_ENABLE_RTC"
+      - path: src/hooks/useVoicePipeline.ts
+        locator: "if (state.useRTC)"
+      - path: vite.config.ts
+        locator: "rtc-sdk"
+    verified_by:
+      - path: src/types/__tests__/chatState.test.ts
+        required: true
+        covers: [rtc_default_disabled]
+      - path: src/hooks/__tests__/useVoicePipeline.test.ts
+        required: true
+        covers: [default_bundle_delivery]
+    claimed_in:
+      - path: README.md
+        locator: "RTC default OFF"
+    supersedes: []
+
+  - id: CTR-505
+    title: Keep full release blocked until named evidence exists
+    status: active
+    severity: critical
+    topic: full_release_readiness
+    rule:
+      operator: require
+      object: release_blocker_evidence
+      applies_to: [license, assets, privacy, live_model, human_review]
+    defined_by:
+      - path: docs/RELEASE_CHECKLIST.md
+        locator: "full v1 public/model release gate is intentionally FAIL"
+    implemented_by:
+      - path: scripts/check-release-readiness.mjs
+      - path: release/readiness.config.json
+    enforced_by:
+      - path: scripts/check-release-readiness.mjs
+        locator: "checks.every"
+    verified_by:
+      - path: LICENSE
+        required: true
+        covers: [license]
+      - path: provenance/assets.json
+        required: true
+        covers: [assets]
+      - path: release/privacy-approval.json
+        required: true
+        covers: [privacy]
+      - path: evals/live/results/latest.json
+        required: true
+        covers: [live_model, human_review]
+    claimed_in:
+      - path: README.md
+        locator: "Current release blockers"
+    supersedes: []
+
+  - id: CTR-506
+    title: Publish evidence as a clean code commit plus evidence commit
+    status: active
+    severity: high
+    topic: evidence_provenance
+    rule:
+      operator: require
+      object: clean_source_evidence_pair
+      applies_to: [behavior_eval, rag_eval, showcase]
+    defined_by:
+      - path: README.md
+        locator: "`sourceDirty=false`"
+    implemented_by:
+      - path: scripts/check-evidence-consistency.mjs
+      - path: evals/run.ts
+      - path: evals/rag/run.ts
+    enforced_by:
+      - path: .github/workflows/ci.yml
+        locator: "npm run evidence:verify"
+    verified_by:
+      - path: evals/results/latest.json
+        required: true
+        covers: [behavior_eval]
+      - path: evals/rag/results/latest.json
+        required: true
+        covers: [rag_eval]
+      - path: docs/showcase/capture-manifest.json
+        required: true
+        covers: [showcase]
+    claimed_in:
+      - path: README.md
+        locator: "Evidence commits point back"
+    supersedes: []

@@ -50,7 +50,15 @@ npm run test:watch
 npm run verify
 ```
 
-This runs lint, frontend/shared/backend/tool TypeScript project checks, unit/integration/component tests, both deterministic synthetic evals, provenance generation, and the production build. The generated evidence records the exact test and eval state; do not treat an old count in prose as canonical.
+This runs the public-boundary scan, lint, frontend/shared/backend/tool TypeScript project checks, unit/integration/component tests, both deterministic synthetic evals, provenance generation, and the production build. The generated evidence records the exact test and eval state; do not treat an old count in prose as canonical.
+
+On a committed evidence pair, validate the generated artifacts without rewriting them:
+
+```bash
+npm run evidence:verify
+```
+
+That check requires the evidence report source SHA to equal the evidence commit's parent, `sourceDirty=false`, matching source-snapshot hashes, byte-identical public report copies, valid showcase/provenance hashes, and an evidence-only commit diff.
 
 ## Evaluation Layers
 

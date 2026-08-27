@@ -108,6 +108,11 @@ interface CaseResult {
 const root = process.cwd()
 const gatePath = path.join(root, 'evals/config/release-gate.json')
 const EVIDENCE_SOURCE_FILES = [
+  '.decisiontrace.yml',
+  '.decisiontrace/contracts.yml',
+  '.github/workflows/ci.yml',
+  '.github/workflows/release-gate.yml',
+  'docs/ARCHITECTURE.md',
   'functions/_shared/audit.ts',
   'functions/_shared/input-safety.ts',
   'functions/_shared/output-guard.ts',
@@ -127,9 +132,13 @@ const EVIDENCE_SOURCE_FILES = [
   'src/App.tsx',
   'src/lib/failurePolicy.ts',
   'src/hooks/useChat.ts',
+  'src/hooks/__tests__/useVoicePipeline.test.ts',
   'src/hooks/useVoicePipeline.ts',
   'src/types/chatState.ts',
+  'src/types/__tests__/chatState.test.ts',
   'src/pages/SyntheticDemoPage.tsx',
+  'scripts/check-evidence-consistency.mjs',
+  'scripts/check-public-boundary.mjs',
   'evals/run.ts',
   'evals/config/release-gate.json',
   'evals/cases/synthetic-v1.json',
@@ -138,6 +147,7 @@ const EVIDENCE_SOURCE_FILES = [
   'evals/rag/fixtures/corpus.json',
   'package.json',
   'package-lock.json',
+  'vite.config.ts',
 ]
 
 function sha256(content: string): string {

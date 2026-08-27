@@ -6,6 +6,15 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/@volcengine/rtc')) return 'rtc-sdk'
+        },
+      },
+    },
+  },
   test: {
     environment: 'jsdom',
     globals: true,
@@ -32,6 +41,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         navigateFallbackDenylist: [/^\/api\//],
+        // RTC remains available to explicit opt-in builds, but a default-off
+        // feature must not add ~1.29 MB to every PWA install.
+        globIgnores: ['**/rtc-sdk-*.js'],
       },
       includeAssets: ['favicon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-192.png', 'icons/icon-maskable-512.png'],
       manifest: {

@@ -49,7 +49,22 @@ The guard is intentionally conservative and pattern-based. It can block a legiti
 - `functions/_shared/audit.ts`: deterministic response/whiteboard checks.
 - `src/lib/failurePolicy.ts`: pure RTC/STT/SSE recovery decisions.
 - `evals/`: synthetic data, deterministic runner, grader calibration logic, generated results.
+- `scripts/check-public-boundary.mjs`: tracked/unignored path, local-path, credential-pattern, production-ID, private-revision, and personal-email boundary.
+- `scripts/check-evidence-consistency.mjs`: verifies the code-commit/evidence-commit pair, source snapshots, public report copies, showcase hashes, and provenance asset hashes without regenerating evidence.
+- `.decisiontrace/`: optional local-only public contract mapping; generated reports are ignored and gates remain disabled.
 - `provenance/` and `release/`: distribution and release-readiness inputs.
+
+## Default delivery performance
+
+The Volcano RTC SDK remains a large optional chunk: the measured production build is 1,294.10 kB minified (393.52 kB gzip). Changing providers or replacing the SDK is a separate product/architecture decision, so this iteration does not pretend to shrink that code.
+
+Instead, the release boundary now controls delivery:
+
+- `useVoicePipeline` does not prefetch the SDK while `VITE_ENABLE_RTC` is false;
+- Rollup gives the optional chunk the stable `rtc-sdk` name;
+- Workbox excludes that chunk from the default PWA precache while preserving on-demand loading for explicit RTC builds.
+
+On the same local production-build toolchain, the precache moved from 32 entries / 2,064.54 KiB to 31 entries / 800.79 KiB, a 1,263.75 KiB reduction. This is default install-transfer evidence, not a claim that the RTC SDK itself became smaller or that RTC is release-ready.
 
 ## Data boundaries
 
