@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "dataPolicy": "Project-authored synthetic textbook snippets only; no copied textbook, learner, school, or provider data.",
+  "documents": [
+    {
+      "path": "evals/rag/fixtures/synthetic-upper-math.md",
+      "source": {
+        "namespace": "thinkbud-synthetic-eval",
+        "externalId": "synthetic-upper-math-v1",
+        "title": "Synthetic Upper Math Notes",
+        "grade": { "min": 4, "max": 6, "label": "upper" },
+        "subject": "math",
+        "version": "1.0.0",
+        "license": { "identifier": "PROJECT-SYNTHETIC-TEST-ONLY", "usage": "test-only" },
+        "provenance": {
+          "origin": "project-authored synthetic fixture",
+          "owner": null,
+          "ownerAttested": false,
+          "authorizedForProduction": false,
+          "notes": "Synthetic evaluation only; deliberately not production-ready."
+        }
+      },
+      "document": { "documentKey": "synthetic-upper-math", "title": "Synthetic Upper Math Notes", "format": "markdown" },
+      "chunking": { "maxChars": 360, "overlapChars": 48, "minSplitChars": 80 }
+    },
+    {
+      "path": "evals/rag/fixtures/synthetic-lower-math.txt",
+      "source": {
+        "namespace": "thinkbud-synthetic-eval",
+        "externalId": "synthetic-lower-math-v1",
+        "title": "Synthetic Lower Math Notes",
+        "grade": { "min": 1, "max": 3, "label": "lower" },
+        "subject": "math",
+        "version": "1.0.0",
+        "license": { "identifier": "PROJECT-SYNTHETIC-TEST-ONLY", "usage": "test-only" },
+        "provenance": {
+          "origin": "project-authored synthetic fixture",
+          "owner": null,
+          "ownerAttested": false,
+          "authorizedForProduction": false,
+          "notes": "Synthetic evaluation only; deliberately not production-ready."
+        }
+      },
+      "document": { "documentKey": "synthetic-lower-math", "title": "Synthetic Lower Math Notes", "format": "text" },
+      "chunking": { "maxChars": 360, "overlapChars": 48, "minSplitChars": 80 }
+    },
+    {
+      "path": "evals/rag/fixtures/synthetic-upper-english.md",
+      "source": {
+        "namespace": "thinkbud-synthetic-eval",
+        "externalId": "synthetic-upper-english-v1",
+        "title": "Synthetic Upper English Notes",
+        "grade": { "min": 4, "max": 6, "label": "upper" },
+        "subject": "english",
+        "version": "1.0.0",
+        "license": { "identifier": "PROJECT-SYNTHETIC-TEST-ONLY", "usage": "test-only" },
+        "provenance": {
+          "origin": "project-authored synthetic fixture",
+          "owner": null,
+          "ownerAttested": false,
+          "authorizedForProduction": false,
+          "notes": "Synthetic evaluation only; deliberately not production-ready."
+        }
+      },
+      "document": { "documentKey": "synthetic-upper-english", "title": "Synthetic Upper English Notes", "format": "markdown" },
+      "chunking": { "maxChars": 360, "overlapChars": 48, "minSplitChars": 80 }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "name": "thinkbud-rag-synthetic-v1",
+  "dataPolicy": "Human-authored synthetic queries and relevance labels; deterministic fake providers only.",
+  "goldQueries": [
+    {
+      "id": "rag-gold-common-denominator",
+      "query": "common denominator combine numerators fractions",
+      "filters": { "subject": "math", "gradeLabel": "upper" },
+      "topK": 1,
+      "relevantSections": ["Common denominators"]
+    },
+    {
+      "id": "rag-gold-benchmark-estimate",
+      "query": "estimate fraction one half benchmark before calculating",
+      "filters": { "subject": "math", "gradeLabel": "upper" },
+      "topK": 1,
+      "relevantSections": ["Compare before calculating"]
+    },
+    {
+      "id": "rag-gold-area-perimeter",
+      "query": "distance around shape surface inside area perimeter",
+      "filters": { "subject": "math", "gradeLabel": "upper" },
+      "topK": 1,
+      "relevantSections": ["Area and perimeter"]
+    },
+    {
+      "id": "rag-gold-place-value",
+      "query": "digit position four tens two ones place value",
+      "filters": { "subject": "math", "gradeLabel": "lower" },
+      "topK": 1,
+      "relevantSections": ["Overview"]
+    },
+    {
+      "id": "rag-gold-reading-evidence",
+      "query": "claim exact detail passage evidence supports claim",
+      "filters": { "subject": "english", "gradeLabel": "upper" },
+      "topK": 1,
+      "relevantSections": ["Claims and evidence"]
+    }
+  ],
+  "badCases": [
+    "prompt-injection textbook text",
+    "wrong grade filter",
+    "wrong subject filter",
+    "duplicate chunk",
+    "no result above threshold",
+    "overlong context",
+    "vector store failure",
+    "embedding provider failure",
+    "RAG to LLM to output-guard answer leakage"
+  ]
+}

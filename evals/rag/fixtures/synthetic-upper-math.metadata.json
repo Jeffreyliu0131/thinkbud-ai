@@ -1,0 +1,24 @@
+{
+  "source": {
+    "namespace": "thinkbud-synthetic-eval",
+    "externalId": "synthetic-upper-math-v1",
+    "title": "Synthetic Upper Math Notes",
+    "grade": { "min": 4, "max": 6, "label": "upper" },
+    "subject": "math",
+    "version": "1.0.0",
+    "license": { "identifier": "PROJECT-SYNTHETIC-TEST-ONLY", "usage": "test-only" },
+    "provenance": {
+      "origin": "project-authored synthetic fixture",
+      "owner": null,
+      "ownerAttested": false,
+      "authorizedForProduction": false,
+      "notes": "Synthetic evaluation only; deliberately not production-ready."
+    }
+  },
+  "document": {
+    "documentKey": "synthetic-upper-math",
+    "title": "Synthetic Upper Math Notes",
+    "format": "markdown"
+  },
+  "chunking": { "maxChars": 360, "overlapChars": 48, "minSplitChars": 80 }
+}

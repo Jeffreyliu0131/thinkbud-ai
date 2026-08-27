@@ -1,0 +1,3 @@
+Place value names what a digit represents because of its position. In 42, the 4 represents four tens and the 2 represents two ones. A coaching prompt can ask the learner to build the number with tens bundles and single units.
+
+When adding two-digit numbers, learners can combine tens with tens and ones with ones. If ten ones are collected, they can be regrouped as one ten. The learner should explain the regrouping rather than copy a completed calculation.
