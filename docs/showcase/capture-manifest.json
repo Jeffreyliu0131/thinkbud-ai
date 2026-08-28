@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "capturedAt": "2026-08-27T14:30:33Z",
-  "sourceCommit": "59aea8f55699b238b1a384c45bcda077fae3bc3a",
+  "capturedAt": "2026-08-28T03:29:49Z",
+  "sourceCommit": "eb8639533819edbf72e7b57289e27ca9e382d292",
   "sourceDirty": false,
   "mode": "synthetic-demo",
   "origin": "http://127.0.0.1:4173",
@@ -18,11 +18,11 @@
   "reports": [
     {
       "path": "public/eval-report.json",
-      "sha256": "a6ba03ea2cc4aba8c546415a345b2fffb5245a0d7348fab413be7ed56869c3de"
+      "sha256": "bb3b6768b538a790756734998efeefa05cf1bd80addfe9166d471fd2df7b3531"
     },
     {
       "path": "public/rag-eval-report.json",
-      "sha256": "c19ee8a2ff4d90c86ff98bebaa2969c7ba3ab089258628a30b4feae68ac0a908"
+      "sha256": "bbd00e52e3d1eebdced033ddddbf9864bdd0311cc6831433ee0f2431e3df7f91"
     }
   ],
   "captures": [
@@ -51,7 +51,7 @@
       "path": "docs/showcase/synthetic-gateway-eval.jpg",
       "route": "/",
       "scrollY": 1967.5,
-      "sha256": "9214c678c9f8c61872eaac8febc1affe1e26c5e755485229620df73856116f79",
+      "sha256": "639b00b414aca924a9d31f529d0001ae9cd665a99b48b8ff20f78ecb59afa5df",
       "shows": ["offline fake LLM gateway", "typed provider metadata", "zero production/network calls", "38-case behavior gate", "14-case RAG gate", "sourceDirty=false", "release limitations"]
     },
     {
