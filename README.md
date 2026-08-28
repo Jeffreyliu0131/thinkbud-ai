@@ -2,13 +2,28 @@
 
 [![CI and deterministic evidence](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml)
 
-ThinkBud is an AI thinking coach for primary-school learners. The problem it tackles is not access to answers; it is the ease with which an AI tutor can replace the learner's reasoning. ThinkBud therefore turns a homework question into a short coaching loop that asks for one cognitive action at a time, checks transfer, and blocks detected answer leakage before text reaches the learner.
+**A safety-first, textbook-RAG Socratic coach that guides reasoning without giving away answers.**
+
+ThinkBud turns a primary-school learner's question into a short coaching loop: ask for one cognitive action, check transfer, and block detected answer leakage before text reaches the learner. It combines multimodal input, a provider-neutral LLM gateway, default-off textbook RAG with citations, and reproducible deterministic evaluations.
 
 > **Product rule:** AI guides the thinking process; the learner owns the answer.
 
-This repository is a working, reviewable prototype and product-evidence trail. It is not evidence of product-market fit, measured learning outcomes, a production-safe child deployment, or a live textbook corpus.
+This repository is a working, reviewable prototype and product-evidence trail—not evidence of product-market fit, measured learning outcomes, a production-safe child deployment, or a live textbook corpus.
 
-## See the product and evidence in 60 seconds
+<p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="docs/showcase/README.md">Showcase</a> ·
+  <a href="docs/TEXTBOOK_RAG.md">Textbook RAG</a> ·
+  <a href="docs/ARCHITECTURE.md">Architecture</a> ·
+  <a href="#evidence-chain">Evidence</a> ·
+  <a href="#safety-and-release-boundary">Safety</a>
+</p>
+
+![ThinkBud synthetic evidence overview](docs/showcase/synthetic-evidence-overview.jpg)
+
+[Inspect the product states and capture provenance](docs/showcase/README.md).
+
+## Quick start
 
 ```bash
 npm ci
@@ -16,10 +31,6 @@ npm run demo
 ```
 
 Open the printed local URL. Synthetic demo mode needs no account, provider credential, paid API, real learner record, or real textbook. It shows the coaching loop beside the deterministic release evidence that produced it.
-
-![ThinkBud synthetic evidence overview](docs/showcase/synthetic-evidence-overview.jpg)
-
-[Inspect the showcase states and capture provenance](docs/showcase/README.md).
 
 For a fast code review, start here:
 
