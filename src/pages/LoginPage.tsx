@@ -1,16 +1,24 @@
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { ArrowUpRight } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../components/Toast'
 import { fetchWithTimeout } from '../lib/api'
 import BudMascot from '../components/BudMascot'
+import './LoginPage.css'
 
 type Step = 'phone' | 'code' | 'profile'
 
 const GRADE_OPTIONS = [
-  { key: 'lower' as const, value: 1, label: '1-3年级', sub: '刚开始探索', bg: 'bg-gradient-to-br from-orange-50 to-rose-50', border: 'border-orange-100' },
-  { key: 'upper' as const, value: 4, label: '4-6年级', sub: '已经会不少', bg: 'bg-gradient-to-br from-sky-50 to-indigo-50', border: 'border-sky-100' },
+  { value: 1, label: '1-3年级', sub: '刚开始探索' },
+  { value: 4, label: '4-6年级', sub: '已经会不少' },
 ]
+
+const STEP_COPY: Record<Step, { label: string; title: string; detail: string }> = {
+  phone: { label: '登录', title: '开始一次思考练习', detail: '输入手机号获取验证码。' },
+  code: { label: '验证', title: '输入六位验证码', detail: '验证成功后会回到你的学习记录。' },
+  profile: { label: '设置', title: '先认识一下你', detail: '昵称和年级只用于调整提问方式。' },
+}
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -155,64 +163,61 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="relative flex flex-col items-center justify-center h-full px-6 overflow-hidden page-enter-fade-up bg-[var(--color-bg-primary)]" style={{ paddingTop: 'max(2rem, var(--safe-top))', paddingBottom: 'max(2rem, var(--safe-bottom))' }}>
-      {/* 装饰背景 */}
-      <div className="absolute top-12 left-8 w-32 h-32 rounded-full bg-teal-200/[0.07] blur-2xl" aria-hidden="true" />
-      <div className="absolute bottom-20 right-6 w-40 h-40 rounded-full bg-amber-200/[0.08] blur-2xl" aria-hidden="true" />
+    <main className="thinkbud-access-page">
+      <div className="thinkbud-access-shell">
+        <section className="thinkbud-access-story" aria-labelledby="thinkbud-access-title">
+          <div className="thinkbud-access-story__mascot" aria-hidden="true">
+            <BudMascot animate={step === 'profile' ? 'wave' : 'idle'} />
+          </div>
+          <p className="thinkbud-access-story__brand">ThinkBud</p>
+          <h1 id="thinkbud-access-title">不替孩子答题，只陪孩子想通。</h1>
+          <p className="thinkbud-access-story__lede">先问一个好问题，再验证孩子能不能把方法用到下一题。</p>
+          <Link className="thinkbud-access-story__demo" to="/showcase">
+            查看无需登录的公开演示 <ArrowUpRight size={18} aria-hidden="true" />
+          </Link>
+        </section>
 
-      <div className="relative z-10 w-full max-w-sm flex flex-col items-center">
-        {/* 吉祥物 */}
-        <div className="w-24 h-28 mb-3 animate-fade-up" aria-hidden="true">
-          <BudMascot animate={step === 'profile' ? 'wave' : 'idle'} />
-        </div>
+        <section className="thinkbud-access-card" aria-labelledby="thinkbud-form-title">
+          <header className="thinkbud-access-card__header">
+            <span>{STEP_COPY[step].label}</span>
+            <h2 id="thinkbud-form-title">{STEP_COPY[step].title}</h2>
+            <p>{STEP_COPY[step].detail}</p>
+          </header>
 
-        {/* 标题 */}
-        <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-1 animate-fade-up" style={{ animationDelay: '100ms' }}>
-          思考教练
-        </h1>
-        <p className="text-[var(--color-text-secondary)] text-sm mb-6 animate-fade-up" style={{ animationDelay: '200ms' }}>
-          对着作业说一说，我来引导你自己想通它
-        </p>
-
-        {/* Step: 手机号输入 */}
         {step === 'phone' && (
-          <div className="w-full space-y-4 animate-fade-up" style={{ animationDelay: '300ms' }}>
-            <label htmlFor="phone-input" className="sr-only">手机号</label>
-            <input
-              id="phone-input"
-              type="tel"
-              inputMode="numeric"
-              placeholder="请输入手机号"
-              aria-label="手机号"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 11))}
-              className="w-full px-4 py-3.5 rounded-[var(--radius-input)] border border-gray-200 text-base min-h-[var(--touch-min)] bg-[var(--color-bg-card)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all"
-              autoFocus
-            />
+          <div className="thinkbud-access-form">
+            <label className="thinkbud-field" htmlFor="phone-input">
+              <span>手机号</span>
+              <input
+                id="phone-input"
+                type="tel"
+                inputMode="numeric"
+                placeholder="请输入 11 位手机号"
+                aria-label="手机号"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 11))}
+                autoFocus
+              />
+            </label>
             <button
               onClick={handleSendCode}
               disabled={isLoading || phone.length !== 11}
-              className={`w-full py-3.5 text-base font-bold transition-all ${
-                !isLoading && phone.length === 11
-                  ? 'bg-teal-500 text-white btn-3d btn-3d-teal'
-                  : 'bg-gray-100 text-[var(--color-text-muted)] cursor-not-allowed rounded-[var(--radius-pill)]'
-              }`}
+              className="thinkbud-access-submit"
             >
-              {isLoading ? '发送中...' : '获取验证码'}
+              {isLoading ? '发送中…' : '获取验证码'}
             </button>
-            <p className="text-xs text-[var(--color-text-secondary)] text-center">
+            <p className="thinkbud-access-form__note">
               首次登录自动注册 · 我们不存储你的手机号
             </p>
           </div>
         )}
 
-        {/* Step: 验证码 */}
         {step === 'code' && (
-          <div className="w-full space-y-4 animate-fade-up">
-            <p className="text-sm text-[var(--color-text-secondary)] text-center">
+          <div className="thinkbud-access-form">
+            <p className="thinkbud-access-form__context">
               已发送到 {phone.slice(0, 3)}****{phone.slice(-4)}
             </p>
-            <div className="flex gap-2 justify-center" role="group" aria-label="6位验证码输入">
+            <div className="thinkbud-code-grid" role="group" aria-label="6位验证码输入">
               {[0, 1, 2, 3, 4, 5].map((i) => (
                 <input
                   key={i}
@@ -224,23 +229,17 @@ export default function LoginPage() {
                   onChange={(e) => handleCodeInput(i, e.target.value)}
                   onKeyDown={(e) => handleCodeKeyDown(i, e)}
                   aria-label={`验证码第${i + 1}位`}
-                  className={`w-11 h-13 text-center text-xl font-bold rounded-[var(--radius-input)] border transition-all ${
-                    isLoading
-                      ? 'bg-gray-50 border-gray-200 text-[var(--color-text-muted)]'
-                      : 'bg-[var(--color-bg-card)] border-gray-200 text-[var(--color-text-primary)] focus:ring-2 focus:ring-teal-400 focus:border-transparent'
-                  }`}
                   disabled={isLoading}
                 />
               ))}
             </div>
             {isLoading && (
-              <p className="text-sm text-teal-500 text-center" role="status">验证中...</p>
+              <p className="thinkbud-access-form__status" role="status">验证中…</p>
             )}
-            {/* 手动验证按钮 */}
             {code.length === 6 && !isLoading && (
               <button
                 onClick={() => handleVerify()}
-                className="w-full py-3 text-base font-bold bg-teal-500 text-white btn-3d btn-3d-teal transition-all"
+                className="thinkbud-access-submit"
               >
                 验证
               </button>
@@ -248,63 +247,62 @@ export default function LoginPage() {
             <button
               onClick={handleSendCode}
               disabled={countdown > 0}
-              className="w-full text-sm text-[var(--color-text-secondary)] hover:text-teal-500 transition-colors min-h-[var(--touch-min)]"
+              className="thinkbud-access-secondary"
             >
               {countdown > 0 ? `${countdown}秒后可重新发送` : '重新发送验证码'}
             </button>
           </div>
         )}
 
-        {/* Step: 完善资料（新用户） */}
         {step === 'profile' && (
-          <div className="w-full space-y-4 animate-fade-up">
-            <p className="text-base font-bold text-[var(--color-text-primary)] text-center">给你的小学霸起个名字</p>
-            <label htmlFor="nickname-input" className="sr-only">孩子的昵称</label>
-            <input
-              id="nickname-input"
-              type="text"
-              placeholder="孩子的昵称"
-              aria-label="孩子的昵称"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value.slice(0, 20))}
-              className="w-full px-4 py-3.5 rounded-[var(--radius-input)] border border-gray-200 text-base min-h-[var(--touch-min)] bg-[var(--color-bg-card)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all"
-              autoFocus
-            />
+          <div className="thinkbud-access-form">
+            <label className="thinkbud-field" htmlFor="nickname-input">
+              <span>孩子的昵称</span>
+              <input
+                id="nickname-input"
+                type="text"
+                placeholder="例如：小禾"
+                aria-label="孩子的昵称"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value.slice(0, 20))}
+                autoFocus
+              />
+            </label>
 
-            {/* 年级选择 */}
-            <div className="grid grid-cols-2 gap-3" role="radiogroup" aria-label="选择年级">
-              {GRADE_OPTIONS.map(({ value, label, sub, bg, border }) => (
+            <fieldset className="thinkbud-grade-fieldset">
+              <legend>选择年级</legend>
+              <div role="radiogroup" aria-label="选择年级">
+              {GRADE_OPTIONS.map(({ value, label, sub }) => (
                 <button
                   key={value}
                   onClick={() => setGrade(value)}
+                  type="button"
                   role="radio"
                   aria-checked={grade === value}
                   aria-label={`${label}，${sub}`}
-                  className={`flex flex-col items-center py-4 px-3 rounded-[var(--radius-card)] border transition-all active:scale-[0.97] min-h-[var(--touch-min)] ${bg} ${
-                    grade === value
-                      ? 'ring-2 ring-teal-400 shadow-lg border-transparent'
-                      : `${border} hover:shadow-md`
-                  }`}
                 >
-                  <p className="text-base font-bold text-[var(--color-text-primary)]">{label}</p>
-                  <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">{sub}</p>
+                  <strong>{label}</strong>
+                  <span>{sub}</span>
                 </button>
               ))}
-            </div>
+              </div>
+            </fieldset>
 
             <button
               onClick={handleCompleteProfile}
               disabled={isLoading || !nickname.trim() || !grade}
-              className={`w-full py-3.5 text-base font-bold transition-all ${
-                !isLoading && nickname.trim() && grade
-                  ? 'bg-teal-500 text-white btn-3d btn-3d-teal'
-                  : 'bg-gray-100 text-[var(--color-text-muted)] cursor-not-allowed rounded-[var(--radius-pill)]'
-              }`}
+              className="thinkbud-access-submit"
             >
-              {isLoading ? '保存中...' : '开始学习 →'}
+              {isLoading ? '保存中…' : '开始学习'}
             </button>
           </div>
         )}
+
+          <footer className="thinkbud-access-card__footer">
+            <span>AI 引导思路，孩子完成答案。</span>
+            <Link to="/showcase">公开演示</Link>
+          </footer>
+        </section>
       </div>
     </main>
   )

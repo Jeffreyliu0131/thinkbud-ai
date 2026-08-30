@@ -76,6 +76,7 @@ export default function App() {
             <Routes>
               {/* 公开路由 */}
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/showcase" element={<SyntheticDemoPage />} />
               <Route path="/admin" element={<AdminPage />} />
 
               {/* 受保护路由 */}
