@@ -17,11 +17,11 @@
   },
   "reports": [
     {
-      "path": "public/eval-report.json",
+      "path": "docs/showcase/captured-eval-report.json",
       "sha256": "bb3b6768b538a790756734998efeefa05cf1bd80addfe9166d471fd2df7b3531"
     },
     {
-      "path": "public/rag-eval-report.json",
+      "path": "docs/showcase/captured-rag-eval-report.json",
       "sha256": "bbd00e52e3d1eebdced033ddddbf9864bdd0311cc6831433ee0f2431e3df7f91"
     }
   ],
@@ -31,35 +31,66 @@
       "route": "/",
       "scrollY": 0,
       "sha256": "dfb4158be3b6f0331850fcddf18cd2fa35218e1ec92a6c9b49a3aeb24c9021cb",
-      "shows": ["synthetic-only boundary", "engineering gate", "product loop", "RAG and RTC default-off flags", "output guard ordering"]
+      "shows": [
+        "synthetic-only boundary",
+        "engineering gate",
+        "product loop",
+        "RAG and RTC default-off flags",
+        "output guard ordering"
+      ]
     },
     {
       "path": "docs/showcase/synthetic-coaching-guard.jpg",
       "route": "/",
       "scrollY": 590,
       "sha256": "c6de73d63fcfef5ffe5593b45356adb46af2a983f705307e23a2bf1a58ef2be0",
-      "shows": ["synthetic coaching turn", "transfer step", "blocked fake-provider answer", "safe fallback before SSE and TTS"]
+      "shows": [
+        "synthetic coaching turn",
+        "transfer step",
+        "blocked fake-provider answer",
+        "safe fallback before SSE and TTS"
+      ]
     },
     {
       "path": "docs/showcase/synthetic-rag-citation-evidence.jpg",
       "route": "/",
       "scrollY": 1350,
       "sha256": "08cb44b80db8e4f59c77e5feb00bfc7e64923c537bfa0bb7e0eaa42e992655d5",
-      "shows": ["RAG used state", "structured source/chapter/section/locator", "stable IDs", "content hash", "no production Vectorize"]
+      "shows": [
+        "RAG used state",
+        "structured source/chapter/section/locator",
+        "stable IDs",
+        "content hash",
+        "no production Vectorize"
+      ]
     },
     {
       "path": "docs/showcase/synthetic-gateway-eval.jpg",
       "route": "/",
       "scrollY": 1967.5,
       "sha256": "639b00b414aca924a9d31f529d0001ae9cd665a99b48b8ff20f78ecb59afa5df",
-      "shows": ["offline fake LLM gateway", "typed provider metadata", "zero production/network calls", "38-case behavior gate", "14-case RAG gate", "sourceDirty=false", "release limitations"]
+      "shows": [
+        "offline fake LLM gateway",
+        "typed provider metadata",
+        "zero production/network calls",
+        "38-case behavior gate",
+        "14-case RAG gate",
+        "sourceDirty=false",
+        "release limitations"
+      ]
     },
     {
       "path": "docs/showcase/synthetic-rag-degraded.jpg",
       "route": "/?rag=degraded#rag-contract",
       "scrollY": 1250,
       "sha256": "c4e8f15b895b2a0cbaca5b813b0d6db6eeec961da59b5ae1d6547f19fffee976",
-      "shows": ["disabled state", "degraded state", "no-result state", "no citation attached", "original non-RAG fallback"]
+      "shows": [
+        "disabled state",
+        "degraded state",
+        "no-result state",
+        "no citation attached",
+        "original non-RAG fallback"
+      ]
     }
   ],
   "dataPolicy": {
@@ -70,5 +101,6 @@
     "realTextbookRecords": 0,
     "userTestimonials": 0,
     "source": "Project-authored synthetic dialogue, synthetic textbook fixtures, and generated deterministic reports only."
-  }
+  },
+  "status": "historical-capture"
 }

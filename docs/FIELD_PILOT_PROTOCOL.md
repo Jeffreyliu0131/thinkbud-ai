@@ -1,5 +1,13 @@
 # Minimal adult-only field pilot protocol
 
+## Current focused hypothesis · 2026-09-05
+
+The accepted product focus is one learning loop: primary grade 4, the distributive property, progressing from a coached example to an independent transfer item and a delayed equivalent item. This is a study design, not a claim that learners completed it. The first execution remains adult-only role-play under the boundaries below; actual learner improvement cannot be measured or inferred from adult role-play.
+
+Compare two bounded coaching policies on equivalent synthetic questions: one cognitive-action hint versus an explanation of the concept using a different example after repeated difficulty. Never automatically reveal the current task's answer. Counterbalance order, record wrong-answer recovery and frustration as well as correctness. In a separately authorized future learner study, record pre-task performance, independent transfer without assistance, and delayed retention; do not treat a model-extracted `mastery` signal as the grader.
+
+The near-term decision is whether teachers judge the escalation useful and whether the interface distinguishes observed dialogue signals from independently demonstrated understanding. Add no new subjects, modalities or knowledge-tree features before this question is resolved. Session consent, named owner, live-model approval and child-release blockers remain open.
+
 ## Decision and scope
 
 The first external pilot should involve **non-family adult parents and primary-school teachers only**. Participants use synthetic worksheets and role-play the learner. No child participates, no participant enters a real child's homework or story, and the study does not claim learning improvement, adoption, retention, or safety for children.

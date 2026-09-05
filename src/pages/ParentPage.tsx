@@ -281,10 +281,11 @@ export default function ParentPage() {
                     <div className="grid grid-cols-2 gap-2 mb-4">
                       <StatCard value={String(report.stats.totalSessions)} label="总学习次数" />
                       <StatCard value={`${Math.round(report.stats.avgDurationMinutes)}分钟`} label="平均时长" />
-                      <StatCard value={`${Math.round(report.stats.independenceRate)}%`} label="独立解决率" />
+                      <StatCard value={`${Math.round(report.stats.independenceRate)}%`} label="会话独立信号比例" />
                       <StatCard value={formatSubjectLabel(report.stats.mostPracticedSubject) || '--'} label="最常练习" />
                     </div>
 
+                    <p className="text-xs text-[var(--color-text-secondary)] mb-3">这些是对话推断信号，尚未由独立迁移题或延迟复测验证，不能作为已经掌握的证明。</p>
                     {/* Subject progress bars */}
                     {report.subjectProgress.length > 0 && (
                       <div className="space-y-3 mb-4">
@@ -340,7 +341,7 @@ export default function ParentPage() {
                     )
 
                     return (
-                      <Accordion title="知识点掌握">
+                      <Accordion title="知识点对话观察">
                         {!hasAnyPoints ? (
                           <p className="text-sm text-[var(--color-text-muted)]">还没有知识点数据</p>
                         ) : (

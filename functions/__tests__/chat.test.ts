@@ -17,7 +17,8 @@ vi.mock('../_shared/rate-limit', () => ({
   checkUserRateLimit: vi.fn(),
 }))
 
-vi.mock('../_shared/db', () => ({
+vi.mock('../_shared/db', async (importOriginal) => ({
+  ...await importOriginal<typeof import('../_shared/db')>(),
   ensureConversation: vi.fn().mockResolvedValue(undefined),
   addMessage: vi.fn().mockResolvedValue(undefined),
   touchUserActivity: vi.fn().mockResolvedValue(undefined),
@@ -44,7 +45,7 @@ vi.mock('../_shared/meta-parser', () => ({
 import { onRequestPost } from '../api/chat'
 import { chatCompletionStream } from '../_shared/providers/chat/ark'
 import { checkUserRateLimit } from '../_shared/rate-limit'
-import { addMessage } from '../_shared/db'
+import { addMessage, ensureConversation, ConversationAccessError } from '../_shared/db'
 import { auditAiResponse } from '../_shared/audit'
 
 // ── Mock 工具 ──────────────────────────────────────
@@ -106,6 +107,7 @@ const VALID_BODY = {
 
 beforeEach(() => {
   vi.clearAllMocks()
+  vi.mocked(ensureConversation).mockResolvedValue(undefined)
   // 默认 mock 返回值
   vi.mocked(checkUserRateLimit).mockResolvedValue({ allowed: true, remaining: 9 })
   vi.mocked(chatCompletionStream).mockResolvedValue(createMockSSEStream(['你好', '同学']))
@@ -260,5 +262,24 @@ describe('chat endpoint', () => {
 
       expect(auditAiResponse).toHaveBeenCalled()
     })
+  })
+})
+
+
+describe('conversation ownership boundary', () => {
+  it('rejects another user session before model use or message writes', async () => {
+    vi.mocked(ensureConversation).mockRejectedValue(new ConversationAccessError())
+    const { ctx } = createMockContext({ ...VALID_BODY, sessionId: 'another-session' })
+    const response = await onRequestPost(ctx as never)
+    expect(response.status).toBe(403)
+    expect(chatCompletionStream).not.toHaveBeenCalled()
+    expect(addMessage).not.toHaveBeenCalled()
+    expect(ctx.waitUntil).not.toHaveBeenCalled()
+  })
+  it('fails closed on a database error before contacting a model', async () => {
+    vi.mocked(ensureConversation).mockRejectedValue(new Error('database unavailable'))
+    const { ctx } = createMockContext(VALID_BODY)
+    expect((await onRequestPost(ctx as never)).status).toBe(500)
+    expect(chatCompletionStream).not.toHaveBeenCalled()
   })
 })

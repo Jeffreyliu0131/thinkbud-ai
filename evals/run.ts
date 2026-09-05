@@ -129,6 +129,8 @@ const EVIDENCE_SOURCE_FILES = [
   'functions/_shared/rag/vector-store.ts',
   'functions/_shared/rag/vectorize.ts',
   'functions/api/chat.ts',
+  'functions/_shared/db.ts',
+  'functions/__tests__/conversation-ownership.test.ts',
   'src/App.tsx',
   'src/lib/failurePolicy.ts',
   'src/hooks/useChat.ts',

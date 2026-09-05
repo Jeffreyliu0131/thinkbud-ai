@@ -1,35 +1,6 @@
 // D1 数据库查询 helpers
 // 所有写入操作使用 fire-and-forget 模式（不阻塞请求）
 
-// ===== D1 写入重试 =====
-
-/**
- * D1 写入重试包装器（STAB-03）
- * 最多重试 retries 次，exponential backoff（100ms, 200ms）
- * 不抛异常 — 最终失败时 console.error 记录并静默返回
- */
-async function withRetry(
-  fn: () => Promise<D1Response>,
-  label: string,
-  retries = 2
-): Promise<D1Response | null> {
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    try {
-      return await fn()
-    } catch (err) {
-      if (attempt < retries) {
-        const delay = 100 * Math.pow(2, attempt) // 100ms, 200ms
-        await new Promise(r => setTimeout(r, delay))
-        console.warn(`[D1 Retry] ${label} attempt ${attempt + 1} failed, retrying in ${delay}ms`)
-      } else {
-        console.error(`[D1 Retry] ${label} failed after ${retries + 1} attempts:`, err)
-        return null
-      }
-    }
-  }
-  return null
-}
-
 // ===== 验证码 =====
 
 export async function checkSendRateLimit(db: D1Database, phoneHash: string): Promise<{ allowed: boolean; reason?: string }> {
@@ -122,13 +93,18 @@ export async function touchUserActivity(db: D1Database, userId: string): Promise
 
 // ===== 对话 =====
 
+export class ConversationAccessError extends Error {
+  constructor() { super('Conversation unavailable'); this.name = 'ConversationAccessError' }
+}
+
 export async function ensureConversation(db: D1Database, conversationId: string, userId: string): Promise<void> {
-  await withRetry(
-    () => db.prepare(
-      `INSERT OR IGNORE INTO conversations (id, user_id) VALUES (?, ?)`
-    ).bind(conversationId, userId).run(),
-    `ensureConversation(${conversationId})`
-  )
+  if (!userId) throw new ConversationAccessError()
+  // Await creation and then verify the winner of any concurrent insert.
+  await db.prepare(`INSERT OR IGNORE INTO conversations (id, user_id) VALUES (?, ?)`)
+    .bind(conversationId, userId).run()
+  const owner = await db.prepare(`SELECT user_id FROM conversations WHERE id = ?`)
+    .bind(conversationId).first<{ user_id: string }>()
+  if (!owner || owner.user_id !== userId) throw new ConversationAccessError()
 }
 
 export async function addMessage(
@@ -138,22 +114,22 @@ export async function addMessage(
   role: 'user' | 'assistant',
   content: string,
   inputMethod?: string,
-  meta?: { emotion?: string; sessionPhase?: string; complianceIssues?: string[] }
+  meta?: { emotion?: string; sessionPhase?: string; complianceIssues?: string[] },
+  userId = ''
 ): Promise<void> {
+  if (!userId) throw new ConversationAccessError()
   const complianceJson = meta?.complianceIssues?.length ? JSON.stringify(meta.complianceIssues) : null
-  await withRetry(
-    () => db.prepare(
-      `INSERT INTO messages (id, conversation_id, role, content, input_method, emotion, session_phase, compliance_issues) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-    ).bind(messageId, conversationId, role, content, inputMethod || null, meta?.emotion || null, meta?.sessionPhase || null, complianceJson).run(),
-    `addMessage(${messageId})`
-  )
+  // D1 batch is transactional: message and count succeed together. The insert
+  // predicate remains scoped even if callers forget the earlier ownership check.
+  const result = await db.batch([
+    db.prepare(`INSERT INTO messages (id, conversation_id, role, content, input_method, emotion, session_phase, compliance_issues)
+      SELECT ?, ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM conversations WHERE id = ? AND user_id = ?)`)
+      .bind(messageId, conversationId, role, content, inputMethod || null, meta?.emotion || null, meta?.sessionPhase || null, complianceJson, conversationId, userId),
+    db.prepare(`UPDATE conversations SET message_count = message_count + 1 WHERE id = ? AND user_id = ?`)
+      .bind(conversationId, userId),
+  ])
+  if (result[0]?.meta.changes !== 1) throw new ConversationAccessError()
 
-  await withRetry(
-    () => db.prepare(
-      `UPDATE conversations SET message_count = message_count + 1 WHERE id = ?`
-    ).bind(conversationId).run(),
-    `updateMessageCount(${conversationId})`
-  )
 }
 
 export async function endConversation(

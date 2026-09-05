@@ -80,7 +80,8 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
                 emotion: msg.emotion,
                 sessionPhase: msg.sessionPhase,
                 complianceIssues,
-              }
+              },
+              userId
             )
           }
         } catch (err) {

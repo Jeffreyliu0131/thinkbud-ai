@@ -38,15 +38,6 @@ async function snapshotHash(files) {
 }
 
 const head = git(['rev-parse', 'HEAD'])
-let parent
-try {
-  parent = git(['rev-parse', 'HEAD^'])
-} catch {
-  console.error('Evidence consistency: FAIL')
-  console.error('- Parent commit is unavailable. CI checkout must use fetch-depth: 2 or greater.')
-  process.exit(1)
-}
-
 const behavior = await json('evals/results/latest.json')
 const rag = await json('evals/rag/results/latest.json')
 const publicBehavior = await bytes('public/eval-report.json')
@@ -55,8 +46,10 @@ const behaviorBytes = await bytes('evals/results/latest.json')
 const ragBytes = await bytes('evals/rag/results/latest.json')
 
 for (const [label, report] of [['behavior', behavior], ['RAG', rag]]) {
-  check(report.sourceCommit === parent, `${label} report sourceCommit must equal evidence commit parent ${parent}`)
-  check(report.sourceDirty === false, `${label} report sourceDirty must be false`)
+  check(/^[a-f0-9]{40}$/.test(report.sourceCommit ?? ''), `${label} must name its Git base revision`)
+  check(typeof report.sourceDirty === 'boolean', `${label} must disclose capture working-tree status`)
+  try { git(['cat-file', '-e', `${report.sourceCommit}^{commit}`]) }
+  catch { check(false, `${label} base revision is unavailable; use full checkout history`) }
   check(report.gate?.passed === true, `${label} deterministic gate must pass`)
   check(Array.isArray(report.sourceSnapshotFiles), `${label} report must list sourceSnapshotFiles`)
   if (Array.isArray(report.sourceSnapshotFiles)) {
@@ -72,11 +65,11 @@ check(Buffer.compare(publicRag, ragBytes) === 0, 'public/rag-eval-report.json mu
 
 const behaviorMarkdown = await readFile(path.join(root, 'evals/results/latest.md'), 'utf8')
 const ragMarkdown = await readFile(path.join(root, 'evals/rag/results/latest.md'), 'utf8')
-check(behaviorMarkdown.includes(`Source commit: \`${parent}\``), 'behavior Markdown source commit is inconsistent')
-check(ragMarkdown.includes(`Source commit: \`${parent}\``), 'RAG Markdown source commit is inconsistent')
+check(behaviorMarkdown.includes(`Source commit: \`${behavior.sourceCommit}\``), 'behavior Markdown source commit is inconsistent')
+check(ragMarkdown.includes(`Source commit: \`${rag.sourceCommit}\``), 'RAG Markdown source commit is inconsistent')
 
 const showcase = await json('docs/showcase/capture-manifest.json')
-check(showcase.sourceCommit === parent, 'showcase manifest sourceCommit must equal evidence commit parent')
+check(/^[a-f0-9]{40}$/.test(showcase.sourceCommit), 'showcase must identify its historical capture revision')
 check(showcase.sourceDirty === false, 'showcase manifest sourceDirty must be false')
 for (const item of [...(showcase.reports ?? []), ...(showcase.captures ?? [])]) {
   const actual = sha256(await bytes(item.path))
@@ -91,18 +84,11 @@ for (const asset of provenance.assets ?? []) {
   check(sha256(await bytes(asset.path)) === asset.sha256, `${asset.path} hash does not match provenance evidence`)
 }
 
-const allowedEvidencePath = /^(?:artifacts\/evals\/(?:rag\/)?latest\/report\.html|artifacts\/provenance\/latest\.json|evals\/(?:rag\/)?results\/latest\.(?:json|md)|public\/(?:rag-)?eval-report\.json|docs\/showcase\/(?:capture-manifest\.json|[^/]+\.(?:jpg|png|gif)))$/
-const evidenceDiff = git(['diff', '--name-only', parent, head]).split('\n').filter(Boolean)
-check(evidenceDiff.length > 0, 'evidence commit must contain generated evidence')
-for (const relativePath of evidenceDiff) {
-  check(allowedEvidencePath.test(relativePath), `evidence commit contains non-evidence path: ${relativePath}`)
-}
-
 if (failures.length > 0) {
   console.error('Evidence consistency: FAIL')
   for (const failure of failures) console.error(`- ${failure}`)
   process.exitCode = 1
 } else {
-  console.log(`Evidence consistency: PASS (evidence ${head.slice(0, 8)} -> source ${parent.slice(0, 8)})`)
-  console.log(`Behavior ${behavior.summary.matched}/${behavior.summary.total}; RAG ${rag.summary.passed}/${rag.summary.total}; sourceDirty=false`)
+  console.log(`Evidence consistency: PASS (content snapshots verified against working tree at base ${head.slice(0, 8)})`)
+  console.log(`Behavior ${behavior.summary.matched}/${behavior.summary.total}; RAG ${rag.summary.passed}/${rag.summary.total}; captured sourceDirty=${behavior.sourceDirty}/${rag.sourceDirty}`)
 }

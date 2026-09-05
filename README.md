@@ -44,6 +44,10 @@ For a fast code review, start here:
 | What product decisions and trade-offs shaped the system? | [Case study](docs/CASE_STUDY.md) and [coaching policy](docs/ThinkBud对话决策规范v5.md) |
 | Can another public tool scan decision-to-code drift without private context? | [DecisionTrace local-only config](.decisiontrace/README.md) and [contract registry](.decisiontrace/contracts.yml) |
 
+## Focused product question
+
+The next learning loop is grade-4 distributive-property practice: a coached step, an independent transfer item, and a delayed equivalent item. The initial study remains adult-only role-play; see the [pilot protocol](docs/FIELD_PILOT_PROTOCOL.md). Dialogue-derived knowledge labels are explicitly unverified observations. Additional modalities and subjects are secondary to demonstrating that this loop helps learning.
+
 ## Product mechanism
 
 1. A learner provides a question through text or the camera/OCR path.
@@ -93,7 +97,9 @@ full release gate fails closed on missing human/legal/live-model evidence
 
 The tracked behavior report covers 38 synthetic cases; the separate RAG report covers 14 retrieval and bad-case checks. Both record zero production-model calls and zero real child records. RAG evidence additionally records zero network calls and zero real textbook records. Exact counts and hashes live in the linked reports rather than in prose that can silently go stale.
 
-`sourceDirty=false` means the evidence runner saw no uncommitted change in its declared source inputs. Evidence commits point back to the clean code commit they evaluated, so a reviewer can inspect both the implementation SHA and the generated result.
+Reports bind a Git base revision and an exact source-content hash, independently of later documentation commits. Captures from uncommitted changes disclose `sourceDirty=true`; historical screenshots keep their own frozen inputs.
+
+`sourceDirty=false` means the evidence runner saw no uncommitted change in its declared source inputs. The source-content hash identifies the evaluated bytes; the Git base and dirty flag describe how they were captured. A reviewer can distinguish a committed revision from an uncommitted working snapshot without imposing an evidence-only HEAD commit.
 
 Passing these deterministic gates proves only that the encoded mechanisms behaved as expected on the versioned synthetic set. It does not prove live-model teaching quality, adoption, learning impact, production latency/cost, privacy compliance, or textbook rights.
 
@@ -186,3 +192,7 @@ The engineering gate can pass while the product release remains blocked. The unr
 ## License
 
 No open-source license is granted. The source is public for portfolio review and technical discussion; all rights are reserved. Choosing a license is an explicit owner decision and remains outside automated release work.
+
+## Audit acceptance · 2026-09-05
+
+Locally verified: 408 tests passed with 2 existing skips; lint, typecheck, production build, 38 behavior cases, 14 RAG cases and current source-content consistency passed. Cross-account SQL writes and pre-provider rejection have regression coverage. Parent-facing knowledge labels now describe dialogue observations rather than independently proven mastery. No change was committed, pushed or deployed during this repair; the public GitHub run remains the older failed run until publication. The separate full release remains blocked on its existing human/live/privacy/license requirements.

@@ -18,8 +18,8 @@ export function getColdStartState(totalConversations: number): ColdStartState {
 
 export function confidenceToLabel(confidence: number): { label: string; level: 'low' | 'mid' | 'high' } {
   if (confidence < 0.4) return { label: '正在探索', level: 'low' }
-  if (confidence <= 0.7) return { label: '逐渐掌握', level: 'mid' }
-  return { label: '已经很熟练', level: 'high' }
+  if (confidence <= 0.7) return { label: '对话中观察到进展', level: 'mid' }
+  return { label: '对话中表现较熟悉', level: 'high' }
 }
 
 export interface ParentReport {

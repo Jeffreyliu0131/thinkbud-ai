@@ -6,7 +6,7 @@
 import { chatCompletionStream } from '../_shared/providers/chat/ark'
 import { errorResponse } from '../_shared/utils/response'
 import { checkUserRateLimit } from '../_shared/rate-limit'
-import { ensureConversation, addMessage, touchUserActivity } from '../_shared/db'
+import { ensureConversation, addMessage, touchUserActivity, ConversationAccessError } from '../_shared/db'
 import { buildSystemPrompt } from '../_shared/prompt'
 import type { GradeLevel, Subject, SessionContext } from '../_shared/prompt'
 import type { AppEnv, ContextData } from '../_shared/env'
@@ -87,6 +87,11 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
 
     const userId = context.data.userId
     const db = context.env.DB
+    if (!userId) return errorResponse('请先登录', 401)
+    if (!db) return errorResponse('服务配置错误', 503)
+    if (sessionId !== undefined && (typeof sessionId !== 'string' || !/^[a-zA-Z0-9_-]{1,128}$/.test(sessionId))) {
+      return errorResponse('无效的 sessionId', 400)
+    }
     const conversationId = sessionId || crypto.randomUUID()
 
     // Per-user 限流（STAB-05: 每分钟 10 次 chat）
@@ -96,6 +101,8 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
         return errorResponse('请求过于频繁，请稍后再试', 429)
       }
     }
+
+    await ensureConversation(db, conversationId, userId)
 
     // COMP-01: 使用时长跟踪（限制暂停——测试阶段无需限流，上线后按订阅等级重新设计）
     if (userId && db) {
@@ -112,14 +119,13 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
         context.waitUntil(
           (async () => {
             try {
-              await ensureConversation(db, conversationId, userId)
               // 首次设置 subject（如果提供）
               if (subject) {
                 await db.prepare(
-                  `UPDATE conversations SET subject = COALESCE(subject, ?) WHERE id = ?`
-                ).bind(subject, conversationId).run()
+                  `UPDATE conversations SET subject = COALESCE(subject, ?) WHERE id = ? AND user_id = ?`
+                ).bind(subject, conversationId, userId).run()
               }
-              await addMessage(db, crypto.randomUUID(), conversationId, 'user', lastUserMsg.content, inputMethod)
+              await addMessage(db, crypto.randomUUID(), conversationId, 'user', lastUserMsg.content, inputMethod, undefined, userId)
               await touchUserActivity(db, userId)
             } catch (err) {
               console.error('[Chat D1 写入用户消息失败]', err)
@@ -165,7 +171,7 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
           emotion: guarded.blocked ? undefined : meta?.emotion,
           sessionPhase: guarded.blocked ? undefined : meta?.session_phase,
           complianceIssues: guarded.issues.length > 0 ? guarded.issues : undefined,
-        }).catch(err => console.error('[Chat D1 写入 AI 回复失败]', err))
+        }, userId).catch(err => console.error('[Chat D1 写入 AI 回复失败]', err))
       )
     }
 
@@ -181,6 +187,7 @@ export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (
       },
     })
   } catch (err) {
+    if (err instanceof ConversationAccessError) return errorResponse('会话不可用', 403)
     const message = err instanceof Error ? err.message : '对话处理失败'
     console.error('[Chat]', message)
     return errorResponse(message)

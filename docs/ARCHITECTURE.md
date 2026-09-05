@@ -50,7 +50,7 @@ The guard is intentionally conservative and pattern-based. It can block a legiti
 - `src/lib/failurePolicy.ts`: pure RTC/STT/SSE recovery decisions.
 - `evals/`: synthetic data, deterministic runner, grader calibration logic, generated results.
 - `scripts/check-public-boundary.mjs`: tracked/unignored path, local-path, credential-pattern, production-ID, private-revision, and personal-email boundary.
-- `scripts/check-evidence-consistency.mjs`: verifies the code-commit/evidence-commit pair, source snapshots, public report copies, showcase hashes, and provenance asset hashes without regenerating evidence.
+- `scripts/check-evidence-consistency.mjs`: verifies current content snapshots, the recorded Git base revision and capture working-tree status, public report copies, historical showcase hashes, and provenance asset hashes without regenerating evidence. A later documentation commit does not invalidate unchanged source content.
 - `.decisiontrace/`: optional local-only public contract mapping; generated reports are ignored and gates remain disabled.
 - `provenance/` and `release/`: distribution and release-readiness inputs.
 
@@ -79,3 +79,9 @@ See [PRIVACY_AND_CHILD_SAFETY.md](PRIVACY_AND_CHILD_SAFETY.md) for the detailed 
 Chat retrieval runs only when `RAG_TEXTBOOK_ENABLED=true` and an injected `RAG_SERVICE` reports ready. Disabled, missing, degraded, empty, or failed retrieval all fall back to the original non-RAG chat path. The output is still fully buffered and passed through `guardAiOutput`; RAG never changes that ordering.
 
 The Cloudflare Vectorize class is an adapter/schema contract, not deployment evidence. This public snapshot contains no binding, production embedding adapter, populated index, durable chunk repository, or real textbook. The credential-free synthetic showcase can render structured citations from the generated eval report, but citation metadata remains server/eval metadata in the actual chat path because the existing SSE client contract carries text deltas only. Adding a learner-facing citation protocol is future work and must be versioned separately.
+
+## 2026-09-05 audit repair
+
+Chat awaits conversation creation and ownership verification before provider calls or asynchronous work. Message insertion uses a user-scoped SQL predicate and an atomic D1 batch for its counter. A known conversation ID is never authorization.
+
+Evidence records the actual Git base plus a hash of the evaluated file contents. A capture from uncommitted sources remains explicitly `sourceDirty=true`; content verification is not a claim that those changes were committed. Historical screenshots retain their original report bytes and capture date. Live-model, independent-human and child-release gates remain unchanged.
