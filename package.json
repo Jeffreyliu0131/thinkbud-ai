@@ -1,7 +1,7 @@
 {
   "name": "thinkbud",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -21,12 +21,13 @@
     "provenance:check": "node scripts/generate-provenance.mjs",
     "public:check": "node scripts/check-public-boundary.mjs",
     "evidence:verify": "node scripts/check-evidence-consistency.mjs",
-    "evidence": "npm run eval:gate && npm run eval:rag && npm run provenance:check",
+    "evidence": "npm run eval:gate && npm run eval:rag && npm run eval:practice && npm run provenance:check",
     "verify": "npm run public:check && npm run lint && npm run typecheck && npm test && npm run evidence && npm run build",
     "release:check": "npm run evidence:verify && npm run verify && node scripts/check-release-readiness.mjs",
     "demo": "npm run evidence && vite --mode synthetic-demo",
     "demo:build": "npm run evidence && vite build --mode synthetic-demo",
-    "rag:ingest": "node --import tsx scripts/ingest-textbook.ts"
+    "rag:ingest": "node --import tsx scripts/ingest-textbook.ts",
+    "eval:practice": "node --import tsx evals/practice/run.ts"
   },
   "dependencies": {
     "@volcengine/rtc": "^4.68.2",
@@ -73,5 +74,6 @@
     "vite-plugin-pwa": "^1.3.0",
     "vitest": "^4.1.11",
     "wrangler": "^4.126.0"
-  }
+  },
+  "description": "Socratic AI coaching prototype with guided practice, independent transfer, and a gated delayed check; learning observations stay separate from inferred mastery."
 }

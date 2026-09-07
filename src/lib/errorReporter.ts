@@ -5,6 +5,8 @@ const ERROR_REPORT_URL = '/api/error-report'
 
 export function reportError(message: string, opts?: { stack?: string; meta?: Record<string, unknown> }): void {
   try {
+    // Local adult-preview observations must not enter the production telemetry path.
+    if (import.meta.env.MODE === 'synthetic-demo' || /^\/practice\/?$/.test(window.location.pathname)) return
     const body = JSON.stringify({
       message: message.substring(0, 1000),
       stack: opts?.stack?.substring(0, 4000),

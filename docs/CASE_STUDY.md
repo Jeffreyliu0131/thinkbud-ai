@@ -42,3 +42,12 @@ That chain is useful beyond education: it demonstrates how to turn a qualitative
 ## Next experiment
 
 After owner approval of credentials and data boundaries, generate a fresh model slice without children, record exact model/config/latency/token/cost metadata, conduct two-rater blinded review, and compare text vs RTC. If RTC cannot match the text safety boundary, keep it disabled or replace the managed agent with a controllable output path.
+
+
+## Practice-loop extension · 2026-09-07
+
+The next product question was whether the interface could distinguish supported completion from reusable understanding. The implemented `/practice` adult preview keeps four coached steps separate from a two-step transfer check and a later check on another item. Two mistakes trigger the selected support policy; asking for help during a check preserves that unfinished attempt and returns to a fresh practice pair.
+
+The key choice is to let deterministic arithmetic and workflow state own the observation record. The preset coach demonstrates the interaction policy; it is not presented as a live-model response. A correct final number alone cannot prove distributive structure, a retry cannot become a first-attempt pass, and a preview cannot become delayed-retention evidence. Existing dialogue-derived BKT signals remain separate.
+
+The implementation includes opt-in local progress, replay validation, pause/reload recovery, bounded unseen items, explicit device-clock limits, and exports that preserve unfinished-task counts while omitting raw answers. Core and interaction tests plus the 15-case synthetic workflow gate validate these mechanisms. Neither teaching-policy superiority nor learning improvement has been measured; those remain questions for a separately scoped human review.

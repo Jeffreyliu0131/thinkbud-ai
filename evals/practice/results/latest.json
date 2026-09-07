@@ -1,0 +1,115 @@
+{
+  "generatedAt": "2026-09-07T07:52:56.222Z",
+  "sourceCommit": "d8330f166787360046385b889ccdcdf20613b8d9",
+  "sourceDirty": true,
+  "sourceSnapshotHash": "00886cbc647cc45295a9f1e8ba13b2c1b2403bf4ab5dfcfce07c054415b952e6",
+  "sourceSnapshotFiles": [
+    "src/lib/practice.ts",
+    "src/lib/practiceStorage.ts",
+    "src/lib/errorReporter.ts",
+    "src/App.tsx",
+    "src/pages/PracticePage.tsx",
+    "src/pages/PracticePage.css",
+    "src/lib/__tests__/practice.test.ts",
+    "src/pages/__tests__/PracticePage.test.tsx",
+    "evals/practice/run.ts",
+    "scripts/check-evidence-consistency.mjs",
+    "package.json",
+    "package-lock.json"
+  ],
+  "summary": {
+    "total": 15,
+    "passed": 15,
+    "failed": 0
+  },
+  "gate": {
+    "passed": true
+  },
+  "scope": {
+    "syntheticOnly": true,
+    "caseAuthor": "Codex under the user-approved product brief",
+    "independentHumanReview": "not_run",
+    "modelCalls": 0,
+    "networkCalls": 0,
+    "realChildRecords": 0,
+    "learningImpactValidated": false,
+    "delaySimulatedWithControlledClock": true
+  },
+  "cases": [
+    {
+      "id": "PR-001",
+      "requirement": "Guided steps cannot become independent mastery",
+      "passed": true
+    },
+    {
+      "id": "PR-002",
+      "requirement": "Independent checks reject in-task hints",
+      "passed": true
+    },
+    {
+      "id": "PR-003",
+      "requirement": "A final number alone cannot prove distributive expansion",
+      "passed": true
+    },
+    {
+      "id": "PR-004",
+      "requirement": "Valid factor and term reordering is accepted",
+      "passed": true
+    },
+    {
+      "id": "PR-005",
+      "requirement": "Missing distribution is rejected",
+      "passed": true
+    },
+    {
+      "id": "PR-006",
+      "requirement": "Retries remain visible in the outcome",
+      "passed": true
+    },
+    {
+      "id": "PR-007",
+      "requirement": "Help seeking is preserved and a new item is assigned",
+      "passed": true
+    },
+    {
+      "id": "PR-008",
+      "requirement": "Delayed check remains closed before 24 hours",
+      "passed": true
+    },
+    {
+      "id": "PR-009",
+      "requirement": "Preview input cannot change the actual session",
+      "passed": true
+    },
+    {
+      "id": "PR-010",
+      "requirement": "Export preserves pending review and excludes preview outcomes",
+      "passed": true
+    },
+    {
+      "id": "PR-011",
+      "requirement": "A due check produces a separate observation on another item",
+      "passed": true
+    },
+    {
+      "id": "PR-012",
+      "requirement": "Saved progress is replayable, not a trusted mastery score",
+      "passed": true
+    },
+    {
+      "id": "PR-013",
+      "requirement": "Future and expired local records cannot be resumed",
+      "passed": true
+    },
+    {
+      "id": "PR-014",
+      "requirement": "Repeated difficulty switches to a different example and preserves unfinished observations",
+      "passed": true
+    },
+    {
+      "id": "PR-015",
+      "requirement": "The question-first comparison policy records a hint",
+      "passed": true
+    }
+  ]
+}

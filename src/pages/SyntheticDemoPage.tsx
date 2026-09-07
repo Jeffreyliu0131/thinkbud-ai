@@ -255,6 +255,7 @@ export default function SyntheticDemoPage() {
           <span>ThinkBud</span>
         </a>
         <div className="tb-nav__links">
+          <a href="/practice">Practice loop</a>
           <a href="#product-loop">Mechanism</a>
           <a href="#rag-contract">RAG boundary</a>
           <a href="#evidence-chain">Evidence</a>
@@ -274,9 +275,10 @@ export default function SyntheticDemoPage() {
           <div className="tb-hero__copy">
             <p className="tb-kicker">Inspectable Socratic coaching</p>
             <h1>Coach thinking, not answers.</h1>
-            <p className="tb-hero__lede">Bounded RAG, blocking answer guards, and reproducible synthetic evals in one reviewable coaching loop.</p>
+            <p className="tb-hero__lede">Socratic coaching with bounded RAG and answer guards. Now explore guided practice, independent transfer, and a separately gated delayed check.</p>
             <div className="tb-hero__actions">
-              <a className="tb-button tb-button--primary" href="#product-loop">See the mechanism <ArrowRight size={17} aria-hidden="true" /></a>
+              <a className="tb-button tb-button--primary" href="/practice">Try the practice loop <ArrowRight size={17} aria-hidden="true" /></a>
+              <a className="tb-button tb-button--quiet" href="#product-loop">Inspect AI boundaries</a>
               <a className="tb-button tb-button--quiet" href="https://github.com/Jeffreyliu0131/thinkbud-ai" target="_blank" rel="noreferrer">View source <ArrowUpRight size={17} aria-hidden="true" /></a>
             </div>
           </div>

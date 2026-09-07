@@ -23,6 +23,7 @@ It does **not** prove that a live model is consistently Socratic, age-appropriat
 ```bash
 npm run eval:gate
 npm run eval:rag
+npm run eval:practice
 npm run eval:calibrate-grader
 npm run evidence
 ```
@@ -39,7 +40,7 @@ Generated evidence:
 - `evals/rag/results/latest.json`: case-level textbook-RAG evidence, structured citations, corpus scope, and zero-network/provider declarations.
 - `artifacts/evals/rag/latest/report.html`: standalone RAG evidence report.
 
-Every result includes the source commit, dataset SHA-256, gate configuration SHA-256, generation time, and explicit counts of model calls and real-child records.
+Reports identify their source revision, exact source-content snapshot, capture time and data/call scope. Behavior and RAG additionally bind their datasets; the practice snapshot includes its versioned scenario runner and expected outcomes.
 
 ## Adding a case
 
@@ -54,3 +55,10 @@ RAG gold labels are authored directly in `evals/rag/cases/synthetic-rag-v1.json`
 A grader is optional and never a source of truth. Before use, calibrate on at least 20 held-out items with human labels. Required minimums are accuracy 0.85, unsafe recall 0.90, and Cohen's kappa 0.60. Failed calibration means grader output is discarded. Even a calibrated grader cannot override `SAF-*`, `INP-*`, or `REC-*` deterministic failures.
 
 The bundled calibration file is a synthetic test of the calibration code, not evidence that any real model grader is calibrated.
+
+
+## Practice workflow gate
+
+`npm run eval:practice` executes 15 versioned synthetic scenarios for coached observations, valid/invalid expansion, retries, help-seeking, fresh items, premature review rejection, separate preview state, local replay, expiry, and adaptive help. Results are written to `evals/practice/results/latest.json` and `latest.md`, with a byte-identical browser copy at `public/practice-eval-report.json`.
+
+Cases were authored by Codex under the user-approved product brief. They use controlled clocks and synthetic answers; they are not independent teacher labels, a real delayed-retention study, or live-model evaluation. Core and browser-interaction tests also cover account/telemetry isolation, unavailable storage, and pause/reload behavior. The practice report participates in `npm run evidence` and `npm run evidence:verify` without relaxing the existing child-release gate.

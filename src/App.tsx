@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { ToastProvider } from './components/Toast'
 import ErrorBoundary from './components/ErrorBoundary'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
@@ -18,6 +18,7 @@ const ParentPage = lazy(() => import('./pages/ParentPage'))
 const ProgressPage = lazy(() => import('./pages/ProgressPage'))
 const WhiteboardSpikePage = lazy(() => import('./pages/WhiteboardSpikePage'))
 const SyntheticDemoPage = lazy(() => import('./pages/SyntheticDemoPage'))
+const PracticePage = lazy(() => import('./pages/PracticePage'))
 
 const syntheticDemoEnabled = import.meta.env.MODE === 'synthetic-demo'
 
@@ -55,13 +56,16 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  if (syntheticDemoEnabled) {
+  const { pathname } = useLocation()
+  // The public adult practice preview must not initialize accounts or call auth APIs.
+  if (syntheticDemoEnabled || /^\/practice\/?$/.test(pathname)) {
     return (
       <ToastProvider>
         <ErrorBoundary>
-          <Routes>
+          <Suspense fallback={<LoadingFallback />}><Routes>
+            <Route path="/practice" element={<PracticePage />} />
             <Route path="*" element={<SyntheticDemoPage />} />
-          </Routes>
+          </Routes></Suspense>
         </ErrorBoundary>
       </ToastProvider>
     )

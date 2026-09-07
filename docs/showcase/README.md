@@ -31,3 +31,8 @@ npm run demo
 Capture the local page at the routes and viewport recorded in `capture-manifest.json`. Select the RAG state from the on-page controls or use the documented `?rag=` query parameter.
 
 The capture manifest points to frozen `captured-*-report.json` inputs. They are historical screenshot provenance, not the current eval owner. Current results remain in `evals/` and `public/`; use the runnable demo to inspect the latest build.
+
+
+## Current practice entry
+
+The current showcase adds **Try the practice loop** linking to `/practice`. The historical images and capture manifest above remain frozen; they do not depict the new page. The new adult-only route uses preset teaching text and deterministic checks, with optional local progress. Its delayed-flow demonstration is isolated from actual practice observations. Use the runnable route and `evals/practice/results/latest.md` to review the current feature.

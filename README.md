@@ -2,9 +2,9 @@
 
 [![CI and deterministic evidence](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml)
 
-**A safety-first, textbook-RAG Socratic coach that guides reasoning without giving away answers.**
+**Socratic AI coaching with a visible practice → transfer → delayed-check loop.**
 
-ThinkBud turns a primary-school learner's question into a short coaching loop: ask for one cognitive action, check transfer, and block detected answer leakage before text reaches the learner. It combines multimodal input, a provider-neutral LLM gateway, default-off textbook RAG with citations, and reproducible deterministic evaluations.
+ThinkBud combines guarded Socratic chat, multimodal input, a provider-neutral LLM gateway, and default-off textbook RAG. Its new adult-only practice preview makes the learning loop explicit: guided steps, a separate no-hint transfer task, and a delayed check. Each stage records what happened without turning dialogue-derived signals into proven mastery.
 
 > **Product rule:** AI guides the thinking process; the learner owns the answer.
 
@@ -19,7 +19,9 @@ This repository is a working, reviewable prototype and product-evidence trail—
   <a href="#safety-and-release-boundary">Safety</a>
 </p>
 
-![ThinkBud synthetic evidence overview](docs/showcase/synthetic-evidence-overview.jpg)
+![Historical ThinkBud synthetic evidence overview, captured 2026-08-28](docs/showcase/synthetic-evidence-overview.jpg)
+
+The image is a historical AI-boundary showcase. Use the runnable **Practice loop** for the current interactive feature.
 
 [Inspect the product states and capture provenance](docs/showcase/README.md).
 
@@ -30,7 +32,7 @@ npm ci
 npm run demo
 ```
 
-Open the printed local URL. Synthetic demo mode needs no account, provider credential, paid API, real learner record, or real textbook. It shows the coaching loop beside the deterministic release evidence that produced it.
+Open the printed local URL and select **Try the practice loop**, or navigate to `/practice`. The adult-only preview needs no account, provider credential, paid API, real learner record, or real textbook. The original synthetic AI-boundary showcase remains at `/showcase`.
 
 For a fast code review, start here:
 
@@ -46,7 +48,20 @@ For a fast code review, start here:
 
 ## Focused product question
 
-The next learning loop is grade-4 distributive-property practice: a coached step, an independent transfer item, and a delayed equivalent item. The initial study remains adult-only role-play; see the [pilot protocol](docs/FIELD_PILOT_PROTOCOL.md). Dialogue-derived knowledge labels are explicitly unverified observations. Additional modalities and subjects are secondary to demonstrating that this loop helps learning.
+The implemented slice is grade-4 distributive-property practice: four coached steps, two independent transfer steps, and two delayed-check steps on another item. It is a deterministic, adult-only product-workflow preview; its teaching prompts are preset rather than live-model output. The existing AI chat stack stays separate. These fixed integer items measure scaffolded near-transfer, not free-form or far-transfer ability. The 24-hour interval is a product default awaiting educational review. The [pilot protocol](docs/FIELD_PILOT_PROTOCOL.md) explains how a future adult role-play review can assess the teaching policy; no learning improvement is claimed.
+
+## Practice, transfer, and delayed observation
+
+- **Help adapts to difficulty.** After two incorrect attempts at a coached step, the selected policy either gives a one-step prompt or explains the idea with a different worked example. The displayed help is recorded.
+- **Transfer has its own boundary.** The learner expands a new expression, then calculates its result. Equivalent factor/term order is accepted. A correct final number alone does not complete the check. Retries remain visible; asking for help records an unfinished check and returns to coaching with fresh items.
+- **Delay is enforced.** A formal review opens 24 hours after transfer completion according to the device clock. The review-flow preview uses a separate item and cannot change the real waiting period, records, or export.
+- **Observations stay separate.** Guided completion, a first completion without in-app hints, retry completion, and help-seeking are distinct records. They do not update BKT, inferred mastery, account records, or parent reports.
+- **Progress is optional and local.** Users may keep submitted numeric steps on the device for a seven-day validity period. Reload replays and validates the event history; malformed, future-dated, expired, and forged-state records are rejected. Pause/resume preserves current-page input. Storage failures leave the in-memory workflow usable.
+- **Records can be inspected.** A local JSON export contains stage outcomes, unfinished-task counts, assistance counts, timestamps, and explicit prototype limitations. It excludes raw numeric attempts and all preview outcomes.
+
+A short review: choose a help policy, deliberately make two mistakes in a coached step, inspect the different-example response, finish the guided and transfer items, then preview the delayed flow. The real delayed check must remain pending. Reload with local saving enabled to inspect recovery.
+
+[Practice evaluation](evals/practice/results/latest.md) · [State machine](src/lib/practice.ts) · [Interaction tests](src/pages/__tests__/PracticePage.test.tsx)
 
 ## Product mechanism
 
@@ -56,7 +71,7 @@ The next learning loop is grade-4 distributive-property practice: a coached step
 4. Textbook RAG, when explicitly enabled and fully configured, retrieves filtered chunks and attaches structured citation metadata as untrusted context. Disabled, incomplete, failed, or empty retrieval falls back to non-RAG chat.
 5. A provider-neutral LLM gateway records completion/stream, timing, usage, timeout, and error metadata while provider keys remain server-side.
 6. The text turn is buffered and the blocking output guard runs **last**. Detected answer, indirect-answer, or worked-step leakage is replaced with a safe question before SSE display, persistence, or TTS.
-7. The learner explains a step; a transfer question checks whether the idea can be reused before the session updates learning evidence.
+7. Everyday chat retains user-triggered variation questions. The opt-in practice route separately controls coached steps, no-hint transfer, delayed review, and typed observations; its local records do not update chat-inferred learning state.
 
 ```mermaid
 flowchart LR
@@ -82,7 +97,7 @@ The default-off textbook path contains no real textbook, production embedding mo
 The public evidence is intentionally synthetic and reproducible:
 
 ```text
-human-authored fixtures + expected outcomes
+versioned synthetic fixtures + explicit expected outcomes
         ↓
 deterministic behavior and RAG runners
         ↓
@@ -122,7 +137,8 @@ Passing these deterministic gates proves only that the encoded mechanisms behave
 | RAG | Deterministic ingestion, readiness contract, filters, budgets, dedupe, citations, untrusted context, failure fallback | Default-off; synthetic corpus and fake embedding/store only |
 | LLM | Provider-neutral gateway plus Ark adapter and offline fake provider | No public live-model evidence or bundled provider credentials |
 | Voice | STT/TTS path and RTC failure recovery | Managed RTC bypasses the text guard and stays disabled |
-| Learning evidence | BKT, knowledge signals, learner/parent views | Prototype data model; no validated learning impact |
+| Practice workflow | Adaptive preset coaching, no-hint transfer, delayed gate, optional local resume, observation export | Adult-only, synthetic questions, device-clock timing; no live teaching or learning-impact claim |
+| Learning signals | BKT, dialogue-derived knowledge signals, learner/parent views | Separate from practice observations; no validated learning impact |
 | Privacy/security | Auth boundaries, rate limits, CSP, input sanitization, public safety docs | No approved DPIA, complete consent/notice, retention/deletion, vendor review, or admin hardening |
 
 ## Product ownership and AI collaboration
@@ -195,4 +211,15 @@ No open-source license is granted. The source is public for portfolio review and
 
 ## Audit acceptance · 2026-09-05
 
-Locally verified: 408 tests passed with 2 existing skips; lint, typecheck, production build, 38 behavior cases, 14 RAG cases and current source-content consistency passed. Cross-account SQL writes and pre-provider rejection have regression coverage. Parent-facing knowledge labels now describe dialogue observations rather than independently proven mastery. No change was committed, pushed or deployed during this repair; the public GitHub run remains the older failed run until publication. The separate full release remains blocked on its existing human/live/privacy/license requirements.
+Locally verified: 408 tests passed with 2 existing skips; lint, typecheck, production build, 38 behavior cases, 14 RAG cases and current source-content consistency passed. Cross-account SQL writes and pre-provider rejection have regression coverage. Parent-facing knowledge labels now describe dialogue observations rather than independently proven mastery. That repair was subsequently published as `d8330f1`; CI status should be read from the commit-specific GitHub run. No production deployment was included. The separate full release remains blocked on its existing human/live/privacy/license requirements.
+
+
+## Practice workflow acceptance · 2026-09-07
+
+The user selected the focused learning loop and authorized this public implementation. Codex implemented the state machine, interface, synthetic scenarios, tests, and documentation. This slice demonstrates an inspectable product mechanism; it is not independent user capability evidence or a study result.
+
+Local engineering verification: 426 tests passed with 2 existing skips; the 38-case behavior gate, 14-case RAG gate, and 15-case practice gate passed. Lint, TypeScript, production and synthetic-demo builds passed. Desktop and 390px browser QA passed: adaptive help, guided/transfer completion, isolated review preview, local reload recovery, and a downloaded observation export were exercised. The mobile layout had no horizontal overflow. Evidence reports identify the source-content snapshot and disclose capture from the working tree. Historical screenshot provenance remains unchanged.
+
+Dependency audit passed the CI high-severity threshold; two pre-existing moderate development-dependency advisories remain (`@humanfs/node` and `qs`). No dependency version was changed in this slice.
+
+The child-facing deployment, live-model teaching quality, independent teacher review, textbook rights, and learning-effect gates remain separate and unresolved. They do not prevent publishing this explicitly bounded public prototype.

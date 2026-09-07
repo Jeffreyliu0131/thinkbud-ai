@@ -85,3 +85,18 @@ The Cloudflare Vectorize class is an adapter/schema contract, not deployment evi
 Chat awaits conversation creation and ownership verification before provider calls or asynchronous work. Message insertion uses a user-scoped SQL predicate and an atomic D1 batch for its counter. A known conversation ID is never authorization.
 
 Evidence records the actual Git base plus a hash of the evaluated file contents. A capture from uncommitted sources remains explicitly `sourceDirty=true`; content verification is not a claim that those changes were committed. Historical screenshots retain their original report bytes and capture date. Live-model, independent-human and child-release gates remain unchanged.
+
+
+## Adult-only practice preview · 2026-09-07
+
+`/practice` is a public local preview in both regular and synthetic-demo builds. It branches before `AuthProvider`; neither account initialization nor production error telemetry runs for this route. The main AI chat gateway, output guard, RTC default, RAG default, and BKT update path retain their existing behavior.
+
+`src/lib/practice.ts` owns a deterministic event-replayed state machine: coached steps → transfer-ready → no-hint transfer → waiting → delayed check → completion. A wrong coached attempt remains an attempt; after two errors the selected policy exposes a hint or a different example and records that help. Independent checks validate both distributive structure and the final number. A hint action in a check is rejected; seeking help records the unfinished attempt and selects a fresh coached/transfer pair. The finite item bank ends explicitly rather than silently reusing a supposedly unseen item.
+
+Every action carries a timestamp and, for answers, the active task ID and step. Old-step submissions, non-integers, unknown actions, reversed timestamps, and premature delayed checks fail closed. The formal delay is 24 hours on the device clock. That clock and editable local storage are not independent study evidence or tamper-resistant records.
+
+`PracticePage` owns an opt-in device-local session under `thinkbud:adult-practice-preview:v1`. Only bounded numeric attempts, help/control events, policy and timestamps are stored. There are no identifiers, free-text notes, accounts, provider calls or BKT writes. A seven-day validity limit and replay validation apply on restore; unavailable or full storage preserves the in-memory experience. Clearing touches only this preview's key. Raw unfinished input stays in the page, including across pause, but is not persisted.
+
+The delayed-flow preview has a separate item and React state. It never appends an event to the real session. Downloads contain computed observation records and limitations, omit raw attempt values, and mark preview results as excluded. Displayed outcomes describe coached completion, first completion without in-app hints, completion after retry, or help-seeking; none is labeled proven mastery.
+
+The new practice eval records source hashes for the workflow, UI, interaction tests and runner. `evidence:verify` checks its current source snapshot and public/canonical report pair alongside behavior and RAG evidence. No live-model or human-quality claim is inferred from these deterministic cases.

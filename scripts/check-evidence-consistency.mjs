@@ -40,12 +40,13 @@ async function snapshotHash(files) {
 const head = git(['rev-parse', 'HEAD'])
 const behavior = await json('evals/results/latest.json')
 const rag = await json('evals/rag/results/latest.json')
+const practice = await json('evals/practice/results/latest.json')
 const publicBehavior = await bytes('public/eval-report.json')
 const publicRag = await bytes('public/rag-eval-report.json')
 const behaviorBytes = await bytes('evals/results/latest.json')
 const ragBytes = await bytes('evals/rag/results/latest.json')
 
-for (const [label, report] of [['behavior', behavior], ['RAG', rag]]) {
+for (const [label, report] of [['behavior', behavior], ['RAG', rag], ['practice', practice]]) {
   check(/^[a-f0-9]{40}$/.test(report.sourceCommit ?? ''), `${label} must name its Git base revision`)
   check(typeof report.sourceDirty === 'boolean', `${label} must disclose capture working-tree status`)
   try { git(['cat-file', '-e', `${report.sourceCommit}^{commit}`]) }
@@ -62,6 +63,9 @@ for (const [label, report] of [['behavior', behavior], ['RAG', rag]]) {
 
 check(Buffer.compare(publicBehavior, behaviorBytes) === 0, 'public/eval-report.json must match evals/results/latest.json byte-for-byte')
 check(Buffer.compare(publicRag, ragBytes) === 0, 'public/rag-eval-report.json must match evals/rag/results/latest.json byte-for-byte')
+check(Buffer.compare(await bytes('public/practice-eval-report.json'), await bytes('evals/practice/results/latest.json')) === 0, 'public/practice-eval-report.json must match its canonical report byte-for-byte')
+const practiceMarkdown = await readFile(path.join(root, 'evals/practice/results/latest.md'), 'utf8')
+check(practiceMarkdown.includes(`Source commit: \`${practice.sourceCommit}\``), 'practice Markdown source commit is inconsistent')
 
 const behaviorMarkdown = await readFile(path.join(root, 'evals/results/latest.md'), 'utf8')
 const ragMarkdown = await readFile(path.join(root, 'evals/rag/results/latest.md'), 'utf8')
@@ -91,4 +95,5 @@ if (failures.length > 0) {
 } else {
   console.log(`Evidence consistency: PASS (content snapshots verified against working tree at base ${head.slice(0, 8)})`)
   console.log(`Behavior ${behavior.summary.matched}/${behavior.summary.total}; RAG ${rag.summary.passed}/${rag.summary.total}; captured sourceDirty=${behavior.sourceDirty}/${rag.sourceDirty}`)
+  console.log(`Practice ${practice.summary.passed}/${practice.summary.total}; captured sourceDirty=${practice.sourceDirty}; synthetic workflow evidence only`)
 }
