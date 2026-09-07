@@ -2,28 +2,21 @@
 
 [![CI and deterministic evidence](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml)
 
-**Socratic AI coaching with a visible practice → transfer → delayed-check loop.**
+**Help the learner think. Then check what they can do without help.**
 
-ThinkBud combines guarded Socratic chat, multimodal input, a provider-neutral LLM gateway, and default-off textbook RAG. Its new adult-only practice preview makes the learning loop explicit: guided steps, a separate no-hint transfer task, and a delayed check. Each stage records what happened without turning dialogue-derived signals into proven mastery.
+ThinkBud is an AI coaching prototype for primary-school maths. Its central product question is whether completing a problem with help translates into solving a new one independently.
 
-> **Product rule:** AI guides the thinking process; the learner owns the answer.
+The current adult-only preview makes that distinction visible: guided practice, a separate transfer task, and a delayed check. Preset teaching prompts and deterministic checks demonstrate the workflow; learning improvement has not been measured. The guarded AI chat, OCR, and optional textbook RAG are separate paths.
 
-This repository is a working, reviewable prototype and product-evidence trail—not evidence of product-market fit, measured learning outcomes, a production-safe child deployment, or a live textbook corpus.
+[**Product decisions**](docs/CASE_STUDY.md) · [**Run the demo**](#quick-start) · [Practice evidence](evals/practice/results/latest.md) · [Architecture](docs/ARCHITECTURE.md)
 
-<p align="center">
-  <a href="#quick-start">Quick start</a> ·
-  <a href="docs/showcase/README.md">Showcase</a> ·
-  <a href="docs/TEXTBOOK_RAG.md">Textbook RAG</a> ·
-  <a href="docs/ARCHITECTURE.md">Architecture</a> ·
-  <a href="#evidence-chain">Evidence</a> ·
-  <a href="#safety-and-release-boundary">Safety</a>
-</p>
+**Key choice:** record guided completion, independent attempts, and requests for help separately. A completed conversation does not establish mastery.
+
+**Status:** working prototype. The practice preview is for adults; live teaching quality, learning outcomes, and child-facing release remain unvalidated. [Release boundary](#safety-and-release-boundary).
 
 ![Historical ThinkBud synthetic evidence overview, captured 2026-08-28](docs/showcase/synthetic-evidence-overview.jpg)
 
-The image is a historical AI-boundary showcase. Use the runnable **Practice loop** for the current interactive feature.
-
-[Inspect the product states and capture provenance](docs/showcase/README.md).
+[Historical screenshots and capture provenance](docs/showcase/README.md). This earlier showcase does not depict the current practice page.
 
 ## Quick start
 
