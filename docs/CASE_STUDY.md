@@ -4,6 +4,8 @@
 
 ThinkBud is a Chinese-language homework-thinking coach for primary students. Its differentiation is a constraint: the AI should guide attention and reasoning without providing the answer or complete steps. The existing prototype covered OCR, text/voice interaction, RTC, grade/subject prompts, persistence, and learning-state features.
 
+The explicit subject policies cover Chinese, maths, and English. The maths-focused policy examples and `/practice` demonstration below are subsets of that product. See [product scope and current coverage](../README.md#product-scope-and-current-coverage) for supported policy modules, routing limitations, and the distinction between model generalisation and verified teaching.
+
 The product risk was that a strong prompt and a large test count could create false confidence. A child can be exposed to one leaked answer before a post-hoc log catches it; an application can be “green” while lint, privacy, live behavior, and deployment approval are outside CI.
 
 ## Product and architecture decisions

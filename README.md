@@ -4,7 +4,7 @@
 
 **Help the learner think. Then check what they can do without help.**
 
-ThinkBud is an AI coaching prototype for primary-school maths. Its central product question is whether completing a problem with help translates into solving a new one independently.
+ThinkBud is an AI learning and thinking coach prototype for primary-school Chinese, maths, and English. It helps learners work through homework, explain their thinking, and develop understanding through guided dialogue. Its subject-specific prompts adapt the kind of help to the task; completing a problem with help is not treated as proof of independent mastery.
 
 The current adult-only preview makes that distinction visible: guided practice, a separate transfer task, and a delayed check. Preset teaching prompts and deterministic checks demonstrate the workflow; learning improvement has not been measured. The guarded AI chat, OCR, and optional textbook RAG are separate paths.
 
@@ -41,7 +41,32 @@ For a fast code review, start here:
 
 ## Focused product question
 
+This section describes the maths-only `/practice` demonstration, not the scope of the whole product. The multi-subject chat policy and this deterministic preview are separate paths.
+
 The implemented slice is grade-4 distributive-property practice: four coached steps, two independent transfer steps, and two delayed-check steps on another item. It is a deterministic, adult-only product-workflow preview; its teaching prompts are preset rather than live-model output. The existing AI chat stack stays separate. These fixed integer items measure scaffolded near-transfer, not free-form or far-transfer ability. The 24-hour interval is a product default awaiting educational review. The [pilot protocol](docs/FIELD_PILOT_PROTOCOL.md) explains how a future adult role-play review can assess the teaching policy; no learning improvement is claimed.
+
+## Product scope and current coverage
+
+Scope checked against this public snapshot and clarified by the owner on 2026-09-15. **ThinkBud is not restricted to maths.** This section owns the scope distinction used by portfolio and career materials; dated demo/evaluation records keep their original, narrower meaning.
+
+| Layer | Current scope | What the evidence supports |
+|---|---|---|
+| Product purpose | Help primary-school learners understand homework and practise their own reasoning and expression through small-step dialogue | A product goal, not a measured learning outcome |
+| Explicit subject policies | Chinese: pinyin, vocabulary, reading, sentence work and writing structure; maths: arithmetic, word problems, geometry and fractions; English: phonics/spelling, grammar, reading, cloze and translation scaffolding | Separate [subject modules](functions/_shared/prompt/subjects/) are assembled by the [server prompt builder](functions/_shared/prompt/index.ts) for grades 1–3 and 4–6 |
+| Task-specific help | Chinese writing can receive a structure but not generated answer sentences; English definitions and grammar rules may be given directly while the learner applies them | The product cannot be accurately summarised as “never give any information” or “every subject ends in an arithmetic-style transfer test” |
+| Maths demonstration | `/practice` contains a fixed grade-4 arithmetic learning loop for adult review | Demonstrates that particular workflow only; it does not define all ThinkBud subjects |
+| Wider generalisation | The owner wants the shared thinking-coach approach to transfer beyond these three subjects | Potential to explore with a general-purpose model; no additional subject adapter, age group, curriculum coverage or reliable teaching outcome is established |
+
+### Implementation gaps relevant to scope
+
+- The chat and RTC APIs accept only `math`, `chinese`, and `english`. An omitted subject defaults to maths; an unsupported explicit subject is rejected. There is no implemented `general` subject mode.
+- [ChatPage](src/pages/ChatPage.tsx) infers the prompt subject from OCR through [a character-count heuristic](src/lib/detectSubject.ts). Empty/short text can fall back to maths, and Chinese prose is not necessarily a Chinese-language homework question. This is not a validated subject classifier or a guarantee of correct routing for speech-only and mixed-subject sessions.
+- The [session block](functions/_shared/prompt/session-manager.ts) asks the model to adjust between subjects, but the prompt builder injects only one subject toolbox at a time. This instruction does not prove that all subject-specific rules are reloaded at each topic change.
+- The shared core and grade adapters still contain many maths examples. Their fit with writing and language tasks needs a separate review; the presence of three subject modules does not prove equally good teaching across them.
+- Existing grade adapters cover grades 1–6. The early PRD's broader school-age/general-subject ambition and an adult testing audience do not establish a supported secondary-school or adult-learning product.
+- The 2026-09-15 focused check passed 45 existing prompt tests across two files. These check prompt construction and encoded rules, with no live-model calls or real learner outcomes.
+
+This correction changes documentation and the scope claim. It does not silently change routing, prompts, release gates, or the deployed product.
 
 ## Practice, transfer, and delayed observation
 
