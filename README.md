@@ -1,24 +1,36 @@
 # ThinkBud
 
-[![CI and deterministic evidence](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml)
-
 **Help the learner think. Then check what they can do without help.**
 
-ThinkBud is an AI learning and thinking coach prototype for primary-school Chinese, maths, and English. It helps learners work through homework, explain their thinking, and develop understanding through guided dialogue. Its subject-specific prompts adapt the kind of help to the task; completing a problem with help is not treated as proof of independent mastery.
+### [Try the live demo · 在线体验 →](https://jeffreyliu0131.github.io/thinkbud-ai/)
 
-The current public candidate is an interactive static frontend: enter answers, receive preset help, retry, complete a separate transfer task, and preview the delayed check. The browser really runs the workflow; it does not call a live model. Learning improvement has not been measured. The retained AI chat, OCR, and textbook-RAG service code is a separate, unserved path.
+**About 3 minutes · Chinese / English · No account or installation needed**
 
-[**Static demo operations**](docs/OPERATIONS.md) · [**Product decisions**](docs/CASE_STUDY.md) · [**Run the demo**](#quick-start) · [Practice evidence](evals/practice/results/latest.md) · [Architecture](docs/ARCHITECTURE.md)
+[Start a maths exercise](https://jeffreyliu0131.github.io/thinkbud-ai/#/practice) · [90-second walkthrough](docs/DEMO_90_SECONDS.md) · [Product decisions](docs/CASE_STUDY.md)
 
-**Key choice:** record guided completion, independent attempts, and requests for help separately. A completed conversation does not establish mastery.
+ThinkBud is an AI learning and thinking coach prototype for primary-school **Chinese, maths, and English**. Its product goal is to help learners work through homework and explain their reasoning through guided dialogue. The online demo lets you try one concrete slice: **grade-4 maths practice**, from guided steps to a new problem without in-app hints.
 
-**Status:** working prototype. The practice preview is for adults; live teaching quality, learning outcomes, and child-facing release remain unvalidated. [Release boundary](#safety-and-release-boundary).
+The demo follows your browser's Chinese or English language preference, with a manual language switch. Answers, feedback, progress and optional local recovery really work; questions and coaching are preset. It runs on **GitHub Pages**, without live AI, account or backend services. This is an adult role-play demonstration; learning outcomes and child-facing release remain unvalidated. [Scope and coverage](#product-scope-and-current-coverage) · [Release boundary](#safety-and-release-boundary).
 
-![ThinkBud interactive static demo, locally accepted 2026-09-21](docs/showcase/2026-09-21/19-bilingual-home-final.png)
+[![ThinkBud bilingual interactive demo — click to try it online](docs/showcase/2026-09-21/19-bilingual-home-final.png)](https://jeffreyliu0131.github.io/thinkbud-ai/)
 
-[Current flow screenshots and capture provenance](docs/showcase/README.md) · [90-second walkthrough](docs/DEMO_90_SECONDS.md)
+### What to try
+
+1. **Work through a guided problem.** Try an incorrect answer or ask for help to see how the next step changes.
+2. **Solve a new problem independently.** Retries and requests for help remain visible in the observations.
+3. **Preview the later check.** The immediate preview stays separate from the formal 24-hour check.
+
+**Key product choice:** record guided completion, independent attempts, and help separately. Finishing a problem with support is not evidence of independent mastery.
+
+### Explore the project
+
+[Product decisions](docs/CASE_STUDY.md) · [Architecture](docs/ARCHITECTURE.md) · [Practice evidence](evals/practice/results/latest.md) · [Screenshots](docs/showcase/README.md) · [Run locally](#quick-start) · [Deployment guide](docs/OPERATIONS.md)
+
+[![CI and deterministic evidence](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/workflows/ci.yml)
 
 ## Quick start
+
+**For local development.** To try the published demo in your browser, use [the online experience](https://jeffreyliu0131.github.io/thinkbud-ai/) above.
 
 ```bash
 npm ci
@@ -273,7 +285,7 @@ UI refinement uses the existing visual style: a shared language control, a short
 
 Verification: 11 locale/preference tests and 10 existing/extended page interaction tests passed, alongside TypeScript, changed-code ESLint, static build/package checks and source/report consistency. The browser's current system setting selected Chinese; switching to English survived reload and navigation. English guided practice, repeated mistakes, mid-answer language switching, independent transfer and the isolated review preview were exercised on desktop and at 390px/320px. Observation counts, pending formal review and local recovery stayed intact. English retrieval states and their labels also worked. Browser validation used the current dark theme; a physical mobile device and screen reader were not used.
 
-As rechecked during this refinement, the public repository still points to `620b2fd`, has no homepage configured and returns no GitHub deployment records. This task has not deployed this version to Vercel or another public host. `127.0.0.1` is a local preview, not a link another visitor can use. The existing prepared publication configuration targets GitHub Pages; choosing and publishing to Vercel remains a separate explicit action.
+This refinement was first accepted locally against public base `620b2fd`, before the online demo was published. That historical checkpoint is superseded by the GitHub Pages publication recorded below. `127.0.0.1` remains a local preview address; visitors should use [the published demo](https://jeffreyliu0131.github.io/thinkbud-ai/).
 
 ## Static publication verification · 2026-09-21
 
