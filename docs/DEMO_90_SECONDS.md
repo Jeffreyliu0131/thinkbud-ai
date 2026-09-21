@@ -4,12 +4,9 @@
 
 ## 演示前
 
-```bash
-npm ci
-npm run demo
-```
+直接打开[已发布的产品与流程展示](https://jeffreyliu0131.github.io/thinkbud-ai/)，或进入[数学交互练习](https://jeffreyliu0131.github.io/thinkbud-ai/#/practice)。不需要安装、账号或真实后台。需要从源码本地复现时，按 [README 的静态构建与预览步骤](../README.md#quick-start)操作。
 
-打开 Vite 打印的本机地址。页面默认跟随浏览器语言，也可在页头选择 **中文 / English / 跟随系统**。点击 **开始数学体验 / Try the maths demo**。确认成人体验，保留默认“连续两次困难后，换例子解释”。需要演示刷新恢复时勾选本机保存；重新演示使用页面的“清除本次记录并重新开始”。GitHub Pages 候选的入口为 `/thinkbud-ai/#/practice`，目前没有已发布线上版本。
+页面默认跟随浏览器语言，也可在页头选择 **中文 / English / 跟随系统**。点击 **开始数学体验 / Try the maths demo**。确认成人体验，保留默认“连续两次困难后，换例子解释”。需要演示刷新恢复时勾选本机保存；重新演示使用页面的“清除本次记录并重新开始”。以下步骤只验证预设的浏览器交互，不是登录、语音或真实 AI 服务的使用教程。
 
 ## 现场顺序
 
@@ -27,7 +24,7 @@ npm run demo
 - **手机：** 在 390px 和 320px 宽度检查首页、四格展开式和提交按钮；输入框有标签，页面可缩放，无页面横向溢出。
 - **报告与深链：** `/#/?rag=degraded` 刷新后保持预设故障选择；未知路由回首页。实际报告 URL 必须是对应 base 下的 200 JSON。报告损坏或 503 时，界面提示错误并可重试，数学体验仍可进入。
 
-[当前验收结果与精确候选版本](../README.md#static-demo-acceptance-and-publication-status--2026-09-21) · [截图](showcase/README.md) · [运行方法](OPERATIONS.md)
+[当前验收结果与发布版本](../README.md#static-publication-verification--2026-09-21) · [截图](showcase/README.md) · [运行方法](OPERATIONS.md)
 
 ## 双语验收补充
 

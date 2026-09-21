@@ -23,12 +23,9 @@ These are historical 2026-08-28 browser captures of ThinkBud's real `synthetic-d
 
 ## Reproduce
 
-```bash
-npm ci
-npm run demo
-```
+For the current page, follow [the README's static build-and-preview steps](../../README.md#quick-start). They run without a live backend. The older `npm run demo` development shortcut is not the complete reproduction path because report JSON is not served correctly in that mode.
 
-Capture the local page at the routes and viewport recorded in `capture-manifest.json`. Select the RAG state from the on-page controls or use the documented `?rag=` query parameter.
+Historical screenshots above belong to their frozen commit, routes and viewport in `capture-manifest.json`; today's source is not expected to recreate those pixels. For current captures, use `/thinkbud-ai/#/showcase` and select a preset RAG state from the page, or use a hash-route query such as `/thinkbud-ai/#/?rag=degraded`.
 
 The capture manifest points to frozen `captured-*-report.json` inputs. They are historical screenshot provenance, not the current eval owner. Current results remain in `evals/` and `public/`; use the runnable demo to inspect the latest build.
 

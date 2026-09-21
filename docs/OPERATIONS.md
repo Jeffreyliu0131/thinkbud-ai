@@ -23,9 +23,9 @@ npm run demo:check
 npm run evidence:verify
 ```
 
-`demo:build` uses Vite's `synthetic-demo` mode, base `/thinkbud-ai/`, and a dedicated HashRouter entry. `dist-demo/` is the only deployable artifact. It contains built static assets, selected public icons, three synthetic reports and `build-info.json`. The stamp identifies the public Git base revision, whether build-source files are dirty, and a SHA-256 plus input-file list binding the exact uncommitted demo candidate; regenerated evidence output is not a source-code change. `demo:check` rejects server/runtime artifacts, service endpoint/camera code and root-relative asset paths escaping the project base, and checks report bytes against the source reports.
+`demo:build` uses Vite's `synthetic-demo` mode, base `/thinkbud-ai/`, and a dedicated HashRouter entry. `dist-demo/` is the only deployable artifact. It contains built static assets, selected public icons, three synthetic reports and `build-info.json`. The stamp identifies the public Git base revision, whether build-source files are dirty, and a SHA-256 plus input-file list binding the exact source snapshot; regenerated evidence output is not a source-code change. `demo:check` rejects server/runtime artifacts, service endpoint/camera code and root-relative asset paths escaping the project base, and checks report bytes against the source reports.
 
-For ordinary local preview, `npm run demo` serves the same mode at `/`. For a realistic Pages check, serve `dist-demo/` under **`/thinkbud-ai/`**, not the server root. Verify actual 200 JSON responses for both `/thinkbud-ai/eval-report.json` and `/thinkbud-ai/rag-eval-report.json`; an HTML fallback or 404 does not count as success.
+For a complete local preview, build the static package first and run `npm run preview -- --mode synthetic-demo --base=/thinkbud-ai/`. It serves `dist-demo/` under **`/thinkbud-ai/`**. The development shortcut `npm run demo` starts the UI but, with the current disabled Vite `publicDir`, report requests receive an HTML fallback rather than JSON; do not use it to validate the complete showcase. This limitation was reproduced on 2026-09-22. Verify actual 200 JSON responses for all three report files; an HTML fallback or 404 does not count as success.
 
 Canonical demo paths:
 
@@ -42,8 +42,8 @@ GitHub Pages is configured with GitHub Actions as its build source. The static d
 
 Only after the user explicitly authorizes publication of the reviewed candidate:
 
-1. Review the complete candidate against its declared public base and verify its snapshot hash. The independent acceptance checkout starts at public `620b2fd` and carries the candidate as uncommitted changes; it does not contain the earlier local consolidation commit. Commit/push only the explicitly approved source to public main; do not rewrite history or import private ancestors. Keep the old services untouched.
-2. In the public repository's **Settings → Pages**, select **GitHub Actions** as the build source. Reuse the repository; no Cloudflare credentials, new product repo or paid resource is needed. Preserve any existing environment protections; do not invent a third-party approval dependency.
+1. Review the complete candidate against the current public main and verify its snapshot hash. Commit/push only the explicitly approved source; do not rewrite history or import private ancestors. The `620b2fd` acceptance base described in historical records is not a required starting revision for future work. Keep the old services untouched.
+2. Confirm the existing **Settings → Pages** build source remains **GitHub Actions**. Reuse the configured repository; no Cloudflare credentials, new product repo or paid resource is needed. Preserve any existing environment protections; do not invent a third-party approval dependency.
 3. Record the approved exact main SHA and ensure its CI passes. Manually dispatch `.github/workflows/deploy-demo.yml` with `expected_sha` equal to that SHA. It checks the exact main revision, runs the engineering/evidence gate, builds/checks `dist-demo`, uploads only that directory and deploys with GitHub's built-in token/OIDC permissions. There is no push-triggered deployment and no custom deployment secret.
 4. Compare the live `build-info.json` source SHA to the workflow SHA, verify both report responses are JSON/200, then exercise the root, practice, hash deep-link refresh, section jumps, preset RAG state switching and narrow-screen layout. Check there are no service/API requests, camera/microphone prompts or login redirects. Do not treat a page 200 as a complete interaction check.
 5. Record the successful workflow/deployment URL and SHA in README. If the static release fails, redeploy a previously accepted static artifact/revision through the normal Pages workflow. Do not use or modify the old Cloudflare/Vercel service as a demo rollback target.
@@ -52,11 +52,11 @@ The initial independent acceptance stage was local-only. The owner subsequently 
 
 ## Original service boundary
 
-The existing backend code is retained for review and future authorized work. Its formal release gate, RTC default-off policy, RAG limitations and privacy/license/human/live-evidence requirements remain. Publishing the preset static demo neither clears those gates nor declares a real tutoring service launched. Cloudflare/Vercel, DB, accounts, runtime keys and the private repo are unchanged. No former publisher is disabled and no private history is made public.
+The existing backend code is retained for review and future authorized work. It is not loaded by the public walkthrough; no currently supported full-service runtime or verified turnkey setup is offered here. Its formal release gate, RTC default-off policy, RAG limitations and privacy/license/human/live-evidence requirements remain. Publishing the preset static demo neither clears those gates nor declares a real tutoring service launched. Cloudflare/Vercel, DB, accounts, runtime keys and the private repo are unchanged. No former publisher is disabled and no private history is made public; old endpoints have not been certified as an operational tutoring service.
 
 ## Independent acceptance reproduction · 2026-09-21
 
-The current candidate, findings, exact snapshot hash and verification limits are recorded in the [README acceptance section](../README.md#static-demo-acceptance-and-publication-status--2026-09-21). Follow the [interactive walkthrough](DEMO_90_SECONDS.md), then inspect the [captured states](showcase/README.md). These documents describe local acceptance, not an online launch.
+Historical acceptance findings and snapshot hashes are recorded in the [README acceptance section](../README.md#static-demo-acceptance-and-publication-status--2026-09-21); the later online release is recorded separately in [publication verification](../README.md#static-publication-verification--2026-09-21). Follow the [interactive walkthrough](DEMO_90_SECONDS.md), then inspect the [captured states](showcase/README.md). Local reproduction below concerns only the static showcase.
 
 A plain HTTP server can reproduce the Pages base without an SPA rewrite:
 

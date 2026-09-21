@@ -12,6 +12,16 @@ ThinkBud is an AI learning and thinking coach prototype for primary-school **Chi
 
 The demo follows your browser's Chinese or English language preference, with a manual language switch. Answers, feedback, progress and optional local recovery really work; questions and coaching are preset. It runs on **GitHub Pages**, without live AI, account or backend services. This is an adult role-play demonstration; learning outcomes and child-facing release remain unvalidated. [Scope and coverage](#product-scope-and-current-coverage) · [Release boundary](#safety-and-release-boundary).
 
+### What is available now
+
+| Entry | What a visitor can use |
+|---|---|
+| Product walkthrough | The published page explains the product, learning flow and implementation evidence. No installation is required. |
+| Interactive maths example | Preset questions, answer checks, feedback and local observations run in the browser. This flow does not need the original backend. |
+| Original AI service | Source for reviewing the chat, login, OCR, voice and storage design. These services are **not connected to the public walkthrough**; a currently supported live service or ready-to-use full-service setup is not provided here. |
+
+The service architecture and source-coverage sections below describe retained code, not features visitors can activate on the public page. Old Cloudflare/Vercel addresses are not the visitor entry point; their existence does not establish current end-to-end service operation.
+
 [![ThinkBud product walkthrough — click to view the product and learning flow](docs/showcase/2026-09-21/19-bilingual-home-final.png)](https://jeffreyliu0131.github.io/thinkbud-ai/)
 
 ### Inside the interactive maths example
@@ -30,14 +40,22 @@ The demo follows your browser's Chinese or English language preference, with a m
 
 ## Quick start
 
-**For local development.** To view the product and learning flow in your browser, use [the product walkthrough](https://jeffreyliu0131.github.io/thinkbud-ai/) above.
+**For reproducing the static showcase locally.** Most visitors can simply open [the product walkthrough](https://jeffreyliu0131.github.io/thinkbud-ai/). The commands below require Git and Node.js 22; they do not start an AI backend or require service credentials.
 
 ```bash
+git clone https://github.com/Jeffreyliu0131/thinkbud-ai.git
+cd thinkbud-ai
 npm ci
-npm run demo
+npm run demo:build
+npm run demo:check
+npm run preview -- --mode synthetic-demo --base=/thinkbud-ai/
 ```
 
-Open the printed local URL and select **开始数学体验**, or use the refreshable `/#/practice` deep link. The adult-only preview needs no account, provider credential, paid API, real learner record, or real textbook. The synthetic AI-boundary showcase is available at `/#/showcase` in demo mode.
+Open the printed URL ending in `/thinkbud-ai/`, then select **开始数学体验 / Try the maths demo**. The practice deep link is `/thinkbud-ai/#/practice`; the product overview is `/thinkbud-ai/#/showcase`. Questions and coaching are preset, with no live AI, account, SMS, OCR, voice or business database.
+
+This sequence was checked on 2026-09-22 from a fresh public checkout: installation, static build and package checks passed; all three reports returned JSON; guided practice, independent transfer and the isolated review preview were completed in a browser. No real model or service credential was used. The formal 24-hour check was not accelerated or counted as completed.
+
+Use this build-and-preview sequence for a complete local walkthrough. The development shortcut `npm run demo` currently starts the UI but does not serve the report JSON files correctly; it is not the recommended reproduction path.
 
 For a fast code review, start here:
 
@@ -95,6 +113,8 @@ A short review: choose a help policy, deliberately make two mistakes in a coache
 
 ## Product mechanism
 
+**Retained AI-service architecture, for source review.** This pipeline is separate from the published walkthrough and local static preview. The frontend commands above do not start these backend services.
+
 1. A learner provides a question through text or the camera/OCR path.
 2. Client history, OCR text, and learner context cross a shared untrusted-input boundary.
 3. The server builds the grade- and subject-aware coaching policy; the browser cannot supply a system role.
@@ -150,6 +170,8 @@ Passing these deterministic gates proves only that the encoded mechanisms behave
 
 ## Safety and release boundary
 
+The service-side controls below describe the retained implementation. They are not a claim that the full AI service is currently operating or available to visitors.
+
 - Text output is guarded before display and TTS; model-judge scores cannot override deterministic hard failures.
 - OCR, chat history, learner memory, and retrieved textbook excerpts are treated as untrusted data rather than privileged instructions.
 - `RAG_TEXTBOOK_ENABLED`, server `RTC_ENABLED` and browser `VITE_ENABLE_RTC` are false by default. Supported deployment builds force browser RTC off; token/start APIs independently reject calls while the server flag is off.
@@ -159,6 +181,8 @@ Passing these deterministic gates proves only that the encoded mechanisms behave
 - No real child/family/teacher data, real textbook content, production identifiers, or credentials belong in this repository or its public issues.
 
 ## What is implemented—and what is not
+
+This is a source-coverage table. Use [What is available now](#what-is-available-now) to distinguish code that can be inspected from functionality available on the published page.
 
 | Area | Implemented evidence | Honest limit |
 |---|---|---|
@@ -179,7 +203,7 @@ That division matters: repository activity or agent-generated prose is not treat
 
 ## Run and review locally
 
-Supported baseline: Node.js 22 and the committed npm lockfile.
+**Engineering checks; no live product service is started.** Use Node.js 22 and the committed lockfile. Run these inside the cloned repository; to view the static showcase, follow [Quick start](#quick-start).
 
 ```bash
 # Full deterministic engineering gate
@@ -192,17 +216,17 @@ npm run evidence:verify
 
 # Registry-backed dependency check
 npm audit --audit-level=high
-
-# Credential-free synthetic showcase build
-npm run demo:build
-
-# Expected to exit non-zero until human/legal/live evidence is complete
-npm run release:check
 ```
 
-For the credential-free demonstration, use `npm run demo`; for the original frontend, use `npm run dev`. Original server credentials belong in ignored `.dev.vars`; never prefix credentials with `VITE_`. No server setup is needed for the static publication.
+`npm run verify` checks code, synthetic behavior and buildability. Passing it does not establish live-model quality or a working hosted backend.
 
-Provider-backed routes require the reviewer's own server-side accounts and keys. Provider credentials are never required by the browser bundle and must remain in ignored environment files.
+The separate full-service gate, `npm run release:check`, is **expected to fail** while the human, rights, privacy and live-model requirements below remain unresolved. It is not a prerequisite for viewing the published walkthrough.
+
+### Inspecting the original service code
+
+`npm run dev` starts the original Vite frontend and proxies `/api` to `http://localhost:3001`; it does not start that backend. Login, real chat, OCR and voice therefore cannot be assumed to work after this command. Cloudflare development/deployment scripts are retained for maintainers, not offered as a one-command setup for visitors.
+
+Restoring a full service requires separate backend setup, platform/database bindings, provider accounts and configuration, and end-to-end validation. Adding an API key alone is not a verified setup procedure. Server credentials belong in ignored environment files such as `.dev.vars`, never browser-exposed `VITE_` variables. This documentation update does not restore or deploy those services.
 
 Offline Markdown/plain-text ingestion is available through `npm run rag:ingest -- ...`. It writes a manifest only; there is no public anonymous upload endpoint. A source without complete owner, provenance, license, and production authorization is explicitly non-production-ready.
 
@@ -223,7 +247,7 @@ Development continues on this repository’s `main`. The public deployment targe
 
 ## Current release blockers
 
-The engineering gate can pass while the product release remains blocked. The unresolved items require owner, legal/privacy, live-provider, or independent-human evidence and must not be auto-filled:
+**These concern the full AI service and child-facing release, not access to the published static walkthrough.** The engineering gate can pass while that service release remains blocked. The unresolved items require owner, legal/privacy, live-provider, or independent-human evidence and must not be auto-filled:
 
 1. explicit project-license choice and first-party rights confirmation;
 2. owner attestation for 11 tracked icons/illustrations/worklet/fixture assets;
