@@ -242,7 +242,7 @@ The child-facing deployment, live-model teaching quality, independent teacher re
 
 ## Static demo acceptance and publication status · 2026-09-21
 
-**Locally accepted for adult portfolio/interview demonstration. Not published.** The browser runs a real, bounded maths workflow; the teaching content is preset. This acceptance does not establish real AI tutoring, three-subject interactive coverage, learning outcomes, or child-release readiness.
+**Published static demo: [open ThinkBud](https://jeffreyliu0131.github.io/thinkbud-ai/). Accepted for adult portfolio/interview demonstration.** The browser runs a real, bounded maths workflow; the teaching content is preset. This acceptance does not establish real AI tutoring, three-subject interactive coverage, learning outcomes, or child-release readiness.
 
 | Layer | What actually works in this candidate | Inspectable basis |
 |---|---|---|
@@ -251,7 +251,7 @@ The child-facing deployment, live-model teaching quality, independent teacher re
 | Delayed observation | A device-clock 24-hour gate; an immediately usable separate preview that cannot complete or alter the formal check | [Practice mechanism](src/lib/practice.ts), [captured observation export](docs/showcase/2026-09-21/observations-first-attempt.json) |
 | Services outside this demo | Live models, accounts/SMS, camera/OCR, STT/TTS/RTC, business DB and real textbook retrieval are not loaded by the static entry | [Demo entry](src/DemoApp.tsx), [package boundary check](scripts/check-static-demo.mjs) |
 
-The accepted copy was reconstructed on public base `620b2fddcfded13cf8be2715e4c2b1f8cccc611e`. Before repair, its 299 non-ignored source files matched the prior candidate byte-for-byte, including untracked additions and removals. The prior candidate's local `acfdba3` commit was not imported into this checkout; only reviewed source bytes were carried over. This candidate remains uncommitted. Its exact demo-input SHA-256 is `2f655490649b3c5c25ad8cb722bfc8a586a9df40eee3590680eba8afb92e9352`, also checked by `demo:check` against `dist-demo/build-info.json`.
+The accepted copy was reconstructed on public base `620b2fddcfded13cf8be2715e4c2b1f8cccc611e`. Before repair, its 299 non-ignored source files matched the prior candidate byte-for-byte, including untracked additions and removals. The prior candidate's local `acfdba3` commit was not imported into this checkout; only reviewed source bytes were carried over. At local acceptance this candidate was uncommitted. Its pre-publication demo-input SHA-256 was `2f655490649b3c5c25ad8cb722bfc8a586a9df40eee3590680eba8afb92e9352`. The deployed version is identified by the live `build-info.json`.
 
 The independent browser review found and repaired three presentation/reliability issues: the engineering-heavy mixed-language entry hid the product story; a malformed report caused a blank page and missing reports gave developer-only instructions; stage completion lost keyboard focus. The entry now leads to the learning loop, technical evidence is optional, report loads are validated/bounded/retryable without blocking practice, and completion focus lands on the next-stage card. Mobile zoom is enabled and RAG choices fit a two-column narrow layout.
 
@@ -261,7 +261,7 @@ Initial acceptance validation passed: 14 core workflow tests and 9 page interact
 
 The served static entry has only two automatic report fetches, both under the same base. Its import graph contains no service entry; the package CSP restricts connections to the same origin. The observed local HTTP log contained static assets/reports only, and the normal browser run had no console/CSP errors. No live service/API was used. This check combines source/package inspection and HTTP/console evidence, not a claim of a separate network-panel trace.
 
-Limits: no physical-phone or screen-reader session was run; no real 24-hour longitudinal observation or teaching-effect study occurred. Controlled-clock tests cover the due-date mechanism. The original services, credentials, data, publishers and private repository remain outside this work. No commit, push, Pages configuration or deployment was performed. [Operations](docs/OPERATIONS.md) owns the eventual explicitly authorized publication and reproduction steps; [the walkthrough](docs/DEMO_90_SECONDS.md) is the interview entry.
+Limits: no physical-phone or screen-reader session was run; no real 24-hour longitudinal observation or teaching-effect study occurred. Controlled-clock tests cover the due-date mechanism. The original services, credentials, data, publishers and private repository remain outside this work. No commit, push, Pages configuration or deployment was performed during that local acceptance stage. [Operations](docs/OPERATIONS.md) owns the eventual explicitly authorized publication and reproduction steps; [the walkthrough](docs/DEMO_90_SECONDS.md) is the interview entry.
 
 ## Bilingual interface refinement · 2026-09-21
 
@@ -274,3 +274,9 @@ UI refinement uses the existing visual style: a shared language control, a short
 Verification: 11 locale/preference tests and 10 existing/extended page interaction tests passed, alongside TypeScript, changed-code ESLint, static build/package checks and source/report consistency. The browser's current system setting selected Chinese; switching to English survived reload and navigation. English guided practice, repeated mistakes, mid-answer language switching, independent transfer and the isolated review preview were exercised on desktop and at 390px/320px. Observation counts, pending formal review and local recovery stayed intact. English retrieval states and their labels also worked. Browser validation used the current dark theme; a physical mobile device and screen reader were not used.
 
 As rechecked during this refinement, the public repository still points to `620b2fd`, has no homepage configured and returns no GitHub deployment records. This task has not deployed this version to Vercel or another public host. `127.0.0.1` is a local preview, not a link another visitor can use. The existing prepared publication configuration targets GitHub Pages; choosing and publishing to Vercel remains a separate explicit action.
+
+## Static publication verification · 2026-09-21
+
+The bilingual interactive demo was published from `901586b2f3861e17312ca49435b6a86b16d04ee3` through the [successful Pages workflow](https://github.com/Jeffreyliu0131/thinkbud-ai/actions/runs/35616626386). Public CI also passed. The live [build information](https://jeffreyliu0131.github.io/thinkbud-ai/build-info.json) matches that exact commit with `sourceDirty=false`, static mode, and no backend or model calls. All three report URLs returned HTTP 200 JSON.
+
+Release verification passed 450 tests with 2 existing skips, lint, TypeScript, build, public/package boundaries and the 38/14/15 synthetic behavior/RAG/practice gates. Online browser checks covered the Chinese system default, English navigation into practice, incorrect-answer feedback, and switching to Chinese while preserving the entered answer and attempt counts. Earlier detailed local interaction and narrow-screen acceptance remains documented above. Real models, physical-device acceptance, learning outcomes and the original Cloudflare/Vercel service remain outside this static release.

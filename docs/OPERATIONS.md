@@ -38,7 +38,7 @@ Hash routing needs no server rewrite. Plain `/thinkbud-ai/practice` is not a sup
 
 ## Manual GitHub Pages publication
 
-As checked on 2026-09-21, the repository Pages API returns 404 (no Pages site configured). Expected URL after successful enablement/deployment: `https://jeffreyliu0131.github.io/thinkbud-ai/`. This is a planned target, **not a claimed live deployment**.
+GitHub Pages is configured with GitHub Actions as its build source. The static demo is live at `https://jeffreyliu0131.github.io/thinkbud-ai/`; the exact published source and verification are recorded in the README publication section.
 
 Only after the user explicitly authorizes publication of the reviewed candidate:
 
@@ -48,7 +48,7 @@ Only after the user explicitly authorizes publication of the reviewed candidate:
 4. Compare the live `build-info.json` source SHA to the workflow SHA, verify both report responses are JSON/200, then exercise the root, practice, hash deep-link refresh, section jumps, preset RAG state switching and narrow-screen layout. Check there are no service/API requests, camera/microphone prompts or login redirects. Do not treat a page 200 as a complete interaction check.
 5. Record the successful workflow/deployment URL and SHA in README. If the static release fails, redeploy a previously accepted static artifact/revision through the normal Pages workflow. Do not use or modify the old Cloudflare/Vercel service as a demo rollback target.
 
-The previous public push was rejected by automatic approval review; a cross-task instruction is not being used to retry or bypass it. The independent acceptance task authorizes local repair and verification only. It does not authorize commit, push, Pages settings or deployment. Source publication and live demo deployment must each be reported truthfully, separately from local verification.
+The initial independent acceptance stage was local-only. The owner subsequently authorized publication directly in the release task; source publication and the static Pages deployment were completed. Future publications still follow the explicit authorization and exact-source checks above.
 
 ## Original service boundary
 
