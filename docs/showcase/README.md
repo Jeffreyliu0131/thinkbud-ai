@@ -33,6 +33,44 @@ Capture the local page at the routes and viewport recorded in `capture-manifest.
 The capture manifest points to frozen `captured-*-report.json` inputs. They are historical screenshot provenance, not the current eval owner. Current results remain in `evals/` and `public/`; use the runnable demo to inspect the latest build.
 
 
-## Current practice entry
+## Initial interactive demo acceptance · 2026-09-21
 
-The current showcase adds **Try the practice loop** linking to `/practice`. The historical images and capture manifest above remain frozen; they do not depict the new page. The new adult-only route uses preset teaching text and deterministic checks, with optional local progress. Its delayed-flow demonstration is isolated from actual practice observations. Use the runnable route and `evals/practice/results/latest.md` to review the current feature.
+The current entry uses **开始数学体验** at `/thinkbud-ai/#/practice`. The historical images above remain frozen. The following screenshots were captured from the independent local review; they depict a running static build, with adult synthetic interactions and no live service. The exact source identity and file hashes are in [this capture manifest](2026-09-21/capture-manifest.json).
+
+1. **Entry — accepted.** Chinese product explanation, current maths scope and a direct practice CTA. Technical evidence is expandable.
+
+![Accepted desktop entry](2026-09-21/07-home.png)
+
+2. **Guided difficulty — accepted.** Two incorrect numeric answers produce a different worked example; mistakes and assistance remain in the observation panel.
+
+![Guided feedback and assistance counts](2026-09-21/09-guided-feedback.png)
+
+3. **Independent transfer — accepted at 320px.** Four labelled inputs and submission remain usable without horizontal page overflow; hints are replaced by an explicit return-to-practice action.
+
+![Narrow independent transfer](2026-09-21/10-mobile-transfer.png)
+
+4. **Review preview — accepted.** Preview completion leaves formal review waiting. This capture also distinguishes retry completion from guided completion.
+
+![Preview completion with formal observation still pending](2026-09-21/11-review-observations.png)
+
+5. **RAG simulation — accepted within its stated boundary.** The chosen failure state is labelled preset and removes the citation.
+
+![Preset retrieval failure](2026-09-21/12-rag-simulation.png)
+
+6. **Report failure — repaired and accepted.** A malformed report previously caused a blank screen. The repaired entry remains usable, exposes a retry, and makes no pass judgment without a report.
+
+![Recoverable malformed-report state](2026-09-21/08-report-error.png)
+
+These images support visual/interaction findings, not full accessibility compliance. Keyboard/Tab behavior, local recovery/export and HTTP responses were checked separately as documented in [the README](../../README.md#static-demo-acceptance-and-publication-status--2026-09-21). No physical phone, screen reader, real delayed learning outcome or teaching-quality study was used. [Downloaded synthetic observation JSON](2026-09-21/observations-first-attempt.json) records the first browser run; it excludes raw answers and preview results. All retained earlier `before` screenshots belong to this same review and show the initial candidate.
+
+## Bilingual UI refinement · 2026-09-21
+
+The latest interface follows browser/system language preferences and offers a local **System / 中文 / English** override. The screenshots below show actual browser captures in dark mode, not mockups. The earlier acceptance captures above remain as historical evidence of the first reviewed candidate.
+
+![Current Chinese homepage with automatic language selection](2026-09-21/19-bilingual-home-final.png)
+
+![Current English homepage](2026-09-21/15-bilingual-home-en.png)
+
+![English independent practice at 320px](2026-09-21/17-bilingual-mobile-en.png)
+
+The English walkthrough covered guided help, an unsubmitted answer surviving a language switch, independent completion and the later-check preview. The normal return to the overview now starts at the top. The final 320px homepage was also inspected after its overlapping header controls were repaired; incomplete captures from the screenshot backend were rejected and are not retained. The language resolver, preference persistence and blocked/full storage behaviour are covered by focused tests. Original reports/export keys remain unchanged. These captures do not add a supported English-subject teaching flow or establish an online deployment.

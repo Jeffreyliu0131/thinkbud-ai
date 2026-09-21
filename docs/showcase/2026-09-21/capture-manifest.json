@@ -1,0 +1,140 @@
+{
+  "date": "2026-09-21",
+  "environment": "local built static demo under /thinkbud-ai/; Codex in-app Chromium browser",
+  "publicBase": "620b2fddcfded13cf8be2715e4c2b1f8cccc611e",
+  "sourceDirty": true,
+  "acceptedDemoSourceSnapshotHash": "78c1d5329d01f658f28cc0684661752d760033f8aed899145ab4fb417345b6e9",
+  "priorCandidateHead": "acfdba3099e2b536252a84ea8a2e258f8f65c3e3",
+  "initialMatchedSourceFiles": 299,
+  "viewports": {
+    "desktop": [
+      1280,
+      800
+    ],
+    "narrow": [
+      390,
+      844
+    ],
+    "small": [
+      320,
+      844
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "01-before-home.png",
+      "sha256": "28f24466486a1d7dd5ae61de4a28cb50164dc3ad224a665d04977833bcebe6ae",
+      "phase": "before-repair"
+    },
+    {
+      "file": "02-before-practice.png",
+      "sha256": "89d96ced13169a2b5436d5724687d431df8560bf30001d01700a3871b583390f",
+      "phase": "before-repair"
+    },
+    {
+      "file": "03-before-feedback.png",
+      "sha256": "1b1baed3acc4672aed75457fea2aee32196a6cc15ed8eb80d258eeac76d62ea3",
+      "phase": "before-repair"
+    },
+    {
+      "file": "05-before-mobile.png",
+      "sha256": "0a5dbd34a5096699a2298d839a389371bd83457ef8c038ab7d38f6c75d1df15d",
+      "phase": "before-repair"
+    },
+    {
+      "file": "06-before-report-error.png",
+      "sha256": "3feda1912fecb9ee4717bef2018d9e6dc8a6111eabab9fffbd45ab50bc9636b7",
+      "phase": "before-repair"
+    },
+    {
+      "file": "07-home.png",
+      "sha256": "46641053fcdcba88c6ee163527bec5fe3dfede77f4224eb9fea3fa5c216291b5",
+      "phase": "accepted-after-repair"
+    },
+    {
+      "file": "08-report-error.png",
+      "sha256": "e19071554794058a3c7d77a8aa854fc6a34a10c6a339c20391d5722497b052e5",
+      "phase": "accepted-after-repair"
+    },
+    {
+      "file": "09-guided-feedback.png",
+      "sha256": "761ade65980e7ebf28b2893ad618edeb2fc557b5a7bacefde1a63d64b749d7a3",
+      "phase": "accepted-after-repair"
+    },
+    {
+      "file": "10-mobile-transfer.png",
+      "sha256": "5a5ea998c1ce6434016cac0ee99eaa067f8908512e1ad1fdb0aa29cb3576ce9c",
+      "phase": "accepted-after-repair"
+    },
+    {
+      "file": "11-review-observations.png",
+      "sha256": "19895c054ab4133daa92b9009d02a05686e069f1d2269f0d02c0725d58dae1e8",
+      "phase": "accepted-after-repair"
+    },
+    {
+      "file": "12-rag-simulation.png",
+      "sha256": "fbc0466efc35e9a5d1bc4bff851d41dbde9087ac6fb6c0d9803a68ee0928749e",
+      "phase": "accepted-after-repair"
+    }
+  ],
+  "notes": [
+    "Viewport captures were saved and inspected. The incorrect full-page capture was rejected.",
+    "06-before-report-error.png intentionally documents the reproduced white-screen defect on a local fault server.",
+    "08-report-error.png uses a separate local fault server; all accepted normal-flow screenshots use the normal candidate.",
+    "No real learner data, live model, physical phone, or real elapsed-24-hour outcome.",
+    "Automatic calls checked through served entry/import inspection, package CSP, local HTTP logs and console; no separate browser network-panel trace."
+  ],
+  "bilingualRefinement": {
+    "date": "2026-09-21",
+    "sourceSnapshotHash": "2f655490649b3c5c25ad8cb722bfc8a586a9df40eee3590680eba8afb92e9352",
+    "sourceDirty": true,
+    "theme": "system dark",
+    "viewports": {
+      "desktop": [
+        1280,
+        800
+      ],
+      "narrow": [
+        390,
+        844
+      ],
+      "small": [
+        320,
+        844
+      ]
+    },
+    "captures": [
+      {
+        "file": "13-before-bilingual.png",
+        "sha256": "f9ce6f59fe528f2b336dbbe12dffe00759c3f089c4f4a2e78ecf398d14a99f06",
+        "state": "before language refinement"
+      },
+      {
+        "file": "14-bilingual-home-system.png",
+        "sha256": "0fb2ee846b9c436d8484f24e782be210fdc8d03d4dbab02a7dcf4e5972545f1a",
+        "state": "intermediate system-language home"
+      },
+      {
+        "file": "15-bilingual-home-en.png",
+        "sha256": "18c9f67396017bc90a0ed4e02a9f9b11ede84734aa78df7fea7d48e2173f3e1b",
+        "state": "final English home"
+      },
+      {
+        "file": "16-bilingual-practice-en.png",
+        "sha256": "06a4378342e717927f6a7df9518de0cd0b3c18b122675f425530ead8e6af7f43",
+        "state": "English practice start"
+      },
+      {
+        "file": "17-bilingual-mobile-en.png",
+        "sha256": "bed4c13140142ceb312ca65730ebfcbf2bc03b2f56bd362658d5c6985316dd1b",
+        "state": "320px English transfer before the final label-wrap polish"
+      },
+      {
+        "file": "19-bilingual-home-final.png",
+        "sha256": "4e3c70165205cc712fd5dc2859e50395c2beea35a845be6b2455d02cb8d0293d",
+        "state": "final system-language Chinese home"
+      }
+    ],
+    "verification": "Language selection/persistence, in-progress input preservation, translated practice and review, 320px header repair, route scroll reset; no public deployment."
+  }
+}

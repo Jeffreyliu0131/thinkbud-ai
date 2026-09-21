@@ -24,6 +24,10 @@ const forbiddenPathRules = [
     matches: file => /(^|\/)\.decisiontrace\/(?:cache|reports)(\/|$)/.test(file),
   },
   {
+    id: 'private-runtime-config',
+    matches: file => /(^|\/)(?:\.dev\.vars(?:\.|$)|wrangler\.(?:toml|jsonc?|local\.jsonc)$|\.deploy\/|\.migration\/)/.test(file),
+  },
+  {
     id: 'environment-file',
     matches: file => /(^|\/)\.env(?:\.|$)/.test(file) && !file.endsWith('.env.example') && file !== '.env.example',
   },

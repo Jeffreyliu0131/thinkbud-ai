@@ -78,7 +78,7 @@ See [PRIVACY_AND_CHILD_SAFETY.md](PRIVACY_AND_CHILD_SAFETY.md) for the detailed 
 
 Chat retrieval runs only when `RAG_TEXTBOOK_ENABLED=true` and an injected `RAG_SERVICE` reports ready. Disabled, missing, degraded, empty, or failed retrieval all fall back to the original non-RAG chat path. The output is still fully buffered and passed through `guardAiOutput`; RAG never changes that ordering.
 
-The Cloudflare Vectorize class is an adapter/schema contract, not deployment evidence. This public snapshot contains no binding, production embedding adapter, populated index, durable chunk repository, or real textbook. The credential-free synthetic showcase can render structured citations from the generated eval report, but citation metadata remains server/eval metadata in the actual chat path because the existing SSE client contract carries text deltas only. Adding a learner-facing citation protocol is future work and must be versioned separately.
+The Cloudflare Vectorize class is an adapter/schema contract, not deployment evidence. This source contains no production Vectorize binding, production embedding adapter, populated index, durable chunk repository, or real textbook. The credential-free synthetic showcase can render structured citations from the generated eval report, but citation metadata remains server/eval metadata in the actual chat path because the existing SSE client contract carries text deltas only. Adding a learner-facing citation protocol is future work and must be versioned separately.
 
 ## 2026-09-05 audit repair
 
@@ -100,3 +100,7 @@ Every action carries a timestamp and, for answers, the active task ID and step. 
 The delayed-flow preview has a separate item and React state. It never appends an event to the real session. Downloads contain computed observation records and limitations, omit raw attempt values, and mark preview results as excluded. Displayed outcomes describe coached completion, first completion without in-app hints, completion after retry, or help-seeking; none is labeled proven mastery.
 
 The new practice eval records source hashes for the workflow, UI, interaction tests and runner. `evidence:verify` checks its current source snapshot and public/canonical report pair alongside behavior and RAG evidence. No live-model or human-quality claim is inferred from these deterministic cases.
+
+## Static deployment boundary
+
+`synthetic-demo` uses a dedicated entry with HashRouter and base-aware static report/asset paths. Its build excludes the service App, authentication, telemetry, provider code and PWA registration. `dist-demo/` contains only an allowlisted static package; `scripts/check-static-demo.mjs` checks the boundary before the manual GitHub Pages workflow uploads it. [OPERATIONS.md](OPERATIONS.md) owns this release. The former real-service cutover is cancelled; backend sources and their safety gates remain for future separately authorized work.

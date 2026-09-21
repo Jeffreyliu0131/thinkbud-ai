@@ -1,0 +1,41 @@
+{
+  "format": "thinkbud-adult-practice-observations-v1",
+  "exportedAt": 1789981215252,
+  "scope": {
+    "adultPrototypeOnly": true,
+    "modelCalls": 0,
+    "learningImpactValidated": false,
+    "independentObserver": false,
+    "clock": "device clock; not tamper-resistant",
+    "delayedPreviewIncluded": false
+  },
+  "policy": "example-after-struggle",
+  "lessonVersion": "distributive-v1",
+  "phase": "waiting",
+  "records": [
+    {
+      "stage": "coach",
+      "taskId": "C1",
+      "startedAt": 1789980437245,
+      "finishedAt": 1789980480763,
+      "attempts": 6,
+      "mistakes": 2,
+      "hints": 0,
+      "examples": 1,
+      "outcome": "coached-completion"
+    },
+    {
+      "stage": "transfer",
+      "taskId": "T1",
+      "startedAt": 1789980485456,
+      "finishedAt": 1789980500130,
+      "attempts": 2,
+      "mistakes": 0,
+      "hints": 0,
+      "examples": 0,
+      "outcome": "first-attempt-without-hints"
+    }
+  ],
+  "pendingReviewAt": 1790066900130,
+  "inProgress": null
+}

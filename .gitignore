@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+dist-demo
 dist-ssr
 *.local
 
@@ -16,6 +17,13 @@ dist-ssr
 .env
 .env.*
 .dev.vars
+.dev.vars.*
+wrangler.local.jsonc
+wrangler.toml
+wrangler.json
+wrangler.jsonc
+.deploy/
+.migration/
 !.env.example
 
 # Editor directories and files

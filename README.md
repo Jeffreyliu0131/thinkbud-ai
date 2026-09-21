@@ -6,17 +6,17 @@
 
 ThinkBud is an AI learning and thinking coach prototype for primary-school Chinese, maths, and English. It helps learners work through homework, explain their thinking, and develop understanding through guided dialogue. Its subject-specific prompts adapt the kind of help to the task; completing a problem with help is not treated as proof of independent mastery.
 
-The current adult-only preview makes that distinction visible: guided practice, a separate transfer task, and a delayed check. Preset teaching prompts and deterministic checks demonstrate the workflow; learning improvement has not been measured. The guarded AI chat, OCR, and optional textbook RAG are separate paths.
+The current public candidate is an interactive static frontend: enter answers, receive preset help, retry, complete a separate transfer task, and preview the delayed check. The browser really runs the workflow; it does not call a live model. Learning improvement has not been measured. The retained AI chat, OCR, and textbook-RAG service code is a separate, unserved path.
 
-[**Product decisions**](docs/CASE_STUDY.md) · [**Run the demo**](#quick-start) · [Practice evidence](evals/practice/results/latest.md) · [Architecture](docs/ARCHITECTURE.md)
+[**Static demo operations**](docs/OPERATIONS.md) · [**Product decisions**](docs/CASE_STUDY.md) · [**Run the demo**](#quick-start) · [Practice evidence](evals/practice/results/latest.md) · [Architecture](docs/ARCHITECTURE.md)
 
 **Key choice:** record guided completion, independent attempts, and requests for help separately. A completed conversation does not establish mastery.
 
 **Status:** working prototype. The practice preview is for adults; live teaching quality, learning outcomes, and child-facing release remain unvalidated. [Release boundary](#safety-and-release-boundary).
 
-![Historical ThinkBud synthetic evidence overview, captured 2026-08-28](docs/showcase/synthetic-evidence-overview.jpg)
+![ThinkBud interactive static demo, locally accepted 2026-09-21](docs/showcase/2026-09-21/19-bilingual-home-final.png)
 
-[Historical screenshots and capture provenance](docs/showcase/README.md). This earlier showcase does not depict the current practice page.
+[Current flow screenshots and capture provenance](docs/showcase/README.md) · [90-second walkthrough](docs/DEMO_90_SECONDS.md)
 
 ## Quick start
 
@@ -25,7 +25,7 @@ npm ci
 npm run demo
 ```
 
-Open the printed local URL and select **Try the practice loop**, or navigate to `/practice`. The adult-only preview needs no account, provider credential, paid API, real learner record, or real textbook. The original synthetic AI-boundary showcase remains at `/showcase`.
+Open the printed local URL and select **开始数学体验**, or use the refreshable `/#/practice` deep link. The adult-only preview needs no account, provider credential, paid API, real learner record, or real textbook. The synthetic AI-boundary showcase is available at `/#/showcase` in demo mode.
 
 For a fast code review, start here:
 
@@ -47,7 +47,7 @@ The implemented slice is grade-4 distributive-property practice: four coached st
 
 ## Product scope and current coverage
 
-Scope checked against this public snapshot and clarified by the owner on 2026-09-15. **ThinkBud is not restricted to maths.** This section owns the scope distinction used by portfolio and career materials; dated demo/evaluation records keep their original, narrower meaning.
+Scope checked against this public source and clarified by the owner on 2026-09-15. **ThinkBud is not restricted to maths.** This section owns the scope distinction used by portfolio and career materials; dated demo/evaluation records keep their original, narrower meaning.
 
 | Layer | Current scope | What the evidence supports |
 |---|---|---|
@@ -140,7 +140,7 @@ Passing these deterministic gates proves only that the encoded mechanisms behave
 
 - Text output is guarded before display and TTS; model-judge scores cannot override deterministic hard failures.
 - OCR, chat history, learner memory, and retrieved textbook excerpts are treated as untrusted data rather than privileged instructions.
-- `RAG_TEXTBOOK_ENABLED` and `VITE_ENABLE_RTC` are false by default.
+- `RAG_TEXTBOOK_ENABLED`, server `RTC_ENABLED` and browser `VITE_ENABLE_RTC` are false by default. Supported deployment builds force browser RTC off; token/start APIs independently reject calls while the server flag is off.
 - A default-off build neither prefetches the optional RTC SDK nor includes its 1.29 MB chunk in the PWA precache; explicit RTC builds can still load it on demand.
 - RAG failure preserves the existing chat path and never changes the requirement that the output guard executes last.
 - The full release gate is expected to fail until the owner chooses a project license, attests the 11 tracked assets, approves child/privacy controls, produces fresh live-model evidence, and completes two-rater blinded review.
@@ -188,17 +188,15 @@ npm run demo:build
 npm run release:check
 ```
 
-For ordinary local development:
-
-```bash
-cp .env.example .env
-npm ci
-npm run dev
-```
+For the credential-free demonstration, use `npm run demo`; for the original frontend, use `npm run dev`. Original server credentials belong in ignored `.dev.vars`; never prefix credentials with `VITE_`. No server setup is needed for the static publication.
 
 Provider-backed routes require the reviewer's own server-side accounts and keys. Provider credentials are never required by the browser bundle and must remain in ignored environment files.
 
 Offline Markdown/plain-text ingestion is available through `npm run rag:ingest -- ...`. It writes a manifest only; there is no public anonymous upload endpoint. A source without complete owner, provenance, license, and production authorization is explicitly non-production-ready.
+
+## One maintained code source
+
+Development continues on this repository’s `main`. The public deployment target is now a credential-free static adult demo on GitHub Pages. The existing service code stays in this source tree, and the private repository retains its history. Real-service migration is cancelled for this task; its data, runtime and publishers remain untouched. The [operations runbook](docs/OPERATIONS.md) owns the static build, manual deployment, version checks and rollback. Formal product/service release retains the full gate.
 
 ## Repository map
 
@@ -209,7 +207,7 @@ Offline Markdown/plain-text ingestion is available through `npm run rag:ingest -
 - `artifacts/` — reviewable HTML/provenance outputs generated by repository scripts.
 - `docs/` — architecture, evaluation, privacy, provenance, pilot, case-study, and release decisions.
 - `.decisiontrace/` — local-only public scan contract; gates disabled and generated reports ignored.
-- `.github/workflows/` — read-only CI and manual full-release checks; no production deployment workflow.
+- `.github/workflows/` — read-only CI, full service-release checks, and manually dispatched static GitHub Pages publication.
 
 ## Current release blockers
 
@@ -241,3 +239,38 @@ Local engineering verification: 426 tests passed with 2 existing skips; the 38-c
 Dependency audit passed the CI high-severity threshold; two pre-existing moderate development-dependency advisories remain (`@humanfs/node` and `qs`). No dependency version was changed in this slice.
 
 The child-facing deployment, live-model teaching quality, independent teacher review, textbook rights, and learning-effect gates remain separate and unresolved. They do not prevent publishing this explicitly bounded public prototype.
+
+## Static demo acceptance and publication status · 2026-09-21
+
+**Locally accepted for adult portfolio/interview demonstration. Not published.** The browser runs a real, bounded maths workflow; the teaching content is preset. This acceptance does not establish real AI tutoring, three-subject interactive coverage, learning outcomes, or child-release readiness.
+
+| Layer | What actually works in this candidate | Inspectable basis |
+|---|---|---|
+| Running frontend | Numeric input and validation; two help policies; separate guided/independent stages; retries and help-seeking; pause/reset; optional seven-day local recovery; JSON export | [Practice page](src/pages/PracticePage.tsx), [state machine](src/lib/practice.ts), [storage replay](src/lib/practiceStorage.ts) |
+| Preset simulation | Fixed maths items and coaching text; sample dialogue; four selectable RAG states and a recorded output-guard result | [Showcase](src/pages/SyntheticDemoPage.tsx), [synthetic reports](public/) |
+| Delayed observation | A device-clock 24-hour gate; an immediately usable separate preview that cannot complete or alter the formal check | [Practice mechanism](src/lib/practice.ts), [captured observation export](docs/showcase/2026-09-21/observations-first-attempt.json) |
+| Services outside this demo | Live models, accounts/SMS, camera/OCR, STT/TTS/RTC, business DB and real textbook retrieval are not loaded by the static entry | [Demo entry](src/DemoApp.tsx), [package boundary check](scripts/check-static-demo.mjs) |
+
+The accepted copy was reconstructed on public base `620b2fddcfded13cf8be2715e4c2b1f8cccc611e`. Before repair, its 299 non-ignored source files matched the prior candidate byte-for-byte, including untracked additions and removals. The prior candidate's local `acfdba3` commit was not imported into this checkout; only reviewed source bytes were carried over. This candidate remains uncommitted. Its exact demo-input SHA-256 is `2f655490649b3c5c25ad8cb722bfc8a586a9df40eee3590680eba8afb92e9352`, also checked by `demo:check` against `dist-demo/build-info.json`.
+
+The independent browser review found and repaired three presentation/reliability issues: the engineering-heavy mixed-language entry hid the product story; a malformed report caused a blank page and missing reports gave developer-only instructions; stage completion lost keyboard focus. The entry now leads to the learning loop, technical evidence is optional, report loads are validated/bounded/retryable without blocking practice, and completion focus lands on the next-stage card. Mobile zoom is enabled and RAG choices fit a two-column narrow layout.
+
+Actual verification used the built package under `/thinkbud-ai/`: desktop 1280×800, narrow 390×844 and 320×844; typed incorrect/correct answers; both help policies; equivalent factor order; first-attempt versus retry outcomes; independent help-seeking; pause/reset; optional persistence and hash refresh; a completed preview that leaves formal review pending; and an actual downloaded JSON export excluding raw answers and preview outcomes. Keyboard entry/Tab order and visible focus were checked. Three report endpoints and `build-info.json` returned actual **200 application/json**, without HTML fallback. Fault injection covered malformed `{}` reports, HTTP 503, slow loading and recovery through the retry button.
+
+Initial acceptance validation passed: 14 core workflow tests and 9 page interaction tests, TypeScript, ESLint on changed code, the static build/package boundary, public-boundary scan, and source/report consistency. Behavior/RAG/practice synthetic gates passed 38/14/15 cases. This is focused verification of the accepted change; earlier full-suite totals are historical, not a substitute for this browser review.
+
+The served static entry has only two automatic report fetches, both under the same base. Its import graph contains no service entry; the package CSP restricts connections to the same origin. The observed local HTTP log contained static assets/reports only, and the normal browser run had no console/CSP errors. No live service/API was used. This check combines source/package inspection and HTTP/console evidence, not a claim of a separate network-panel trace.
+
+Limits: no physical-phone or screen-reader session was run; no real 24-hour longitudinal observation or teaching-effect study occurred. Controlled-clock tests cover the due-date mechanism. The original services, credentials, data, publishers and private repository remain outside this work. No commit, push, Pages configuration or deployment was performed. [Operations](docs/OPERATIONS.md) owns the eventual explicitly authorized publication and reproduction steps; [the walkthrough](docs/DEMO_90_SECONDS.md) is the interview entry.
+
+## Bilingual interface refinement · 2026-09-21
+
+The demo now follows the browser/system language preferences: the first supported Chinese (`zh-*`) or English (`en-*`) preference wins; other languages fall back to English. Chinese is displayed in Simplified Chinese. The page header offers **System / 中文 / English**; a manual choice is stored only on the device and applies across refreshes and demo routes. Returning to System follows the browser again. If preference storage is blocked or full, switching still works for the current page. This UI localisation does not add an English-subject tutoring workflow.
+
+The whole practice path is translated, including preset examples, validation, help, outcomes, recovery notices and dates. Switching language preserves in-progress inputs and observation counts. Export keys, event history and original evidence-report data remain unchanged. The HTML language and document title follow the selected UI language.
+
+UI refinement uses the existing visual style: a shared language control, a shorter first-screen layout, matching dark colours on the practice page, clear success/error feedback, quieter motion, touch-friendly controls and return-to-top route navigation. A 320px check caught and fixed an overlap between the language control and the home brand; the source link remains in the footer on small screens.
+
+Verification: 11 locale/preference tests and 10 existing/extended page interaction tests passed, alongside TypeScript, changed-code ESLint, static build/package checks and source/report consistency. The browser's current system setting selected Chinese; switching to English survived reload and navigation. English guided practice, repeated mistakes, mid-answer language switching, independent transfer and the isolated review preview were exercised on desktop and at 390px/320px. Observation counts, pending formal review and local recovery stayed intact. English retrieval states and their labels also worked. Browser validation used the current dark theme; a physical mobile device and screen reader were not used.
+
+As rechecked during this refinement, the public repository still points to `620b2fd`, has no homepage configured and returns no GitHub deployment records. This task has not deployed this version to Vercel or another public host. `127.0.0.1` is a local preview, not a link another visitor can use. The existing prepared publication configuration targets GitHub Pages; choosing and publishing to Vercel remains a separate explicit action.

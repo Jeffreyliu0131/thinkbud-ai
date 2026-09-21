@@ -53,6 +53,7 @@ function createMockContext(body: Record<string, unknown>) {
         body: JSON.stringify(body),
       }),
       env: {
+        RTC_ENABLED: 'true',
         DB: { prepare: mockPrepare } as unknown as D1Database,
         JWT_SECRET: 'test',
         RTC_APP_ID: 'test-rtc',
@@ -92,6 +93,15 @@ beforeEach(() => {
 })
 
 describe('rtc-start endpoint', () => {
+  it.each([undefined, 'false', 'TRUE', '1'])('blocks direct calls when RTC_ENABLED=%s', async (flag) => {
+    const { ctx } = createMockContext(validBody)
+    Object.assign(ctx.env, { RTC_ENABLED: flag })
+    const response = await onRequestPost(ctx as never)
+    expect(response.status).toBe(503)
+    expect(mockFetch).not.toHaveBeenCalled()
+    expect(checkUserRateLimit).not.toHaveBeenCalled()
+    expect(ctx.waitUntil).not.toHaveBeenCalled()
+  })
   describe('参数校验', () => {
     it('缺少 roomId 返回 400', async () => {
       const { ctx } = createMockContext({ userId: 'u', taskId: 't', gradeLevel: 'lower' })

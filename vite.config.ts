@@ -5,8 +5,10 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  publicDir: mode === 'synthetic-demo' ? false : 'public',
   build: {
+    outDir: mode === 'synthetic-demo' ? 'dist-demo' : 'dist',
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -19,7 +21,7 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
-    exclude: ['**/node_modules/**', '**/dist/**', '**/.claude/worktrees/**'],
+    exclude: ['**/node_modules/**', '**/dist/**', '**/dist-demo/**', '**/.deploy/**', '**/.claude/worktrees/**'],
   },
   resolve: {
     alias: {
@@ -37,7 +39,7 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    VitePWA({
+    ...(mode === 'synthetic-demo' ? [] : [VitePWA({
       registerType: 'autoUpdate',
       workbox: {
         navigateFallbackDenylist: [/^\/api\//],
@@ -87,6 +89,6 @@ export default defineConfig({
           },
         ],
       },
-    }),
+    })]),
   ],
-})
+}))

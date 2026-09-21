@@ -27,6 +27,10 @@ npm run release:check          # full gate; fails until legal/live-review blocke
 
 `npm run demo` uses only generated synthetic evidence. The regular app still needs service credentials and a Cloudflare-compatible local environment.
 
+## Source and deployment
+
+All ongoing code changes belong on this repository’s main branch. Do not import private history or maintain a parallel production feature copy. The current published-site target is a pure static demo; original service source remains for future separately authorized work. See [the operations runbook](docs/OPERATIONS.md). Source publication and deployment remain separate authorized actions.
+
 ## Change contract
 
 Every AI-behavior change should include:

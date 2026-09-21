@@ -1,38 +1,36 @@
-# 90-second demo script
+# ThinkBud 90 秒演示脚本
 
-Run before the interview/demo:
+这是一段成人扮演学习者的交互演示。重点是亲手走过“得到帮助”和“独立完成”的区别。页面响应为预设规则，不调用真实 AI；完整慢速体验约 3 分钟。
+
+## 演示前
 
 ```bash
 npm ci
 npm run demo
 ```
 
-Open the local URL shown by Vite. The root page is the synthetic evidence dashboard in this mode.
+打开 Vite 打印的本机地址。页面默认跟随浏览器语言，也可在页头选择 **中文 / English / 跟随系统**。点击 **开始数学体验 / Try the maths demo**。确认成人体验，保留默认“连续两次困难后，换例子解释”。需要演示刷新恢复时勾选本机保存；重新演示使用页面的“清除本次记录并重新开始”。GitHub Pages 候选的入口为 `/thinkbud-ai/#/practice`，目前没有已发布线上版本。
 
-## Script
+## 现场顺序
 
-**0–15s — Problem**
+1. **0–15 秒：说明问题。** “ThinkBud 面向小学语文、数学、英语的思考引导。今天展示四年级数学的一个预设流程：跟着做完，并不等于自己会做。”
+2. **15–40 秒：让系统看到困难。** 在 `6 × (10 + 4)` 的第一格连续输入两次 `5`，观察系统换成苹果例子，而不是直接写原题答案。指出右侧“2 次不匹配 · 1 次例子”。接着依次填写 `6`、`60`、`24`、`84`，完成四步引导。
+3. **40–65 秒：撤去提示。** 点击“开始独立迁移”，面对新题 `7 × (20 + 3)`，填写展开式 `7, 20, 7, 3`，再填写 `161`。这里不能只提交最终答案跳过展开。“我需要帮助，回去练习”会保留未完成记录，再换一组题。答错后再完成，也会明确记作“重试后完成”。
+4. **65–90 秒：展示完成边界。** 正式复测仍要等 24 小时；打开“不计入记录”的预览，填写 `5, 10, 5, 7`，再填写 `85`。预览完成后，右侧仍显示“等待间隔后再检查”。导出 JSON 可核对两段正式观察，里面没有预览结果或原始答案。
+5. **追问时再看技术证据。** 回到“项目展示”，展开“查看实现与证据”，切换预设检索故障/无结果，观察引用消失。合成报告验证指定规则，不证明实时模型质量、三科互动覆盖或学习效果。
 
-“Most AI tutor demos optimise for fluent answers. ThinkBud has the opposite product contract: protect the learner's thinking. The hard part is making ‘never give the answer’ enforceable and reviewable, not just a sentence in a system prompt.”
+## 可重复的验收步骤
 
-**15–35s — Mechanism**
+- **输入与重新尝试：** 空提交不推进；`abc` 显示整数格式错误且不计作答；数值不匹配保留重试；另一种帮助策略在两次错误后展示一步提示。
+- **键盘与暂停：** Enter 提交，Tab 顺序经过四个乘数框；暂停禁用提交并保留当前输入。阶段完成后焦点进入下一阶段卡片。
+- **本地恢复：** 开启保存后刷新 `/#/practice`，恢复已提交步骤与原有次数；未保存时刷新回到起点；未提交的输入不写入存储。
+- **手机：** 在 390px 和 320px 宽度检查首页、四格展开式和提交按钮；输入框有标签，页面可缩放，无页面横向溢出。
+- **报告与深链：** `/#/?rag=degraded` 刷新后保持预设故障选择；未知路由回首页。实际报告 URL 必须是对应 base 下的 200 JSON。报告损坏或 503 时，界面提示错误并可重试，数学体验仍可进入。
 
-Point to the synthetic conversation.
+[当前验收结果与精确候选版本](../README.md#static-demo-acceptance-and-publication-status--2026-09-21) · [截图](showcase/README.md) · [运行方法](OPERATIONS.md)
 
-“Untrusted OCR and chat history are normalised, role-limited, bounded, and marked as data. On the text path, the short model turn is buffered and a deterministic output guard blocks answer or full-step leakage before the browser or TTS can receive it.”
+## 双语验收补充
 
-**35–55s — Eval**
+首次访问按浏览器语言列表中的首个中文或英文偏好展示；没有支持的语言时显示英文。中文地区变体统一为简体中文。页头的手动选择只保存在本设备，刷新及切换页面后仍保留；选择“跟随系统”可恢复自动识别。
 
-Point to the metric cards.
-
-“This report comes from an actual local run. It replays 38 synthetic positive controls and bad cases across answer leakage, Socratic next questions, transfer, age fit, prompt injection, RTC/STT/SSE recovery, and latency/cost budget classification. The dataset and source-snapshot hashes bind the evidence to the exact isolated implementation.”
-
-**55–72s — Bad cases and honesty**
-
-“Negative controls are deliberately unsafe; the gate passes only if they are detected. No child records and no production model calls are used. So this proves the harness and deterministic controls—not live-model teaching quality.”
-
-**72–90s — Release decision**
-
-“The full release gate still fails. RTC can speak before the app can inspect output, so it is off by default. Live model outputs need blinded human review; privacy, vendor processing, asset provenance, and the project license need owner decisions. That fail-closed boundary is part of the product, not an embarrassing footnote.”
-
-Do not claim real users, improved learning outcomes, adoption, retention, model quality, or production readiness.
+在题目中先填写一个数字但不提交，切换中英文，确认填写内容和观察次数未变。再检查错误提示、换例子说明、独立作答、复测日期及恢复提示都使用当前语言。语言选择不改变导出的观察字段或正式复测门槛，不代表新增了英语学科辅导。

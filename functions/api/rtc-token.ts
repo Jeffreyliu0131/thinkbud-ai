@@ -9,6 +9,9 @@ import type { AppEnv, ContextData } from '../_shared/env'
 
 export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (context) => {
   try {
+    if (context.env.RTC_ENABLED !== 'true') {
+      return errorResponse('实时语音暂未开放，请使用普通语音模式', 503)
+    }
     const authenticatedUserId = context.data.userId
     if (!authenticatedUserId) {
       return errorResponse('未登录', 401)

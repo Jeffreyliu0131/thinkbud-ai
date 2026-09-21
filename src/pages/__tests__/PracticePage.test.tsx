@@ -1,10 +1,12 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import PracticePage from '../PracticePage'
 import App from '../../App'
 import { appendPracticeEvent, createPractice, practiceState, PRACTICE_STORAGE_KEY, REVIEW_DELAY_MS, type PracticeSession } from '../../lib/practice'
+
+beforeEach(() => { vi.spyOn(window.navigator, 'languages', 'get').mockReturnValue(['zh-CN']) })
 
 afterEach(() => { cleanup(); localStorage.clear(); vi.restoreAllMocks() })
 async function submitSingle(user: ReturnType<typeof userEvent.setup>, value: string) {
@@ -82,4 +84,25 @@ describe('PracticePage', () => {
     expect(practiceState(restored).phase).toBe('complete')
     expect(practiceState(restored).records[2].taskId).toBe('R1')
   })
+  it('detects English and switches language without resetting entries or submitted progress', async () => {
+    vi.spyOn(window.navigator, 'languages', 'get').mockReturnValue(['en-SG'])
+    const user = userEvent.setup(); render(<PracticePage />)
+    expect(screen.getByRole('heading', { name: 'Turn one problem into a method.' })).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Start guided practice' }))
+    expect(screen.getByRole('alert')).toHaveTextContent('Confirm that you are an adult')
+    await user.click(screen.getByRole('checkbox', { name: "I'm an adult exploring this preset workflow" }))
+    await user.click(screen.getByRole('button', { name: 'Start guided practice' }))
+    await user.type(screen.getByRole('textbox', { name: 'Your answer' }), '6')
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Language / 语言' }), 'zh')
+    expect(screen.getByRole('textbox', { name: '本步答案' })).toHaveValue('6')
+    await user.click(screen.getByRole('button', { name: '提交这一步' }))
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Language / 语言' }), 'en')
+    expect(screen.getByText('Guided practice · Step 2 of 4')).toBeInTheDocument()
+    expect(document.documentElement.lang).toBe('en')
+    await user.type(screen.getByRole('textbox', { name: 'Your answer' }), 'abc')
+    await user.click(screen.getByRole('button', { name: 'Check this step' }))
+    expect(screen.getByRole('alert')).toHaveTextContent('Enter a whole number from 0 to 10000.')
+    expect(screen.getByRole('textbox', { name: 'Your answer' })).toHaveAttribute('aria-invalid', 'true')
+  })
+
 })

@@ -102,6 +102,7 @@ const ragReport = {
 }
 
 beforeEach(() => {
+  vi.spyOn(window.navigator, 'languages', 'get').mockReturnValue(['zh-CN'])
   vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => {
     const body = String(input).includes('rag-eval-report') ? ragReport : behaviorReport
     return new Response(JSON.stringify(body), {
@@ -113,11 +114,24 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup()
+  vi.restoreAllMocks()
   vi.unstubAllGlobals()
+  vi.unstubAllEnvs()
   window.history.replaceState({}, '', '/')
 })
 
 describe('SyntheticDemoPage', () => {
+  it('uses the Pages base for real static-report loads and hash links, including a deep-link state', async () => {
+    vi.stubEnv('MODE', 'synthetic-demo')
+    vi.stubEnv('BASE_URL', '/thinkbud-ai/')
+    window.history.replaceState({}, '', '/thinkbud-ai/#/?rag=degraded')
+    render(<SyntheticDemoPage />)
+    expect(await screen.findByText('38/38')).toBeInTheDocument()
+    expect(screen.getByText('检索故障，不编造依据')).toBeInTheDocument()
+    expect(vi.mocked(fetch).mock.calls.map(([url]) => url)).toEqual(['/thinkbud-ai/eval-report.json', '/thinkbud-ai/rag-eval-report.json'])
+    expect(screen.getByRole('link', { name: /开始数学体验/ })).toHaveAttribute('href', '/thinkbud-ai/#/practice')
+    expect(screen.queryByRole('link', { name: /login|admin/i })).not.toBeInTheDocument()
+  })
   it('renders generated guard, citation, gateway, and evidence metadata', async () => {
     render(<SyntheticDemoPage />)
 
@@ -134,13 +148,37 @@ describe('SyntheticDemoPage', () => {
     render(<SyntheticDemoPage />)
     await screen.findByText('Synthetic Upper Math Notes')
 
-    await user.click(screen.getByRole('button', { name: /Service incomplete or failed/i }))
-    expect(screen.getByText('Safe degradation')).toBeInTheDocument()
+    await user.click(screen.getByText('查看实现与证据'))
+    await user.click(screen.getByRole('button', { name: /检索服务故障/ }))
+    expect(screen.getByText('检索故障，不编造依据')).toBeInTheDocument()
     expect(screen.getByText(/service missing/)).toBeInTheDocument()
-    expect(screen.queryByText('Structured citation TB1')).not.toBeInTheDocument()
+    expect(screen.queryByText('合成引用 TB1')).not.toBeInTheDocument()
 
-    await user.click(screen.getByRole('button', { name: /No result/i }))
-    expect(screen.getByText('No evidence above threshold')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /未找到结果/ }))
+    expect(screen.getByText('没有合适的参考内容')).toBeInTheDocument()
     expect(screen.getByText(/no matching chunks/)).toBeInTheDocument()
   })
+  it('keeps practice available when a static report is malformed and recovers on retry', async () => {
+    const user = userEvent.setup()
+    vi.mocked(fetch).mockImplementation(async () => new Response('{}', { headers: { 'Content-Type': 'application/json' } }))
+    render(<SyntheticDemoPage />)
+    await user.click(screen.getByText('查看实现与证据'))
+    expect(await screen.findByRole('alert')).toHaveTextContent('报告格式不完整')
+    expect(screen.getByRole('link', { name: /开始数学体验/ })).toBeInTheDocument()
+    expect(screen.queryByText('已拦截')).not.toBeInTheDocument()
+    expect(screen.getByText('报告不可用，未作通过判断')).toBeInTheDocument()
+    vi.mocked(fetch).mockImplementation(async input => new Response(JSON.stringify(String(input).includes('rag-eval-report') ? ragReport : behaviorReport), { headers: { 'Content-Type': 'application/json' } }))
+    await user.click(screen.getByRole('button', { name: '重新加载报告' }))
+    expect(await screen.findByText('38/38')).toBeInTheDocument()
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
+
+  it('rejects HTML fallbacks and unknown inherited RAG status names without a white screen', async () => {
+    window.history.replaceState({}, '', '/#/?rag=toString')
+    vi.mocked(fetch).mockResolvedValue(new Response('<html>fallback</html>', { headers: { 'Content-Type': 'text/html' } }))
+    render(<SyntheticDemoPage />)
+    expect(await screen.findByRole('alert')).toHaveTextContent('报告暂时无法读取')
+    expect(screen.getByRole('heading', { name: '附上可追溯的参考片段' })).toBeInTheDocument()
+  })
+
 })

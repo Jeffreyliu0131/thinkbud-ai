@@ -5,6 +5,9 @@ All notable changes to ThinkBud will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Static adult demo with a dedicated service-free entry, GitHub Pages base/hash routing, checked static reports and a manual Pages publication workflow.
+- Cancelled the unpublished real-service source-cutover plan; old services/data remain untouched and original source is retained.
+- Server-side default-off RTC token/start gate; supported deployment builds keep browser RTC off.
 - Backend textbook source/document/chapter/section/chunk contracts with stable IDs, SHA-256 hashes, locators, and fail-closed production-readiness attestation.
 - Offline Markdown/plain-text ingestion CLI, deterministic chunking, embedding/vector interfaces, fake embedding provider, in-memory store, and adapter-only Cloudflare Vectorize contract.
 - Filtered/deduplicated/budgeted retrieval, structured citations, and sanitized untrusted RAG context builder.

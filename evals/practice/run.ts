@@ -6,7 +6,12 @@ import { appendPracticeEvent, createPractice, gradeExpansion, practiceExport, pr
 
 const SOURCE_FILES = [
   'src/lib/practice.ts', 'src/lib/practiceStorage.ts', 'src/lib/errorReporter.ts', 'src/App.tsx',
-  'src/pages/PracticePage.tsx', 'src/pages/PracticePage.css', 'src/lib/__tests__/practice.test.ts',
+  'src/pages/PracticePage.tsx',
+  'src/lib/demoLocale.ts',
+  'src/lib/demoTranslations.ts',
+  'src/components/DemoLanguageSwitch.tsx',
+  'src/components/DemoLanguageSwitch.css',
+  'src/lib/__tests__/demoLocale.test.tsx', 'src/pages/PracticePage.css', 'src/lib/__tests__/practice.test.ts',
   'src/pages/__tests__/PracticePage.test.tsx', 'evals/practice/run.ts',
   'scripts/check-evidence-consistency.mjs', 'package.json', 'package-lock.json',
 ]

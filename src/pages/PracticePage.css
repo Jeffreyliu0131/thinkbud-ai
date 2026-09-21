@@ -1,10 +1,10 @@
 .practice-page {
-  --practice-accent: #24654e;
-  --practice-ink: #29362e;
+  --practice-accent: #087f6b;
+  --practice-ink: #112a24;
   --practice-muted: #626b62;
   --practice-line: #d9dfd4;
   color: var(--practice-ink);
-  background: #f6f5ee;
+  background: #f2f5f0;
   min-height: 100vh;
   padding: 0 max(24px, calc((100% - 1140px) / 2)) 60px;
 }
@@ -28,14 +28,14 @@
 .practice-start li span { font-size: 13px; color: var(--practice-muted); line-height: 1.7; }
 .practice-start form { display: grid; align-content: start; gap: 20px; }
 .practice-start form > label:not(.practice-checkbox) { display: grid; gap: 10px; font-size: 13px; font-weight: 700; }
-.practice-start select { width: 100%; min-width: 0; height: 48px; border: 1px solid var(--practice-line); border-radius: 9px; background: #f6f5ee; color: var(--practice-ink); padding: 0 12px; font-size: 13px; }
+.practice-start select { width: 100%; min-width: 0; height: 48px; border: 1px solid var(--practice-line); border-radius: 9px; background: #f2f5f0; color: var(--practice-ink); padding: 0 12px; font-size: 13px; }
 .practice-checkbox { display: flex; align-items: start; gap: 10px; font-size: 13px; line-height: 1.7; }
 .practice-checkbox input { accent-color: var(--practice-accent); width: 19px; height: 19px; margin-top: 2px; flex-shrink: 0; }
 .practice-start form p, .practice-session-tools p { margin: 0; font-size: 12px; line-height: 1.8; color: var(--practice-muted); }
 .practice-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 13px 20px; min-height: 48px; background: var(--practice-accent); color: #fff; border: 1px solid transparent; border-radius: 10px; font-weight: 700 !important; font-size: 14px !important; cursor: pointer; }
-.practice-button:hover { background: #194d3a; }
+@media (hover: hover) and (pointer: fine) { .practice-button:hover { background: #056252; } }
 .practice-button-quiet { background: transparent; color: var(--practice-accent); border-color: var(--practice-line); }
-.practice-button-quiet:hover { background: #eaf0e6; }
+@media (hover: hover) and (pointer: fine) { .practice-button-quiet:hover { background: #eaf0e6; } }
 .practice-page button:disabled { opacity: 0.5; cursor: not-allowed; }
 .practice-link-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 0; min-height: 42px; border: 0; background: none; color: var(--practice-accent); text-decoration: underline; text-underline-offset: 4px; font-size: 12px !important; cursor: pointer; }
 .practice-stages { display: flex; gap: 10px; padding: 0 0 25px; margin: 0; list-style: none; }
@@ -76,7 +76,7 @@
 .practice-observation { padding: 19px 0; border-top: 1px solid #d4dace; }
 .practice-observation h3 { font-size: 12px; font-weight: 600; color: var(--practice-muted); margin: 0 0 8px; }
 .practice-observation strong { font-size: 14px; line-height: 1.7; }
-.practice-observation p, .practice-observation small { color: var(--practice-muted); font-size: 11px; line-height: 1.8; margin: 7px 0 0; }
+.practice-observation p, .practice-observation small { color: var(--practice-muted); font-size: 12px; line-height: 1.8; margin: 7px 0 0; }
 .practice-evidence .observation-limit { color: var(--practice-muted); font-size: 12px; line-height: 1.8; padding-top: 18px; border-top: 1px solid var(--practice-line); }
 .practice-evidence details { margin-top: 16px; font-size: 11px; line-height: 1.8; }
 .practice-evidence summary { cursor: pointer; color: var(--practice-accent); }
@@ -120,3 +120,60 @@
   .apple-bags i { width: 10px; height: 10px; }
   .practice-card > .practice-button { display: flex; width: 100%; margin-right: 0; }
 }
+
+/* Same visual language from overview through the learning loop. */
+.practice-page { font-family: "Avenir Next", Avenir, "Segoe UI", "Noto Sans SC", sans-serif; }
+.practice-start { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.practice-start form { min-width: 0; }
+.practice-start select { width: 100%; min-width: 0; }
+.practice-start .practice-error { color: #a53428; font-size: 13px; }
+.practice-page--active .practice-header { padding: 24px 0 18px; }
+.practice-page--active .practice-header h1 { font-size: clamp(25px, 2.8vw, 34px); }
+.practice-page--active .practice-header > p { font-size: 15px; }
+.practice-page--active .practice-preview-note { margin-top: 12px; }
+.practice-button { transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms ease; }
+.practice-button:active:not(:disabled):not(:focus-visible) { transform: scale(0.98); }
+.practice-page :focus-visible { transition: none; }
+.practice-answer input[aria-invalid="true"] { border-color: #a53428; }
+.practice-feedback--success { background: #e7f3ec; border-color: #398765; color: #215c46 !important; }
+.practice-evidence { position: sticky; top: 24px; }
+.practice-evidence summary { min-height: 32px; padding-block: 6px; }
+.practice-observation h3 { letter-spacing: 0.02em; }
+.practice-card, .practice-start { box-shadow: 0 10px 30px rgb(30 62 52 / 3%); }
+@media (max-width: 860px) {
+  .practice-start { grid-template-columns: minmax(0, 1fr); }
+  .practice-evidence { position: static; }
+}
+@media (max-width: 540px) {
+  .practice-nav { gap: 12px; }
+  .practice-nav > a { gap: 6px; }
+  .practice-nav strong { font-size: 18px; }
+  .practice-stages li { text-align: center; font-size: 11px; line-height: 1.5; }
+  .practice-page[data-language="en"] .practice-header h1 { max-width: 17ch; }
+  .practice-help-actions { flex-wrap: wrap; }
+  .practice-card .practice-button { white-space: normal; }
+}
+@media (prefers-color-scheme: dark) {
+  .practice-page { --practice-accent: #70d0b4; --practice-ink: #edf5f0; --practice-muted: #b3c2b9; --practice-line: #34473c; background: #101713; color-scheme: dark; }
+  .practice-card, .practice-start { background: #19241e; box-shadow: none; }
+  .practice-evidence { background: #202d26; }
+  .practice-problem, .practice-start select { color: var(--practice-ink); background: #22382b; border-color: #4c6554; }
+  .answer-equation input { color: #edf5f0; background: #121d16; border-color: #718e7b; }
+  .practice-button { background: #70d0b4; color: #10281f; }
+  .practice-button-quiet { background: transparent; color: #70d0b4; }
+  .practice-feedback, .practice-example, .review-preview { background: #332e1d; border-color: #776944; }
+  .practice-hint, .practice-feedback--success { background: #173b31; color: #9de2ca !important; border-color: #58a98a; }
+  .practice-example, .review-preview { color: #eee6d0; }
+  .apple-bags > div { background: #443d29; border-color: #807153; }
+  .practice-observation { border-color: #3c4e42; }
+  .practice-storage-notice, .practice-paused { color: #ead4a1; background: #363020; }
+  .practice-page .practice-error, .practice-start .practice-error { color: #ffb2a9; }
+  .practice-answer input[aria-invalid="true"] { border-color: #ffb2a9; }
+  @media (hover: hover) and (pointer: fine) {
+    .practice-button:hover { background: #92dfc7; }
+    .practice-button-quiet:hover { background: #254234; }
+  }
+}
+@media (prefers-reduced-motion: reduce) { .practice-button { transition: none; } .practice-button:active { transform: none !important; } }
+
+.practice-card-heading .practice-eyebrow { text-wrap: balance; }

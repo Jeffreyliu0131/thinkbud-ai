@@ -2,8 +2,8 @@
 
 - Gate: **PASS**
 - Synthetic cases: **15/15**
-- Source commit: `a312172da6aa186e1c6bc811d02385fdfd7f83f4`
-- Source snapshot SHA-256: `426173a40c1cfd82fe287da5f35ba736fe068803267be8c7fcc522135540c49f`
+- Source commit: `620b2fddcfded13cf8be2715e4c2b1f8cccc611e`
+- Source snapshot SHA-256: `e1e9c69cda9cc23ebe2b26dcdc7ea7622e98b886303769dc2f4561b55c9f811f`
 - Source dirty: `true`
 - Model/network calls and real child records: **0/0/0**
 - Delay: controlled-clock simulation, not a real longitudinal study

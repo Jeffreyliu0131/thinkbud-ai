@@ -28,6 +28,9 @@ const MAX_LEARNER_CONTEXT_LENGTH = 2000
 
 export const onRequestPost: PagesFunction<AppEnv, string, ContextData> = async (context) => {
   try {
+    if (context.env.RTC_ENABLED !== 'true') {
+      return errorResponse('实时语音暂未开放，请使用普通语音模式', 503)
+    }
     const { roomId, userId, taskId, gradeLevel, subject, session, learnerContext } = await context.request.json() as {
       roomId?: string
       userId?: string

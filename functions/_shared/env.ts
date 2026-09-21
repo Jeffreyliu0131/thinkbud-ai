@@ -20,6 +20,8 @@ export interface AppEnv extends VolcanoEnv, RagRuntimeEnv {
 
   // ===== Auth 模式 =====
   AUTH_MODE?: string // 'sms' | 'invite'，默认 'invite'
+  // Server-side release boundary; a browser flag alone cannot disable RTC APIs.
+  RTC_ENABLED?: string
 }
 
 export interface VolcanoEnv {
