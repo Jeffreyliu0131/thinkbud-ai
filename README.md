@@ -2,19 +2,19 @@
 
 **Help the learner think. Then check what they can do without help.**
 
-### [Try the live demo · 在线体验 →](https://jeffreyliu0131.github.io/thinkbud-ai/)
+### [Product walkthrough · 产品与流程展示 →](https://jeffreyliu0131.github.io/thinkbud-ai/)
 
-**About 3 minutes · Chinese / English · No account or installation needed**
+**Chinese / English · Product overview and learning flow · No account or installation needed**
 
-[Start a maths exercise](https://jeffreyliu0131.github.io/thinkbud-ai/#/practice) · [90-second walkthrough](docs/DEMO_90_SECONDS.md) · [Product decisions](docs/CASE_STUDY.md)
+[Interactive maths practice · 数学交互练习](https://jeffreyliu0131.github.io/thinkbud-ai/#/practice) · [90-second walkthrough](docs/DEMO_90_SECONDS.md) · [Product decisions](docs/CASE_STUDY.md)
 
-ThinkBud is an AI learning and thinking coach prototype for primary-school **Chinese, maths, and English**. Its product goal is to help learners work through homework and explain their reasoning through guided dialogue. The online demo lets you try one concrete slice: **grade-4 maths practice**, from guided steps to a new problem without in-app hints.
+ThinkBud is an AI learning and thinking coach prototype for primary-school **Chinese, maths, and English**. Its product goal is to help learners work through homework and explain their reasoning through guided dialogue. The linked page introduces the product and learning flow. A separate interactive example covers **grade-4 maths practice**, from guided steps to a new problem without in-app hints.
 
 The demo follows your browser's Chinese or English language preference, with a manual language switch. Answers, feedback, progress and optional local recovery really work; questions and coaching are preset. It runs on **GitHub Pages**, without live AI, account or backend services. This is an adult role-play demonstration; learning outcomes and child-facing release remain unvalidated. [Scope and coverage](#product-scope-and-current-coverage) · [Release boundary](#safety-and-release-boundary).
 
-[![ThinkBud bilingual interactive demo — click to try it online](docs/showcase/2026-09-21/19-bilingual-home-final.png)](https://jeffreyliu0131.github.io/thinkbud-ai/)
+[![ThinkBud product walkthrough — click to view the product and learning flow](docs/showcase/2026-09-21/19-bilingual-home-final.png)](https://jeffreyliu0131.github.io/thinkbud-ai/)
 
-### What to try
+### Inside the interactive maths example
 
 1. **Work through a guided problem.** Try an incorrect answer or ask for help to see how the next step changes.
 2. **Solve a new problem independently.** Retries and requests for help remain visible in the observations.
@@ -30,7 +30,7 @@ The demo follows your browser's Chinese or English language preference, with a m
 
 ## Quick start
 
-**For local development.** To try the published demo in your browser, use [the online experience](https://jeffreyliu0131.github.io/thinkbud-ai/) above.
+**For local development.** To view the product and learning flow in your browser, use [the product walkthrough](https://jeffreyliu0131.github.io/thinkbud-ai/) above.
 
 ```bash
 npm ci
