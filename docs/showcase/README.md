@@ -72,9 +72,9 @@ The latest interface follows browser/system language preferences and offers a lo
 
 The English walkthrough covered guided help, an unsubmitted answer surviving a language switch, independent completion and the later-check preview. The normal return to the overview now starts at the top. The final 320px homepage was also inspected after its overlapping header controls were repaired; incomplete captures from the screenshot backend were rejected and are not retained. The language resolver, preference persistence and blocked/full storage behaviour are covered by focused tests. Original reports/export keys remain unchanged. These captures do not add a supported English-subject teaching flow or establish an online deployment.
 
-## Visual refinement candidate · 2026-09-22
+## Visual refinement captures · 2026-09-22
 
-These are local screenshots of the unpublished refinement. The public Pages deployment has not been changed by this design work. The [capture manifest](2026-09-22/capture-manifest.json) records the source identity and palette-check method.
+These local acceptance screenshots document the visual refinement now [published on GitHub Pages](https://jeffreyliu0131.github.io/thinkbud-ai/) from `a3fe573e14893eaba6570b6770473a64ba7bfd67`. They were captured before publication; their original provenance is retained. The [capture manifest](2026-09-22/capture-manifest.json) records the source identity and palette-check method.
 
 The direction is a quiet learning surface: a lesson sheet in the overview, continuous numbered learning content, a shared type hierarchy and a main problem area with observations alongside it. The preset boundary, bilingual UI and usable learning flow remain visible.
 

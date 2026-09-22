@@ -3,7 +3,6 @@
   "baseCommit": "8184681e3ae4d2463a52147b362870ba247c2c59",
   "sourceDirty": true,
   "sourceSnapshotHash": "36b044b00a2859030f6d2fb7ccec758082f9a6f117154af37d3207d4f75aba8f",
-  "publication": "not published; existing Pages deployment unchanged",
   "captureTool": "Codex in-app browser; viewport screenshots saved and inspected",
   "lightPaletteMethod": "Local port 59835 serves the same package, replacing (prefers-color-scheme:dark) with the nonmatching (width:-1px) only in CSS HTTP responses. Source/build files and OS settings are unchanged. Normal port 59833 has no override.",
   "screenshots": [
@@ -97,5 +96,14 @@
       "paletteMode": "system-dark",
       "state": "local-candidate"
     }
-  ]
+  ],
+  "publicationAtCapture": "not published; existing Pages deployment unchanged",
+  "publication": {
+    "verifiedOn": "2026-09-22",
+    "sourceCommit": "a3fe573e14893eaba6570b6770473a64ba7bfd67",
+    "sourceDirty": false,
+    "demoInputSha256": "b63878e91faffb097df6157bcbd00052864908aa05199fcd8e4f3d2686b2c2df",
+    "workflow": "https://github.com/Jeffreyliu0131/thinkbud-ai/actions/runs/35686265947",
+    "url": "https://jeffreyliu0131.github.io/thinkbud-ai/"
+  }
 }
