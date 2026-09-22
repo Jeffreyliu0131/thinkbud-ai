@@ -4,7 +4,7 @@ ThinkBud has one continuing source repository, `Jeffreyliu0131/thinkbud-ai`. The
 
 ## What visitors can use
 
-- A preset synthetic coaching transcript and inspectable examples of the output guard and RAG failure states.
+- A three-subject policy explorer with authored task examples and selectable learner states, a source-backed concept vocabulary with a local BKT illustration, and inspectable synthetic examples of the output guard and RAG failure states. These additions are in the source candidate; the README publication record owns whether they are live.
 - An adult-only, deterministic grade-4 maths practice loop: guided steps, independent transfer and a separate delayed-check preview.
 - Optional local progress and local export. There is no account, business database, live model, SMS, voice, camera/OCR or provider API.
 - Product positioning spans Chinese, maths and English; the interactive example covers only the specified maths slice. It does not establish live language tutoring, learning outcomes or child-release readiness.

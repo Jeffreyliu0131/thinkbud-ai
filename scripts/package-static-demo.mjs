@@ -20,7 +20,7 @@ function walk(directory) {
     return entry.isDirectory() ? walk(file) : [file]
   })
 }
-const sourceSnapshotFiles = [...walk('src'), ...walk('scripts'), 'package.json', 'package-lock.json', 'vite.config.ts', 'index.html', 'tsconfig.json', 'tsconfig.app.json', 'tsconfig.node.json',
+const sourceSnapshotFiles = [...walk('src'), ...walk('shared'), ...walk('scripts'), 'package.json', 'package-lock.json', 'vite.config.ts', 'index.html', 'tsconfig.json', 'tsconfig.app.json', 'tsconfig.node.json',
   'public/favicon.svg', 'public/icons/icon-192.png', 'public/eval-report.json', 'public/rag-eval-report.json', 'public/practice-eval-report.json'].sort()
 const sourceHash = createHash('sha256')
 for (const file of sourceSnapshotFiles) sourceHash.update(file).update('\0').update(readFileSync(file)).update('\0')

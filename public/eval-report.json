@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-21T17:09:07.525Z",
-  "durationMs": 12.49,
-  "sourceCommit": "8184681e3ae4d2463a52147b362870ba247c2c59",
+  "generatedAt": "2026-09-22T05:15:01.021Z",
+  "durationMs": 10.28,
+  "sourceCommit": "4e17da4c902b5b54c242000ae337e1839e62508d",
   "sourceDirty": true,
-  "sourceSnapshotHash": "c2c71b934136840e6cc7148da15e955977a48c957984e3a78bb2bfc67ed9b183",
+  "sourceSnapshotHash": "2734d084b581acdd9aebe67e7525944443ab0d1aaa4ec6c49d4eed5d6d133f60",
   "sourceSnapshotFiles": [
     ".decisiontrace.yml",
     ".decisiontrace/contracts.yml",

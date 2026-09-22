@@ -21,6 +21,7 @@ import {
 import BudMascot from '../components/BudMascot'
 import { demoAsset, demoRoute } from '../lib/demoPaths'
 import './SyntheticDemoPage.css'
+import { ShowcaseIntro, SubjectExplorer, KnowledgeExplorer, SystemExplorer, SubjectPreview, ChapterNav } from '../components/ShowcaseExplorer'
 
 interface EvalReport {
   generatedAt: string
@@ -289,10 +290,10 @@ export default function SyntheticDemoPage() {
           <span>ThinkBud</span>
         </a>
         <div className="tb-nav__links">
-          <a href={demoRoute('/practice')}>{t("体验一题")}</a>
-          <a href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('product-loop') }}>{t("学习路径")}</a>
-          <a href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('rag-contract') }}>{t("参考资料")}</a>
-          <a href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('evidence-chain') }}>{t("实现与证据")}</a>
+          <a href={demoRoute('/practice')}>{locale === 'zh' ? '数学实操' : 'Maths practice'}</a>
+          <a href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('subject-explorer') }}>{locale === 'zh' ? '学科与题型' : 'Subjects & tasks'}</a>
+          <a href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('knowledge-explorer') }}>{locale === 'zh' ? '知识与思考' : 'Knowledge'}</a>
+          <a href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('system-explorer') }}>{locale === 'zh' ? 'AI 与实现' : 'AI & implementation'}</a>
         </div>
         <div className="demo-nav-tools"><DemoLanguageSwitch /><a className="tb-nav__source" href="https://github.com/Jeffreyliu0131/thinkbud-ai" target="_blank" rel="noreferrer">
           {t("源码")}<GitBranch size={16} aria-hidden="true" />
@@ -304,36 +305,27 @@ export default function SyntheticDemoPage() {
         <header className="tb-hero">
           <div className="tb-hero__copy">
             <p className="tb-kicker">{t('小学学习与思考教练')}</p>
-            <h1>{t('做完这一题，')}<br />{t('能自己做下一题吗？')}</h1>
+            <h1>{locale === 'zh' ? '一步步想清楚，' : 'Make room to think.'}<br />{locale === 'zh' ? '再走出自己的下一步。' : 'Then take your own next step.'}</h1>
             <p className="tb-hero__lede">{t('面向小学语文、数学、英语，帮助学习者一步步想清楚。做题时得到的帮助，与离开帮助后能做什么，分别观察。')}</p>
-            <p className="tb-demo-scope">{t('本次体验：四年级数学 · 分配律。语文、英语保留产品定位，本演示尚未提供对应互动流程。')}</p>
+            <p className="tb-demo-scope">{locale === 'zh' ? '探索三科题型与分龄引导，查看思考链、知识点观察和 RAG；也可以亲自完成四年级数学练习。' : 'Explore subject and age-band policies, thinking traces, knowledge observations and RAG—or try the grade-4 maths workflow.'}</p>
             <div className="tb-hero__actions">
-              <a className="tb-button tb-button--primary" href={demoRoute('/practice')}>{t('开始数学体验')}<ArrowRight size={16} aria-hidden="true" /></a>
-              <a className="tb-button tb-button--quiet" href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('product-loop') }}>{t('先看学习路径')}</a>
+              <a className="tb-button tb-button--primary" href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('subject-explorer') }}>{locale === 'zh' ? '探索学科与题型' : 'Explore subjects & tasks'}<ArrowRight size={16} aria-hidden="true" /></a>
+              <a className="tb-button tb-button--quiet" href={demoRoute('/practice')}>{t('开始数学体验')}</a>
             </div>
             <aside className="tb-synthetic-note">{t('成人体验 · 无需账号 · 预设提示，不调用真实 AI')}</aside>
           </div>
-          <div className="tb-hero__preview">
-            <article className="tb-lesson" aria-label={t('预设练习片段')}>
-              <div className="tb-lesson__meta"><span>{t('分配律 · 练习片段')}</span><span>{t('约 3 分钟体验')}</span></div>
-              <h2 className="tb-lesson__title">{t('一次，只走一步')}</h2>
-              <div className="tb-lesson__equation">6 × (10 + 4)</div>
-              <div className="tb-lesson__prompt">
-                <div className="tb-lesson__mascot" aria-hidden="true"><BudMascot emotion="thinking" /></div>
-                <div><strong>{t('ThinkBud · 预设提示')}</strong><p>{t('括号里的两项都要参与。你能先把它展开吗？')}</p></div>
-              </div>
-              <div className="tb-lesson__footer"><span>01 / 04 · {t('引导练习')}</span><a href={demoRoute('/practice')}>{t('亲自试一题')}<ArrowRight size={15} aria-hidden="true" /></a></div>
-            </article>
-            <p className="tb-lesson__caption">{t('预设题目与提示，过程由你的作答推进。')}</p>
-          </div>
+          <SubjectPreview jumpTo={jumpTo} />
         </header>
 
+        <ShowcaseIntro jumpTo={jumpTo} />
+        <ChapterNav jumpTo={jumpTo} />
+        <SubjectExplorer />
 
         <section id="product-loop" tabIndex={-1} className="tb-section tb-mechanism" data-showcase="product-loop">
           <div className="tb-section__intro">
-            <p className="tb-kicker">{t('一条学习路径，三种不同的观察。')}</p>
+            <p className="tb-kicker">{locale === 'zh' ? '02 / 数学实操 · 四年级分配律' : '02 / MATHS WORKFLOW · GRADE-4 DISTRIBUTIVE PROPERTY'}</p>
             <h2>{t("帮助会逐步撤去，观察才有区别。")}</h2>
-            <p>{t("你可以故意答错、请求提示，或独立完成。系统会根据操作推进流程，并保留不同的完成方式。")}</p>
+            <p>{locale === 'zh' ? '这是一条可操作的数学实验路径：引导练习、独立新题与延迟观察。它与普通三科对话分开，不把同一验收方式强加到作文等开放任务。' : 'This runnable maths experiment separates guided work, a new independent item and a delayed check. It is distinct from ordinary subject chat; open-ended writing does not inherit this assessment flow.'}<br /><a className="sx-source" href={demoRoute('/practice')}>{locale === 'zh' ? '进入交互练习 →' : 'Open interactive practice →'}</a></p>
           </div>
 
           <ol className="tb-loop">
@@ -345,6 +337,9 @@ export default function SyntheticDemoPage() {
             ))}
           </ol>
         </section>
+
+        <KnowledgeExplorer />
+        <SystemExplorer jumpTo={jumpTo} />
 
         <details className="tb-engineering" open={new URLSearchParams(window.location.hash.split('?')[1] ?? window.location.search).has('rag') || undefined}>
           <summary><div><strong>{t("查看实现与证据")}</strong><span>{t("预设对话 · 检索状态 · 合成测试报告")}</span></div><Plus size={19} strokeWidth={1.4} aria-hidden="true" /></summary>

@@ -87,3 +87,22 @@ The direction is a quiet learning surface: a lesson sheet in the overview, conti
 ![Independent practice at mobile width](2026-09-22/07-mobile-transfer-light.png)
 
 Light images use the same built UI with the dark media condition disabled by a local QA server. They are not a separate design or a published alternate site. The actual normal preview continues to follow the device's colour preference. All inputs shown are adult synthetic role-play; no learning-outcome evidence is implied.
+
+
+## Expanded three-subject showcase · 2026-09-22
+
+These captures document the current **locally verified candidate**, not a new online publication. The old images above remain dated historical captures. [Capture manifest](2026-09-22-expanded/capture-manifest.json).
+
+1. **Entry — verified:** visible Chinese, maths and English previews, direct exploration CTA and preserved maths practice.
+2. **Subject exploration — verified:** subject/age-band/task switching, learner-state changes, Chinese writing closure and English grammar-rule application.
+3. **Knowledge exploration — verified:** source vocabulary, synthetic BKT updates, neutral signal behaviour and reset. No learning record is persisted.
+4. **RAG handoff — verified:** module CTA opens evidence, fault selection removes citations.
+5. **Responsive and navigation — verified:** English at 390px and 320px, no page-level horizontal overflow in the checked states; keyboard activation, anchored navigation and practice entry work. No physical-phone or screen-reader compliance claim is made.
+
+![Expanded local homepage](2026-09-22-expanded/home.png)
+
+![English reasoning with a preset learner attempt](2026-09-22-expanded/english-reasoning.png)
+
+![Chinese composition planning](2026-09-22-expanded/chinese-reasoning.png)
+
+![English mobile homepage](2026-09-22-expanded/mobile-home-en.png)

@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-22",
+  "status": "local-candidate-not-published",
+  "route": "/thinkbud-ai/",
+  "baseCommit": "4e17da4c902b5b54c242000ae337e1839e62508d",
+  "sourceSnapshotHash": "d58104e1b2711b5f0c0d04f5bf68e4c68353ba704ffaca66c6f8f5d894b0daae",
+  "sourceDirty": true,
+  "captureMethod": "Codex in-app browser screenshots of the built static demo",
+  "desktopViewport": {
+    "width": 1360,
+    "height": 900
+  },
+  "mobileViewport": {
+    "width": 390,
+    "height": 844
+  },
+  "captures": {
+    "home.png": "Three-subject first screen",
+    "english-reasoning.png": "English grammar policy after preset learner attempt",
+    "chinese-reasoning.png": "Chinese composition planning after preset learner attempt",
+    "mobile-home-en.png": "English UI at 390px; captured before final navigation scrollbar polish"
+  },
+  "limits": [
+    "Authored examples, not live model output",
+    "Synthetic BKT illustration; no learner records",
+    "No screen reader or physical phone tested"
+  ]
+}
