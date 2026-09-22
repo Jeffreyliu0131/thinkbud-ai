@@ -2,9 +2,9 @@
 
 - Gate: **PASS**
 - Synthetic cases: **15/15**
-- Source commit: `4e17da4c902b5b54c242000ae337e1839e62508d`
-- Source snapshot SHA-256: `4936a38889a789a52cc0b5e073b7f0ab19d19aaaf99cfa207084bd31f53e66dc`
-- Source dirty: `false`
+- Source commit: `6a8cee97003ed19f33129534919c2ee4eaefa5ea`
+- Source snapshot SHA-256: `9f6e0653ed1aea70b3e4028291c20cdd342eca0b8aa013f2c59e756221f3fa6a`
+- Source dirty: `true`
 - Model/network calls and real child records: **0/0/0**
 - Delay: controlled-clock simulation, not a real longitudinal study
 - Learning impact and independent human review: **not validated / not run**

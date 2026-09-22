@@ -40,7 +40,7 @@ describe('source-grounded subject exploration', () => {
   })
   it('updates the first-screen preview for all three subjects', async () => {
     const user = userEvent.setup()
-    render(<SubjectPreview jumpTo={vi.fn()} />)
+    render(<SubjectPreview />)
     const group = screen.getByRole('group', { name: '预览学科' })
     await user.click(within(group).getByRole('button', { name: '语文' }))
     expect(screen.getByText('你想写哪一次具体的经历？')).toBeInTheDocument()

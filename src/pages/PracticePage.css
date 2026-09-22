@@ -150,3 +150,13 @@
   .answer-equation input { width: 50px; }
   .apple-bags { gap: 21px; }
 }
+
+/* The direct-link page states its destination; the primary walkthrough embeds the exercise. */
+.practice-nav__location { color: var(--tb-ink-faint); font-size: 12px; }
+.practice-nav .practice-back { font-size: 13px; gap: 8px; }
+.practice-page--embedded { min-height: 0; padding: 26px 0 0; background: transparent; }
+.practice-page--embedded .practice-start { display: block; padding-top: 0; border-top: 0; }
+.practice-page--embedded .practice-start form { max-width: 600px; margin-inline: auto; }
+.practice-page--embedded .practice-layout { gap: 36px; }
+.practice-page--embedded .practice-evidence { position: static; }
+@media (max-width: 600px) { .practice-nav__location { display: none; } }

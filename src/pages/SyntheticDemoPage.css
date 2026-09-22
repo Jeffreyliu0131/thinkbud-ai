@@ -200,3 +200,37 @@
   .tb-lesson__equation { font-size: 35px; }
   .tb-synthetic-note { font-size: 10px; }
 }
+
+/* Reading comes first. Local choices change the content beside them, not the route. */
+.tb-page-label { font-size: 12px; color: var(--tb-ink-faint); }
+.tb-reading-note { display: flex; align-items: start; gap: 12px; margin-top: 30px !important; padding-top: 22px; border-top: 1px solid var(--tb-line); color: var(--tb-accent); font-size: 12px; line-height: 1.85; max-width: 34em; }
+.tb-reading-note svg { flex-shrink: 0; margin-top: 3px; }
+.tb-inline-practice { grid-column: 1 / -1; border: 1px solid var(--tb-line-strong); border-radius: 5px; background: var(--tb-surface); padding: 26px 30px; margin-top: -20px; }
+.tb-inline-practice__entry { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+.tb-inline-practice__entry h3 { font-family: var(--tb-display); font-weight: 400; font-size: 24px; }
+.tb-inline-practice__entry p { color: var(--tb-ink-soft); font-size: 12px; max-width: 44em; margin-top: 8px; line-height: 1.85; }
+.tb-inline-practice__entry button { flex-shrink: 0; }
+.tb-inline-practice__body { border-top: 1px solid var(--tb-line); margin-top: 24px; }
+.tb-inline-practice__body[hidden] { display: none; }
+.tb-inline-practice__exit { border-top: 1px solid var(--tb-line); padding-top: 16px; margin-top: 28px; }
+.tb-inline-practice__exit p { font-size: 12px; color: var(--tb-ink-soft); }
+.sx-local-detail { border: 1px solid var(--tb-line); border-radius: 4px; margin-top: 24px; background: var(--tb-surface); }
+.sx-local-detail > summary { display: flex; align-items: center; gap: 16px; cursor: pointer; list-style: none; min-height: 82px; padding: 18px 25px; }
+.sx-local-detail > summary::-webkit-details-marker { display: none; }
+.sx-local-detail > summary > span { font-size: 16px; font-weight: 500; }
+.sx-local-detail > summary small { color: var(--tb-ink-soft); font-size: 12px; }
+.sx-local-detail > summary svg { margin-left: auto; flex-shrink: 0; }
+.sx-local-detail[open] > summary svg { transform: rotate(45deg); }
+.sx-local-detail .tb-rag { padding: 28px; }
+.sx-local-detail .tb-section__intro h3 { font-family: var(--tb-display); font-size: 27px; font-weight: 400; line-height: 1.4; }
+@media (max-width: 800px) {
+  .tb-inline-practice { margin-top: 0; padding: 22px; }
+  .tb-inline-practice__entry { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .sx-local-detail > summary { flex-wrap: wrap; gap: 7px 16px; }
+  .sx-local-detail > summary small { order: 3; width: 100%; }
+  .sx-local-detail .tb-rag { padding: 22px; }
+}
+@media (max-width: 450px) { .tb-page-label { display: none; } .tb-inline-practice { padding-inline: 17px; } }
+
+.tb-mechanism { row-gap: 38px; }
+.tb-inline-practice { margin-top: 0; overflow-anchor: none; }

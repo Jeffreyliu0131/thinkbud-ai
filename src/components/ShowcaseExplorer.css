@@ -1,14 +1,5 @@
 /* Reuse the existing ThinkBud editorial palette and type scale. */
-.sx-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid var(--tb-line); }
-.sx-summary button { display: flex; align-items: flex-start; gap: 16px; padding: 27px 24px; background: transparent; color: var(--tb-ink); border: 0; text-align: left; cursor: pointer; }
-.sx-summary button:first-child { padding-left: 0; }
-.sx-summary button + button { border-left: 1px solid var(--tb-line); }
-.sx-summary button > span { color: var(--tb-accent); font-size: 11px; padding-top: 4px; }
-.sx-summary strong { font-size: 16px; font-weight: 500; }
-.sx-summary p { margin-top: 8px; color: var(--tb-ink-soft); font-size: 12px; line-height: 1.8; }
-.sx-summary svg { flex-shrink: 0; margin-top: 5px; }
 .sx-chapter { border-top: 1px solid var(--tb-line); padding-block: 70px; scroll-margin-top: 30px; }
-.sx-summary + .sx-chapter { border-top: 0; }
 .sx-heading { max-width: 810px; margin-bottom: 34px; }
 .sx-heading h2 { font-family: var(--tb-display); font-size: clamp(27px, 3vw, 38px); font-weight: 400; line-height: 1.4; letter-spacing: -0.015em; margin-top: 14px; text-wrap: balance; }
 .sx-heading > p:last-child { color: var(--tb-ink-soft); font-size: 14px; line-height: 1.9; margin-top: 18px; max-width: 52em; }
@@ -24,7 +15,7 @@
 .sx-note { font-size: 11px; color: var(--tb-ink-soft); line-height: 1.85; margin-top: 15px !important; }
 .sx-workspace { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 35px; margin-top: 30px; align-items: start; }
 .sx-topic-list { display: flex; flex-direction: column; gap: 4px; }
-.sx-topic-list button { display: grid; grid-template-columns: 20px 1fr 15px; gap: 11px; align-items: center; min-height: 62px; text-align: left; border: 1px solid transparent; border-radius: 4px; padding: 12px 14px; background: transparent; color: var(--tb-ink-soft); cursor: pointer; }
+.sx-topic-list button { display: grid; grid-template-columns: 20px 1fr; gap: 11px; align-items: center; min-height: 62px; text-align: left; border: 1px solid transparent; border-radius: 4px; padding: 12px 14px; background: transparent; color: var(--tb-ink-soft); cursor: pointer; }
 .sx-topic-list button > span { font-size: 10px; color: var(--tb-ink-faint); }
 .sx-topic-list strong { font-size: 13px; font-weight: 500; }
 .sx-topic-list button[aria-pressed="true"] { border-color: var(--tb-line-strong); background: var(--tb-surface); color: var(--tb-accent); }
@@ -51,7 +42,6 @@
 .sx-completion { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--tb-line); }
 .sx-completion strong { font-size: 12px; font-weight: 500; }
 .sx-completion p { font-size: 12px; color: var(--tb-ink-soft); line-height: 1.9; margin-top: 5px; }
-.sx-practice { margin-top: 22px; }
 .sx-source { display: inline-flex; align-items: center; gap: 7px; color: var(--tb-accent); font-size: 11px; min-height: 35px; text-decoration-thickness: 1px; text-underline-offset: 5px; }
 .sx-sources { display: flex; flex-wrap: wrap; gap: 7px 26px; margin-top: 24px; }
 .sx-traces { display: grid; grid-template-columns: 1fr 1fr; gap: 65px; }
@@ -117,7 +107,6 @@
 .sx-preview__content .tb-lesson__prompt { min-height: 127px; }
 .sx-preview .tb-lesson__footer button { display: inline-flex; align-items: center; gap: 9px; padding: 4px 0; border: 0; background: transparent; color: var(--tb-accent); font-size: 12px; min-height: 32px; cursor: pointer; }
 @media (hover: hover) and (pointer: fine) {
-  .sx-summary button:hover, .sx-topic-list button:hover, .sx-branches button:hover { background: var(--tb-accent-soft); }
   .sx-segment button:hover, .sx-preview__tabs button:hover { color: var(--tb-accent); }
   .sx-observation__buttons button:hover:not(:disabled) { border-color: var(--tb-accent); }
 }
@@ -132,11 +121,6 @@
 }
 @media (max-width: 800px) {
   .sx-chapter { padding-block: 48px; }
-  .sx-summary { grid-template-columns: 1fr; }
-  .sx-summary button { padding: 19px 0; }
-  .sx-summary button + button { border-left: 0; border-top: 1px solid var(--tb-line); }
-  .sx-summary button > div { flex: 1; }
-  .sx-summary p { margin-top: 4px; }
   .sx-workspace { grid-template-columns: 1fr; }
   .sx-topic-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
   .sx-topic-list button { min-height: 52px; border-color: var(--tb-line); padding-inline: 10px; grid-template-columns: 18px 1fr; }
@@ -170,16 +154,11 @@
   .sx-preview__question { font-size: 22px; }
 }
 
-.sx-chapter-nav { display: flex; position: sticky; z-index: 10; top: 0; gap: 8px; justify-content: space-between; padding-block: 11px; background: var(--tb-canvas); border-bottom: 1px solid var(--tb-line); overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; }
-.sx-chapter-nav button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid transparent; padding: 10px 16px; min-height: 43px; background: transparent; border-radius: 3px; color: var(--tb-ink-soft); font-size: 12px; white-space: nowrap; cursor: pointer; }
-.sx-chapter-nav span { color: var(--tb-ink-faint); font-size: 10px; }
-.sx-chapter-nav [aria-current="location"] { background: var(--tb-accent-soft); color: var(--tb-accent); border-color: var(--tb-line); }
-.sx-chapter, .tb-section[id] { scroll-margin-top: 82px; }
-.sx-chapter-nav + .sx-chapter { border-top: 0; }
 @media (min-width: 801px) { .tb-hero { padding-block: 60px; } }
-@media (max-width: 800px) { .sx-chapter-nav { gap: 3px; margin-inline: -8px; } .sx-chapter-nav button { padding-inline: 10px; font-size: 11px; gap: 6px; } }
-@media (max-width: 800px) {
-  .sx-chapter-nav { scrollbar-width: none; scroll-snap-type: x proximity; }
-  .sx-chapter-nav::-webkit-scrollbar { display: none; }
-  .sx-chapter-nav button { scroll-snap-align: center; }
-}
+@media (hover: hover) and (pointer: fine) { .sx-topic-list button:hover, .sx-branches button:hover { background: var(--tb-accent-soft); } }
+
+.sx-source-notes { margin-top: 24px; }
+.sx-source-notes > summary { color: var(--tb-ink-soft); font-size: 11px; cursor: pointer; width: fit-content; min-height: 38px; padding-block: 8px; }
+.sx-source-notes .sx-sources { margin-top: 5px; }
+.sx-chapter { scroll-margin-top: 24px; }
+.sx-workspace, .sx-preview__content { overflow-anchor: none; }

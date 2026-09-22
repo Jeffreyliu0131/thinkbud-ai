@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-22",
+  "status": "local-acceptance-before-publication",
+  "baseCommit": "6a8cee97003ed19f33129534919c2ee4eaefa5ea",
+  "sourceSnapshotHash": "80d796462f4bb8b15b6e57ecf9bc1112aa479120c390a9812b00b775a47de60a",
+  "sourceDirty": true,
+  "captureMethod": "Codex in-app browser; final built static candidate",
+  "desktopViewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "captures": {
+    "home.png": "Continuous reading entry, no jump or exercise-route CTAs",
+    "inline-practice.png": "First inline exercise opening, scrollY before/after both 2160; same URL"
+  },
+  "verifiedInteractions": [
+    "No section-jump navigation",
+    "Native click opens and closes without changing viewport location",
+    "Collapse/resume keeps the typed 5 and surrounding selections",
+    "Answer submission retains keyboard focus on the next answer input",
+    "English layouts at 390px and 320px have no page-level horizontal overflow",
+    "Standalone back link is upper left and returns to the named introduction",
+    "RAG disclosure stays in the AI chapter; degraded state removes citations"
+  ],
+  "limits": [
+    "Synthetic preset workflow; no live model",
+    "No physical phone or screen-reader audit",
+    "Local screenshot provenance, not an online capture"
+  ]
+}

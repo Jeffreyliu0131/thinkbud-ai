@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render, screen, within, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import SyntheticDemoPage from '../SyntheticDemoPage'
 
@@ -117,11 +117,12 @@ afterEach(() => {
   vi.restoreAllMocks()
   vi.unstubAllGlobals()
   vi.unstubAllEnvs()
+  localStorage.clear()
   window.history.replaceState({}, '', '/')
 })
 
 describe('SyntheticDemoPage', () => {
-  it('uses the Pages base for real static-report loads and hash links, including a deep-link state', async () => {
+  it('uses the Pages base for report loads and keeps practice inline while supporting a RAG deep link', async () => {
     vi.stubEnv('MODE', 'synthetic-demo')
     vi.stubEnv('BASE_URL', '/thinkbud-ai/')
     window.history.replaceState({}, '', '/thinkbud-ai/#/?rag=degraded')
@@ -129,7 +130,7 @@ describe('SyntheticDemoPage', () => {
     expect(await screen.findByText('38/38')).toBeInTheDocument()
     expect(screen.getByText('检索故障，不编造依据')).toBeInTheDocument()
     expect(vi.mocked(fetch).mock.calls.map(([url]) => url)).toEqual(['/thinkbud-ai/eval-report.json', '/thinkbud-ai/rag-eval-report.json'])
-    expect(screen.getByRole('link', { name: /开始数学体验/ })).toHaveAttribute('href', '/thinkbud-ai/#/practice')
+    expect(screen.getByRole('button', { name: '展开数学练习' })).toHaveAttribute('aria-expanded', 'false')
     expect(screen.queryByRole('link', { name: /login|admin/i })).not.toBeInTheDocument()
   })
   it('renders generated guard, citation, gateway, and evidence metadata', async () => {
@@ -148,7 +149,7 @@ describe('SyntheticDemoPage', () => {
     render(<SyntheticDemoPage />)
     await screen.findByText('Synthetic Upper Math Notes')
 
-    await user.click(screen.getByText('查看实现与证据'))
+    await user.click(screen.getByText('展开检索示例'))
     await user.click(screen.getByRole('button', { name: /检索服务故障/ }))
     expect(screen.getByText('检索故障，不编造依据')).toBeInTheDocument()
     expect(screen.getByText(/service missing/)).toBeInTheDocument()
@@ -164,7 +165,7 @@ describe('SyntheticDemoPage', () => {
     render(<SyntheticDemoPage />)
     await user.click(screen.getByText('查看实现与证据'))
     expect(await screen.findByRole('alert')).toHaveTextContent('报告格式不完整')
-    expect(screen.getByRole('link', { name: /开始数学体验/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '展开数学练习' })).toBeInTheDocument()
     expect(screen.queryByText('已拦截')).not.toBeInTheDocument()
     expect(screen.getByText('报告不可用，未作通过判断')).toBeInTheDocument()
     vi.mocked(fetch).mockImplementation(async input => new Response(JSON.stringify(String(input).includes('rag-eval-report') ? ragReport : behaviorReport), { headers: { 'Content-Type': 'application/json' } }))
@@ -173,10 +174,39 @@ describe('SyntheticDemoPage', () => {
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
+  it('keeps first-time reading linear and preserves context around an inline exercise', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<SyntheticDemoPage />)
+    await screen.findByText('38/38')
+    expect(container.querySelectorAll('.tb-nav a, .tb-hero a, a[href*="#/"]')).toHaveLength(0)
+    expect(screen.queryByRole('navigation', { name: '模块导航' })).not.toBeInTheDocument()
+    const subjects = screen.getByRole('group', { name: '选择学科' })
+    await user.click(within(subjects).getByRole('button', { name: '英语' }))
+    await user.click(screen.getByRole('button', { name: '我尝试了一步' }))
+    const originalUrl = window.location.href
+    await user.click(screen.getByRole('button', { name: '展开数学练习' }))
+    const exercise = screen.getByRole('region', { name: '本节数学练习' })
+    expect(within(exercise).queryByRole('main')).not.toBeInTheDocument()
+    expect(within(exercise).queryByRole('navigation')).not.toBeInTheDocument()
+    await user.click(within(exercise).getByRole('checkbox', { name: '我以成人身份体验预设题目的流程' }))
+    await user.click(within(exercise).getByRole('button', { name: '开始引导练习' }))
+    await user.type(within(exercise).getByRole('textbox', { name: '本步答案' }), '5')
+    await user.click(screen.getByRole('button', { name: '收起练习' }))
+    expect(screen.queryByRole('region', { name: '本节数学练习' })).not.toBeInTheDocument()
+    await waitFor(() => expect(screen.getByRole('button', { name: '继续刚才的练习' })).toHaveFocus())
+    await user.click(screen.getByRole('button', { name: '继续刚才的练习' }))
+    expect(within(exercise).getByRole('textbox', { name: '本步答案' })).toHaveValue('5')
+    expect(within(subjects).getByRole('button', { name: '英语' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: '我尝试了一步' })).toHaveAttribute('aria-pressed', 'true')
+    expect(window.location.href).toBe(originalUrl)
+    expect(vi.mocked(fetch)).toHaveBeenCalledTimes(2)
+  })
+
   it('rejects HTML fallbacks and unknown inherited RAG status names without a white screen', async () => {
     window.history.replaceState({}, '', '/#/?rag=toString')
     vi.mocked(fetch).mockResolvedValue(new Response('<html>fallback</html>', { headers: { 'Content-Type': 'text/html' } }))
     render(<SyntheticDemoPage />)
+    await userEvent.setup().click(screen.getByText('查看实现与证据'))
     expect(await screen.findByRole('alert')).toHaveTextContent('报告暂时无法读取')
     expect(screen.getByRole('heading', { name: '附上可追溯的参考片段' })).toBeInTheDocument()
   })

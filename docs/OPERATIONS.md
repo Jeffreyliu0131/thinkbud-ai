@@ -34,7 +34,7 @@ Canonical demo paths:
 - Showcase: `/thinkbud-ai/#/showcase`
 - Preset degraded RAG state: `/thinkbud-ai/#/?rag=degraded`
 
-Hash routing needs no server rewrite. Plain `/thinkbud-ai/practice` is not a supported route; all in-app links use the canonical hash form. Section navigation scrolls without replacing the route hash. Unknown hash routes return to the demo; no link leads to login/admin or the old service.
+Hash routing needs no server rewrite. Plain `/thinkbud-ai/practice` is not a supported route; all in-app links use the canonical hash form. The primary walkthrough is a continuous reading page with local disclosures; it has no section-jump navigation. Maths practice opens inline and remains mounted when collapsed. The standalone practice deep link is retained for direct visitors and has an explicit upper-left return to the introduction. Unknown hash routes return to the demo; no link leads to login/admin or the old service.
 
 ## Manual GitHub Pages publication
 
@@ -45,7 +45,7 @@ Only after the user explicitly authorizes publication of the reviewed candidate:
 1. Review the complete candidate against the current public main and verify its snapshot hash. Commit/push only the explicitly approved source; do not rewrite history or import private ancestors. The `620b2fd` acceptance base described in historical records is not a required starting revision for future work. Keep the old services untouched.
 2. Confirm the existing **Settings → Pages** build source remains **GitHub Actions**. Reuse the configured repository; no Cloudflare credentials, new product repo or paid resource is needed. Preserve any existing environment protections; do not invent a third-party approval dependency.
 3. Record the approved exact main SHA and ensure its CI passes. Manually dispatch `.github/workflows/deploy-demo.yml` with `expected_sha` equal to that SHA. It checks the exact main revision, runs the engineering/evidence gate, builds/checks `dist-demo`, uploads only that directory and deploys with GitHub's built-in token/OIDC permissions. There is no push-triggered deployment and no custom deployment secret.
-4. Compare the live `build-info.json` source SHA to the workflow SHA, verify both report responses are JSON/200, then exercise the root, practice, hash deep-link refresh, section jumps, preset RAG state switching and narrow-screen layout. Check there are no service/API requests, camera/microphone prompts or login redirects. Do not treat a page 200 as a complete interaction check.
+4. Compare the live `build-info.json` source SHA to the workflow SHA, verify both report responses are JSON/200, then exercise the root, practice, hash deep-link refresh, inline exercise open/collapse/resume without losing input, local RAG disclosure and preset state switching and narrow-screen layout. Check there are no service/API requests, camera/microphone prompts or login redirects. Do not treat a page 200 as a complete interaction check.
 5. Record the successful workflow/deployment URL and SHA in README. If the static release fails, redeploy a previously accepted static artifact/revision through the normal Pages workflow. Do not use or modify the old Cloudflare/Vercel service as a demo rollback target.
 
 The initial independent acceptance stage was local-only. The owner subsequently authorized publication directly in the release task; source publication and the static Pages deployment were completed. Future publications still follow the explicit authorization and exact-source checks above.

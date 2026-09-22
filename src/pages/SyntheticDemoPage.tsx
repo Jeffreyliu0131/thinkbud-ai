@@ -3,13 +3,13 @@ import DemoLanguageSwitch from '../components/DemoLanguageSwitch'
 import { useEffect, useMemo, useState } from 'react'
 import {
   ArrowRight,
+  ArrowDown,
   ArrowUpRight,
   CheckCircle2,
   CircleSlash2,
   Database,
   FileSearch2,
   GitCommit,
-  GitBranch,
   LockKeyhole,
   Network,
   Plus,
@@ -19,9 +19,10 @@ import {
   TriangleAlert,
 } from 'lucide-react'
 import BudMascot from '../components/BudMascot'
-import { demoAsset, demoRoute } from '../lib/demoPaths'
+import { demoAsset } from '../lib/demoPaths'
 import './SyntheticDemoPage.css'
-import { ShowcaseIntro, SubjectExplorer, KnowledgeExplorer, SystemExplorer, SubjectPreview, ChapterNav } from '../components/ShowcaseExplorer'
+import { SubjectExplorer, KnowledgeExplorer, SystemExplorer, SubjectPreview } from '../components/ShowcaseExplorer'
+import InlinePractice from '../components/InlinePractice'
 
 interface EvalReport {
   generatedAt: string
@@ -238,6 +239,7 @@ export default function SyntheticDemoPage() {
   const [error, setError] = useState<string | null>(null)
 
   const [attempt, setAttempt] = useState(0)
+  const [ragOpen, setRagOpen] = useState(() => new URLSearchParams(window.location.hash.split('?')[1] ?? window.location.search).has('rag'))
 
   useEffect(() => {
     const controller = new AbortController()
@@ -262,14 +264,7 @@ export default function SyntheticDemoPage() {
   }, [attempt])
 
   const retry = () => { setError(null); setBehaviorReport(null); setRagReport(null); setAttempt(value => value + 1) }
-  const jumpTo = (id: string) => {
-    const element = document.getElementById(id)
-    if (!element) return
-    const details = element.closest('details')
-    if (details) details.open = true
-    element.focus({ preventScroll: true })
-    element.scrollIntoView({ behavior: 'auto', block: 'start' })
-  }
+
 
   const runtimeState = useMemo(
     () => ragReport?.showcase.runtimeStates.find(state => state.status === selectedStatus),
@@ -284,21 +279,11 @@ export default function SyntheticDemoPage() {
 
   return (
     <main data-language={locale} className="tb-showcase" id="top" tabIndex={-1}>
-      <nav className="tb-nav" aria-label={t("演示导航")}>
-        <a className="tb-brand" href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('top') }} aria-label={t("ThinkBud 演示首页")}>
-          <span className="tb-brand__mark" aria-hidden="true"><BudMascot animate="idle" /></span>
-          <span>ThinkBud</span>
-        </a>
-        <div className="tb-nav__links">
-          <a href={demoRoute('/practice')}>{locale === 'zh' ? '数学实操' : 'Maths practice'}</a>
-          <a href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('subject-explorer') }}>{locale === 'zh' ? '学科与题型' : 'Subjects & tasks'}</a>
-          <a href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('knowledge-explorer') }}>{locale === 'zh' ? '知识与思考' : 'Knowledge'}</a>
-          <a href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('system-explorer') }}>{locale === 'zh' ? 'AI 与实现' : 'AI & implementation'}</a>
-        </div>
-        <div className="demo-nav-tools"><DemoLanguageSwitch /><a className="tb-nav__source" href="https://github.com/Jeffreyliu0131/thinkbud-ai" target="_blank" rel="noreferrer">
-          {t("源码")}<GitBranch size={16} aria-hidden="true" />
-        </a></div>
-      </nav>
+      <header className="tb-nav">
+        <div className="tb-brand"><span className="tb-brand__mark" aria-hidden="true"><BudMascot animate="idle" /></span><span>ThinkBud</span></div>
+        <span className="tb-page-label">{locale === 'zh' ? '产品与交互展示' : 'Product walkthrough'}</span>
+        <DemoLanguageSwitch />
+      </header>
 
       <div className="tb-shell">
 
@@ -308,24 +293,19 @@ export default function SyntheticDemoPage() {
             <h1>{locale === 'zh' ? '一步步想清楚，' : 'Make room to think.'}<br />{locale === 'zh' ? '再走出自己的下一步。' : 'Then take your own next step.'}</h1>
             <p className="tb-hero__lede">{t('面向小学语文、数学、英语，帮助学习者一步步想清楚。做题时得到的帮助，与离开帮助后能做什么，分别观察。')}</p>
             <p className="tb-demo-scope">{locale === 'zh' ? '探索三科题型与分龄引导，查看思考链、知识点观察和 RAG；也可以亲自完成四年级数学练习。' : 'Explore subject and age-band policies, thinking traces, knowledge observations and RAG—or try the grade-4 maths workflow.'}</p>
-            <div className="tb-hero__actions">
-              <a className="tb-button tb-button--primary" href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('subject-explorer') }}>{locale === 'zh' ? '探索学科与题型' : 'Explore subjects & tasks'}<ArrowRight size={16} aria-hidden="true" /></a>
-              <a className="tb-button tb-button--quiet" href={demoRoute('/practice')}>{t('开始数学体验')}</a>
-            </div>
+            <p className="tb-reading-note"><ArrowDown size={17} aria-hidden="true" /><span>{locale === 'zh' ? '向下阅读：从三科的思考过程，到背后的产品设计。' : 'Read on: from thinking in three subjects to the product decisions behind it.'}</span></p>
             <aside className="tb-synthetic-note">{t('成人体验 · 无需账号 · 预设提示，不调用真实 AI')}</aside>
           </div>
-          <SubjectPreview jumpTo={jumpTo} />
+          <SubjectPreview />
         </header>
 
-        <ShowcaseIntro jumpTo={jumpTo} />
-        <ChapterNav jumpTo={jumpTo} />
         <SubjectExplorer />
 
         <section id="product-loop" tabIndex={-1} className="tb-section tb-mechanism" data-showcase="product-loop">
           <div className="tb-section__intro">
             <p className="tb-kicker">{locale === 'zh' ? '02 / 数学实操 · 四年级分配律' : '02 / MATHS WORKFLOW · GRADE-4 DISTRIBUTIVE PROPERTY'}</p>
             <h2>{t("帮助会逐步撤去，观察才有区别。")}</h2>
-            <p>{locale === 'zh' ? '这是一条可操作的数学实验路径：引导练习、独立新题与延迟观察。它与普通三科对话分开，不把同一验收方式强加到作文等开放任务。' : 'This runnable maths experiment separates guided work, a new independent item and a delayed check. It is distinct from ordinary subject chat; open-ended writing does not inherit this assessment flow.'}<br /><a className="sx-source" href={demoRoute('/practice')}>{locale === 'zh' ? '进入交互练习 →' : 'Open interactive practice →'}</a></p>
+            <p>{locale === 'zh' ? '这是一条可操作的数学实验路径：引导练习、独立新题与延迟观察。它与普通三科对话分开，不把同一验收方式强加到作文等开放任务。' : 'This runnable maths experiment separates guided work, a new independent item and a delayed check. It is distinct from ordinary subject chat; open-ended writing does not inherit this assessment flow.'}</p>
           </div>
 
           <ol className="tb-loop">
@@ -336,50 +316,19 @@ export default function SyntheticDemoPage() {
               </li>
             ))}
           </ol>
+          <InlinePractice />
         </section>
 
         <KnowledgeExplorer />
-        <SystemExplorer jumpTo={jumpTo} />
-
-        <details className="tb-engineering" open={new URLSearchParams(window.location.hash.split('?')[1] ?? window.location.search).has('rag') || undefined}>
-          <summary><div><strong>{t("查看实现与证据")}</strong><span>{t("预设对话 · 检索状态 · 合成测试报告")}</span></div><Plus size={19} strokeWidth={1.4} aria-hidden="true" /></summary>
-          <p className="tb-engineering-note">{t("以下是供进一步审阅的合成案例。切换状态不会发起真实检索，对话也不是实时生成。")}</p>
-          {!behaviorReport && !error && <p className="tb-loading" role="status">{t("正在读取合成报告，数学体验可正常使用。")}</p>}
-          {error && <section className="tb-error" role="alert"><p><strong>{t(error)}</strong> {t("数学体验仍可使用。")}</p><button className="tb-button tb-button--quiet" type="button" onClick={retry}>{t("重新加载报告")}</button></section>}
-        <div className="tb-proof-grid">
-          <section className="tb-section tb-coaching" data-showcase="coaching-loop">
-            <div className="tb-section__title"><Sparkles aria-hidden="true" /><h2>{t("预设对话：让学习者继续想")}</h2></div>
-            <div className="tb-transcript">
-              {SYNTHETIC_TRANSCRIPT.map((turn, index) => (
-                <div key={`${turn.role}-${index}`} className={`tb-transcript__turn tb-transcript__turn--${turn.role}`}>
-                  <p><span>{t(turn.label)}</span>{t(turn.text)}</p>
-                </div>
-              ))}
-            </div>
-            <div className="tb-transfer"><strong>{t("接着检查迁移")}</strong><p>{t("这段减法对话是另一个预设案例。可操作的分配律练习会用新题检查方法，避免把跟着做完当作独立完成。")}</p></div>
-          </section>
-
-          <section className="tb-section tb-guard" data-showcase="answer-guard">
-            <div className="tb-section__title"><ShieldAlert aria-hidden="true" /><h2>{t("预设案例：拦下直接给出的答案")}</h2></div>
-            <div className="tb-guard__candidate">
-              <div><span>{t("离线假模型的候选输出")}</span><strong>{ragReport ? (ragReport.showcase.outputGuard.blocked ? t("已拦截") : t("未拦截")) : t("待读取")}</strong></div>
-              <p>{t(ragReport?.showcase.outputGuard.candidate ?? '报告未加载')}</p>
-              <small>{ragReport?.showcase.outputGuard.blockingIssues.map(issue => t(issue)).join(' / ') || '—'}</small>
-            </div>
-            <ArrowRight className="tb-guard__arrow" aria-hidden="true" />
-            <div className="tb-guard__fallback">
-              <span>{t("替代提示（此处不播放语音）")}</span>
-              <p>{t(ragReport?.showcase.outputGuard.fallback ?? '报告未加载')}</p>
-            </div>
-            <p className="tb-caption">{t("这是本地合成测试的已记录结果。它验证了该样例的拦截与替代顺序，不能保证真实模型永不泄露答案。")}</p>
-          </section>
-        </div>
-
+        <SystemExplorer ragDemo={<details className="sx-local-detail" open={ragOpen} onToggle={event => setRagOpen(event.currentTarget.open)}>
+          <summary><span>{ragOpen ? (locale === 'zh' ? '收起检索示例' : 'Collapse retrieval examples') : (locale === 'zh' ? '展开检索示例' : 'Open retrieval examples')}</span><small>{locale === 'zh' ? '在这里比较有结果、无结果与故障' : 'Compare results, empty retrieval and failure here'}</small><Plus size={18} aria-hidden /></summary>
         <section id="rag-contract" tabIndex={-1} className="tb-section tb-rag" data-showcase="rag-contract">
           <div className="tb-section__intro">
-            <h2>{t("有资料、没资料、出故障，分别怎么办？")}</h2>
+            <h3>{t("有资料、没资料、出故障，分别怎么办？")}</h3>
             <p>{t("点选一种预设检索场景，查看系统会采用什么依据。只有“找到参考内容”才展示合成引用。")}</p>
           </div>
+          {!ragReport && <p className="tb-loading" role="status">{error ? t(error) : t('正在读取…')}</p>}
+          {error && <button className="tb-button tb-button--quiet" onClick={retry}>{locale === 'zh' ? '重新加载检索报告' : 'Reload retrieval report'}</button>}
           <div className="tb-rag__meta"><Database size={15} aria-hidden="true" /> {t("预设状态 · 无真实教材检索")}</div>
 
           <div className="tb-rag__workspace">
@@ -420,6 +369,41 @@ export default function SyntheticDemoPage() {
             </div>
           )}
         </section>
+        </details>} />
+
+        <details className="tb-engineering">
+          <summary><div><strong>{t("查看实现与证据")}</strong><span>{locale === 'zh' ? '按需查看：对话规则、输出检查与合成测试报告' : 'Optional: coaching rules, output checks and synthetic reports'}</span></div><Plus size={19} strokeWidth={1.4} aria-hidden="true" /></summary>
+          <p className="tb-engineering-note">{t("以下是供进一步审阅的合成案例。切换状态不会发起真实检索，对话也不是实时生成。")}</p>
+          {!behaviorReport && !error && <p className="tb-loading" role="status">{t("正在读取合成报告，数学体验可正常使用。")}</p>}
+          {error && <section className="tb-error" role="alert"><p><strong>{t(error)}</strong> {t("数学体验仍可使用。")}</p><button className="tb-button tb-button--quiet" type="button" onClick={retry}>{t("重新加载报告")}</button></section>}
+        <div className="tb-proof-grid">
+          <section className="tb-section tb-coaching" data-showcase="coaching-loop">
+            <div className="tb-section__title"><Sparkles aria-hidden="true" /><h2>{t("预设对话：让学习者继续想")}</h2></div>
+            <div className="tb-transcript">
+              {SYNTHETIC_TRANSCRIPT.map((turn, index) => (
+                <div key={`${turn.role}-${index}`} className={`tb-transcript__turn tb-transcript__turn--${turn.role}`}>
+                  <p><span>{t(turn.label)}</span>{t(turn.text)}</p>
+                </div>
+              ))}
+            </div>
+            <div className="tb-transfer"><strong>{t("接着检查迁移")}</strong><p>{t("这段减法对话是另一个预设案例。可操作的分配律练习会用新题检查方法，避免把跟着做完当作独立完成。")}</p></div>
+          </section>
+
+          <section className="tb-section tb-guard" data-showcase="answer-guard">
+            <div className="tb-section__title"><ShieldAlert aria-hidden="true" /><h2>{t("预设案例：拦下直接给出的答案")}</h2></div>
+            <div className="tb-guard__candidate">
+              <div><span>{t("离线假模型的候选输出")}</span><strong>{ragReport ? (ragReport.showcase.outputGuard.blocked ? t("已拦截") : t("未拦截")) : t("待读取")}</strong></div>
+              <p>{t(ragReport?.showcase.outputGuard.candidate ?? '报告未加载')}</p>
+              <small>{ragReport?.showcase.outputGuard.blockingIssues.map(issue => t(issue)).join(' / ') || '—'}</small>
+            </div>
+            <ArrowRight className="tb-guard__arrow" aria-hidden="true" />
+            <div className="tb-guard__fallback">
+              <span>{t("替代提示（此处不播放语音）")}</span>
+              <p>{t(ragReport?.showcase.outputGuard.fallback ?? '报告未加载')}</p>
+            </div>
+            <p className="tb-caption">{t("这是本地合成测试的已记录结果。它验证了该样例的拦截与替代顺序，不能保证真实模型永不泄露答案。")}</p>
+          </section>
+        </div>
 
         <section id="evidence-chain" tabIndex={-1} className="tb-section tb-evidence" data-showcase="evidence-chain">
           <div className="tb-section__intro">
