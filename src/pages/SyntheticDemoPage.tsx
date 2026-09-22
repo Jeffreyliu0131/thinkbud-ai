@@ -8,11 +8,11 @@ import {
   CircleSlash2,
   Database,
   FileSearch2,
-  FlaskConical,
   GitCommit,
   GitBranch,
   LockKeyhole,
   Network,
+  Plus,
   ShieldAlert,
   ShieldCheck,
   Sparkles,
@@ -300,63 +300,54 @@ export default function SyntheticDemoPage() {
       </nav>
 
       <div className="tb-shell">
-        <aside className="tb-synthetic-note">
-          <div><FlaskConical size={18} aria-hidden="true" /><p><strong>{t("成人体验 · 预设样例。")}</strong> {t("答题、反馈与进度可操作；教练提示为预设内容。无需账号，不调用真实 AI。")}</p></div>
-          <span>{t("约 3 分钟体验")}</span>
-        </aside>
 
         <header className="tb-hero">
           <div className="tb-hero__copy">
-            <p className="tb-kicker">{t("ThinkBud · 小学学习与思考教练")}</p>
-            <h1>{t("做完这一题，")}<br />{t("能自己做下一题吗？")}</h1>
-            <p className="tb-hero__lede">{t("面向小学语文、数学、英语，帮助学习者一步步想清楚。做题时得到的帮助，与离开帮助后能做什么，分别观察。")}</p>
-            <p className="tb-demo-scope">{t("本次体验：四年级数学 · 分配律。语文、英语保留产品定位，本演示尚未提供对应互动流程。")}</p>
+            <p className="tb-kicker">{t('小学学习与思考教练')}</p>
+            <h1>{t('做完这一题，')}<br />{t('能自己做下一题吗？')}</h1>
+            <p className="tb-hero__lede">{t('面向小学语文、数学、英语，帮助学习者一步步想清楚。做题时得到的帮助，与离开帮助后能做什么，分别观察。')}</p>
+            <p className="tb-demo-scope">{t('本次体验：四年级数学 · 分配律。语文、英语保留产品定位，本演示尚未提供对应互动流程。')}</p>
             <div className="tb-hero__actions">
-              <a className="tb-button tb-button--primary" href={demoRoute('/practice')}>{t("开始数学体验")}<ArrowRight size={17} aria-hidden="true" /></a>
-              <a className="tb-button tb-button--quiet" href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('product-loop') }}>{t("先看学习路径")}</a>
+              <a className="tb-button tb-button--primary" href={demoRoute('/practice')}>{t('开始数学体验')}<ArrowRight size={16} aria-hidden="true" /></a>
+              <a className="tb-button tb-button--quiet" href={demoRoute('/')} onClick={event => { event.preventDefault(); jumpTo('product-loop') }}>{t('先看学习路径')}</a>
             </div>
+            <aside className="tb-synthetic-note">{t('成人体验 · 无需账号 · 预设提示，不调用真实 AI')}</aside>
           </div>
-
-          <div className="tb-hero__visual" aria-label={t("预设练习片段")}>
-            <div className="tb-coach-presence">
-              <div className="tb-coach-presence__mascot" aria-hidden="true"><BudMascot animate="wave" /></div>
-              <div><strong>{t("一次，只走一步")}</strong><span>{t("预设片段 · 进入体验后由你填写答案")}</span></div>
-            </div>
-            <div className="tb-hero-dialogue">
-              <p className="tb-message tb-message--learner"><span>{t("预设学习者")}</span>{t("6 × (10 + 4)，我该从哪里开始？")}</p>
-              <p className="tb-message tb-message--coach"><span>{t("ThinkBud · 预设提示")}</span>{t("括号里的两项都要参与。你能先把它展开吗？")}</p>
-            </div>
-            <div className="tb-gate tb-gate--pass">
-              <ArrowRight size={21} aria-hidden="true" />
-              <div><span>{t("接下来，由你操作")}</span><strong>{t("引导练习 → 独立新题 → 复测预览")}</strong></div>
-            </div>
+          <div className="tb-hero__preview">
+            <article className="tb-lesson" aria-label={t('预设练习片段')}>
+              <div className="tb-lesson__meta"><span>{t('分配律 · 练习片段')}</span><span>{t('约 3 分钟体验')}</span></div>
+              <h2 className="tb-lesson__title">{t('一次，只走一步')}</h2>
+              <div className="tb-lesson__equation">6 × (10 + 4)</div>
+              <div className="tb-lesson__prompt">
+                <div className="tb-lesson__mascot" aria-hidden="true"><BudMascot emotion="thinking" /></div>
+                <div><strong>{t('ThinkBud · 预设提示')}</strong><p>{t('括号里的两项都要参与。你能先把它展开吗？')}</p></div>
+              </div>
+              <div className="tb-lesson__footer"><span>01 / 04 · {t('引导练习')}</span><a href={demoRoute('/practice')}>{t('亲自试一题')}<ArrowRight size={15} aria-hidden="true" /></a></div>
+            </article>
+            <p className="tb-lesson__caption">{t('预设题目与提示，过程由你的作答推进。')}</p>
           </div>
         </header>
 
 
         <section id="product-loop" tabIndex={-1} className="tb-section tb-mechanism" data-showcase="product-loop">
           <div className="tb-section__intro">
+            <p className="tb-kicker">{t('一条学习路径，三种不同的观察。')}</p>
             <h2>{t("帮助会逐步撤去，观察才有区别。")}</h2>
             <p>{t("你可以故意答错、请求提示，或独立完成。系统会根据操作推进流程，并保留不同的完成方式。")}</p>
           </div>
-          <dl className="tb-contract-strip">
-            <div><dt>{t("真实运行")}</dt><dd>{t("答题判定、流程推进、本地进度")}</dd></div>
-            <div><dt>{t("预设模拟")}</dt><dd>{t("教学提示、对话与检索案例")}</dd></div>
-            <div><dt>{t("本演示未接入")}</dt><dd>{t("模型、账号、拍照、语音服务")}</dd></div>
-          </dl>
+
           <ol className="tb-loop">
             {PRODUCT_LOOP.map((step, index) => (
               <li key={t(step.title)}>
                 <span>{String(index + 1).padStart(2, '0')}</span>
                 <div><h3>{t(step.title)}</h3><p>{t(step.detail)}</p></div>
-                {index < PRODUCT_LOOP.length - 1 && <ArrowRight className="tb-loop__arrow" size={17} aria-hidden="true" />}
               </li>
             ))}
           </ol>
         </section>
 
         <details className="tb-engineering" open={new URLSearchParams(window.location.hash.split('?')[1] ?? window.location.search).has('rag') || undefined}>
-          <summary>{t("查看实现与证据")}<span>{t("预设对话 · 检索状态 · 合成测试报告")}</span></summary>
+          <summary><div><strong>{t("查看实现与证据")}</strong><span>{t("预设对话 · 检索状态 · 合成测试报告")}</span></div><Plus size={19} strokeWidth={1.4} aria-hidden="true" /></summary>
           <p className="tb-engineering-note">{t("以下是供进一步审阅的合成案例。切换状态不会发起真实检索，对话也不是实时生成。")}</p>
           {!behaviorReport && !error && <p className="tb-loading" role="status">{t("正在读取合成报告，数学体验可正常使用。")}</p>}
           {error && <section className="tb-error" role="alert"><p><strong>{t(error)}</strong> {t("数学体验仍可使用。")}</p><button className="tb-button tb-button--quiet" type="button" onClick={retry}>{t("重新加载报告")}</button></section>}
@@ -469,10 +460,18 @@ export default function SyntheticDemoPage() {
           <div className="tb-report-links"><a href={demoAsset('eval-report.json')} target="_blank" rel="noreferrer">{t("对话规则 JSON")}</a><a href={demoAsset('rag-eval-report.json')} target="_blank" rel="noreferrer">{t("检索机制 JSON")}</a><a href={demoAsset('practice-eval-report.json')} target="_blank" rel="noreferrer">{t("练习流程 JSON")}</a></div>
         </details>
 
+        <div className="tb-boundary">
         <section className="tb-limitations">
           <ShieldCheck aria-hidden="true" />
           <div><h2>{t("这次体验的边界")}</h2><p>{t("它展示成人扮演学习者的预设流程，不代表已经验证教学效果，也不提供三科实时 AI 辅导。真实模型质量、儿童使用、隐私与资料授权仍需另行验证。")}</p></div>
         </section>
+
+          <dl className="tb-contract-strip">
+            <div><dt>{t("真实运行")}</dt><dd>{t("答题判定、流程推进、本地进度")}</dd></div>
+            <div><dt>{t("预设模拟")}</dt><dd>{t("教学提示、对话与检索案例")}</dd></div>
+            <div><dt>{t("本演示未接入")}</dt><dd>{t("模型、账号、拍照、语音服务")}</dd></div>
+          </dl>
+        </div>
 
         <footer className="tb-footer">
           <p>{t("ThinkBud · 把得到帮助与独立完成分开看。")}</p>

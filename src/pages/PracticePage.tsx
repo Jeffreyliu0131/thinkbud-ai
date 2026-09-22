@@ -1,7 +1,8 @@
 import { useDemoLocale } from '../lib/demoLocale'
 import DemoLanguageSwitch from '../components/DemoLanguageSwitch'
+import BudMascot from '../components/BudMascot'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
-import { ArrowLeft, ArrowRight, Check, Clock3, Lightbulb, Pause, Play, Sprout } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, Clock3, Lightbulb, Pause, Play } from 'lucide-react'
 import {
   appendPracticeEvent, createPractice, gradeAnswer, parsePracticeNumbers, practiceExport, practiceState,
   REVIEW_PREVIEW_TASK, taskFor, type CoachingPolicy, type PracticeEvent, type PracticeRecord,
@@ -166,7 +167,7 @@ export default function PracticePage() {
   }
   const stageIndex = !state || ['coach', 'transfer-ready'].includes(state.phase) ? 0 : state.phase === 'transfer' ? 1 : 2
 
-  return <main data-language={locale} className={`practice-page ${session ? 'practice-page--active' : ''}`}><nav className="practice-nav" aria-label={t("练习导航")}><a href={demoRoute('/showcase')}><Sprout size={24} aria-hidden /><strong>ThinkBud</strong></a>
+  return <main data-language={locale} className={`practice-page ${session ? 'practice-page--active' : ''}`}><nav className="practice-nav" aria-label={t("练习导航")}><a href={demoRoute('/showcase')}><span className="practice-brand__mark" aria-hidden="true"><BudMascot /></span><strong>ThinkBud</strong></a>
     <div className="demo-nav-tools"><DemoLanguageSwitch /><a aria-label={t('项目展示')} href={demoRoute('/showcase')}><ArrowLeft size={15} aria-hidden /><span className="demo-return-label">{t("项目展示")}</span></a></div></nav>
     <header className="practice-header"><span className="practice-eyebrow">{t("数学 · 四年级 · 分配律")}</span><h1>{t("把一道题，学成一种方法。")}</h1>
       <p>{t("先跟着练，再独立换题，最后隔一段时间检查。")}</p>

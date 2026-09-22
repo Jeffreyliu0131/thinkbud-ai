@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-21T15:02:47.838Z",
-  "sourceCommit": "620b2fddcfded13cf8be2715e4c2b1f8cccc611e",
+  "generatedAt": "2026-09-21T17:12:06.877Z",
+  "sourceCommit": "8184681e3ae4d2463a52147b362870ba247c2c59",
   "sourceDirty": true,
-  "sourceSnapshotHash": "e1e9c69cda9cc23ebe2b26dcdc7ea7622e98b886303769dc2f4561b55c9f811f",
+  "sourceSnapshotHash": "4936a38889a789a52cc0b5e073b7f0ab19d19aaaf99cfa207084bd31f53e66dc",
   "sourceSnapshotFiles": [
     "src/lib/practice.ts",
     "src/lib/practiceStorage.ts",
@@ -15,6 +15,7 @@
     "src/components/DemoLanguageSwitch.css",
     "src/lib/__tests__/demoLocale.test.tsx",
     "src/pages/PracticePage.css",
+    "src/styles/demoFoundation.css",
     "src/lib/__tests__/practice.test.ts",
     "src/pages/__tests__/PracticePage.test.tsx",
     "evals/practice/run.ts",

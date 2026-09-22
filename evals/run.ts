@@ -139,6 +139,8 @@ const EVIDENCE_SOURCE_FILES = [
   'src/types/chatState.ts',
   'src/types/__tests__/chatState.test.ts',
   'src/pages/SyntheticDemoPage.tsx',
+  'src/pages/SyntheticDemoPage.css',
+  'src/styles/demoFoundation.css',
   'src/lib/demoLocale.ts',
   'src/lib/demoTranslations.ts',
   'src/components/DemoLanguageSwitch.tsx',

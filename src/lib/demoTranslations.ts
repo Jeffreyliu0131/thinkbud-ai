@@ -1,5 +1,11 @@
 // Display copy only. Observation/export keys and source reports stay unchanged.
 export const EN: Record<string, string> = {
+  "小学学习与思考教练": "A thinking coach for young learners",
+  "成人体验 · 无需账号 · 预设提示，不调用真实 AI": "Adult preview · No account · Preset prompts, no live AI",
+  "分配律 · 练习片段": "Distributive property · Preview",
+  "亲自试一题": "Try this problem",
+  "预设题目与提示，过程由你的作答推进。": "Preset questions and prompts. Your answers move the process forward.",
+  "一条学习路径，三种不同的观察。": "One learning path. Three kinds of observation.",
   "请先确认你以成人身份体验。": "Confirm that you are an adult to start the demo.",
   "预设学习者": "Preset learner",
   "我不会算 12-5。": "I can't work out 12 − 5.",

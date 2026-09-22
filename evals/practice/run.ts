@@ -11,7 +11,7 @@ const SOURCE_FILES = [
   'src/lib/demoTranslations.ts',
   'src/components/DemoLanguageSwitch.tsx',
   'src/components/DemoLanguageSwitch.css',
-  'src/lib/__tests__/demoLocale.test.tsx', 'src/pages/PracticePage.css', 'src/lib/__tests__/practice.test.ts',
+  'src/lib/__tests__/demoLocale.test.tsx', 'src/pages/PracticePage.css', 'src/styles/demoFoundation.css', 'src/lib/__tests__/practice.test.ts',
   'src/pages/__tests__/PracticePage.test.tsx', 'evals/practice/run.ts',
   'scripts/check-evidence-consistency.mjs', 'package.json', 'package-lock.json',
 ]

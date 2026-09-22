@@ -1,0 +1,101 @@
+{
+  "date": "2026-09-22",
+  "baseCommit": "8184681e3ae4d2463a52147b362870ba247c2c59",
+  "sourceDirty": true,
+  "sourceSnapshotHash": "36b044b00a2859030f6d2fb7ccec758082f9a6f117154af37d3207d4f75aba8f",
+  "publication": "not published; existing Pages deployment unchanged",
+  "captureTool": "Codex in-app browser; viewport screenshots saved and inspected",
+  "lightPaletteMethod": "Local port 59835 serves the same package, replacing (prefers-color-scheme:dark) with the nonmatching (width:-1px) only in CSS HTTP responses. Source/build files and OS settings are unchanged. Normal port 59833 has no override.",
+  "screenshots": [
+    {
+      "file": "01-live-before.png",
+      "sha256": "b920279ec7a4b02a835d6f09697b27c6e3d602364ffd7b32a077d0c5bd59546e",
+      "pixels": [
+        65536,
+        4292542531
+      ],
+      "paletteMode": "system-dark",
+      "state": "published-before"
+    },
+    {
+      "file": "02-home-dark-zh.png",
+      "sha256": "5759fefc574f096d66ab28585e57ed215c5958028681c68e00350004d2d2ef65",
+      "pixels": [
+        65536,
+        4292542531
+      ],
+      "paletteMode": "system-dark",
+      "state": "local-candidate"
+    },
+    {
+      "file": "03-learning-path.png",
+      "sha256": "a55ddd5ae984042255c745be27e3b00083a65a65d1197886668d4f84d0e4c980",
+      "pixels": [
+        65536,
+        4292542531
+      ],
+      "paletteMode": "system-dark",
+      "state": "local-candidate"
+    },
+    {
+      "file": "04-practice-start.png",
+      "sha256": "94715c19da447d48ce22315689331b9d54614591f0005067b7bdb2ddaf21a107",
+      "pixels": [
+        65536,
+        4292542531
+      ],
+      "paletteMode": "system-dark",
+      "state": "local-candidate"
+    },
+    {
+      "file": "05-home-light-zh.png",
+      "sha256": "e205c1388723717a2d21abb447334eb47fa0988adc81d84dd05babc109898ef3",
+      "pixels": [
+        65536,
+        4292542531
+      ],
+      "paletteMode": "light-defaults-via-local-CSS-QA",
+      "state": "local-candidate"
+    },
+    {
+      "file": "06-home-light-en.png",
+      "sha256": "1dc48c87d2d7c64f669c5e7d1bdb05ffacde95cbc8ee80d4eeb865006031d480",
+      "pixels": [
+        65536,
+        4292542531
+      ],
+      "paletteMode": "light-defaults-via-local-CSS-QA",
+      "state": "local-candidate"
+    },
+    {
+      "file": "07-mobile-transfer-light.png",
+      "sha256": "768f7e024c674b413c7165c3b9c90b32980fbfe5cc238a64d87f97fb3fd78ea3",
+      "pixels": [
+        65536,
+        4292542531
+      ],
+      "paletteMode": "light-defaults-via-local-CSS-QA",
+      "state": "local-candidate"
+    },
+    {
+      "file": "08-practice-desktop-light.png",
+      "sha256": "a20c89cef0ece03ac2b24a6523205eeb7cb0a6369d811d0ba58983dc7bf71cc4",
+      "pixels": [
+        65536,
+        4292542531
+      ],
+      "paletteMode": "light-defaults-via-local-CSS-QA",
+      "state": "intermediate local candidate; before success feedback was reduced to inline text"
+    },
+    {
+      "file": "09-reference-detail.png",
+      "sha256": "418366fb92723ff7f5e66fdf7c84469aeb230f1cdac0e0120b4900fcacba2d76",
+      "pixels": [
+        65536,
+        4292542531
+      ],
+      "paletteMode": "system-dark",
+      "state": "local-candidate"
+    }
+  ]
+}
