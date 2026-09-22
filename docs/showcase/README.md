@@ -91,7 +91,7 @@ Light images use the same built UI with the dark media condition disabled by a l
 
 ## Expanded three-subject showcase · 2026-09-22
 
-These captures document the current **locally verified candidate**, not a new online publication. The old images above remain dated historical captures. [Capture manifest](2026-09-22-expanded/capture-manifest.json).
+These captures document local acceptance of the expanded walkthrough, subsequently published from application source `3c2e9196493309e4bdcd12b90a7595ddf6c1ae36`. They retain their original pre-publication provenance. The old images above remain dated historical captures. [Capture manifest](2026-09-22-expanded/capture-manifest.json).
 
 1. **Entry — verified:** visible Chinese, maths and English previews, direct exploration CTA and preserved maths practice.
 2. **Subject exploration — verified:** subject/age-band/task switching, learner-state changes, Chinese writing closure and English grammar-rule application.

@@ -4,10 +4,10 @@ ThinkBud has one continuing source repository, `Jeffreyliu0131/thinkbud-ai`. The
 
 ## What visitors can use
 
-- A three-subject policy explorer with authored task examples and selectable learner states, a source-backed concept vocabulary with a local BKT illustration, and inspectable synthetic examples of the output guard and RAG failure states. These additions are in the source candidate; the README publication record owns whether they are live.
+- A three-subject policy explorer with authored task examples and selectable learner states, a source-backed concept vocabulary with a local BKT illustration, and inspectable synthetic examples of the output guard and RAG failure states. The expanded walkthrough is published; the README publication record identifies the exact application source.
 - An adult-only, deterministic grade-4 maths practice loop: guided steps, independent transfer and a separate delayed-check preview.
 - Optional local progress and local export. There is no account, business database, live model, SMS, voice, camera/OCR or provider API.
-- Product positioning spans Chinese, maths and English; the interactive example covers only the specified maths slice. It does not establish live language tutoring, learning outcomes or child-release readiness.
+- The policy explorer spans Chinese, maths and English; the answer-entry practice workflow covers only the specified maths slice. It does not establish live language tutoring, learning outcomes or child-release readiness.
 
 The static entry imports only demonstration pages. The service app and authentication/error-reporting entry are excluded at build time. Demo builds do not generate a service worker or include the RTC SDK, audio worklet, Functions, Worker or runtime configuration. The package's CSP restricts fetches to its own static origin. Source links intentionally open GitHub when the visitor chooses them.
 
