@@ -110,7 +110,7 @@ These captures document local acceptance of the expanded walkthrough, subsequent
 
 ## Continuous reading and inline practice · 2026-09-22
 
-This local acceptance revision fixes the orientation problems in the preceding expanded release. The page now reads in order; optional interactions expand in their own chapter. Publication status is recorded in the project README. [Capture manifest](2026-09-22-reading-flow/capture-manifest.json).
+These local acceptance captures document the reading-flow repair now published from application source `c0286f181a5c3b806ee330bcd989edd0ab1a4a33`. The page reads in order; optional interactions expand in their own chapter. The screenshots retain their original pre-publication provenance; the project README owns live verification. [Capture manifest](2026-09-22-reading-flow/capture-manifest.json).
 
 1. **First visit — verified:** no section-jump header, sticky jump rail, or practice-page CTA. Subject previews only change the adjacent content.
 2. **Exercise — verified:** first opening preserves the visible entry and URL; collapsing preserves input and session state; reopening resumes it. Native clicks kept scrollY at 2160 before and after opening. Keyboard focus follows the next answer input without scrolling.
